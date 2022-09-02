@@ -19,6 +19,8 @@ defmodule GeoffclaytonWebsite.Application do
       # {GeoffclaytonWebsite.Worker, arg}
     ]
 
+    SixMusic.start_job()
+
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: GeoffclaytonWebsite.Supervisor]

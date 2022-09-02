@@ -6,8 +6,6 @@ defmodule GeoffclaytonWebsiteWeb.SixMusicNowPlaying do
   @topic "now_playing"
 
   def mount(_params, _session, socket) do
-    # SixMusic.start_job()
-
     GeoffclaytonWebsiteWeb.Endpoint.subscribe(@topic)
 
     socket = assign(socket, :light_bulb_status, "...awaiting data...")
