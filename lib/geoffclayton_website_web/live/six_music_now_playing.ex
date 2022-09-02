@@ -6,6 +6,7 @@ defmodule GeoffclaytonWebsiteWeb.SixMusicNowPlaying do
   @topic "now_playing"
 
   def mount(_params, _session, socket) do
+
     GeoffclaytonWebsiteWeb.Endpoint.subscribe(@topic)
 
     socket = assign(socket, :light_bulb_status, "...awaiting data...")
@@ -19,7 +20,7 @@ defmodule GeoffclaytonWebsiteWeb.SixMusicNowPlaying do
   end
 
   def handle_info(step, socket) do
-    Logger.debug step.event
+    #Logger.debug step.event
 
     socket = assign(socket, :light_bulb_status, step.event)
     {:noreply, socket}
@@ -35,9 +36,10 @@ defmodule SixMusic do
   Documentation for `SixMusic`.
   """
 
-  def start_job() do
+  def start_job(run_spec) do
     Periodic.start_link(
-      run: fn -> get_latest_track() end,
+      # https://elixirforum.com/t/crashes-in-periodic-after-a-code-reload/35865
+      run: run_spec,
       # @todo: when a new track is detected, there's no need to be polling every 5 seconds straight away. Maybe wait 30 seconds, then poll
       # every 10 seconds, then at 60 seconds start going every 5 seconds again. Bit unnecessarily fancy I guess, but kinda cool.
       every: :timer.seconds(5)
@@ -75,7 +77,7 @@ defmodule SixMusic do
 
   @topic "now_playing"
 
-  defp get_latest_track() do
+  def get_latest_track() do
     latest_tweet_text = get_data_from_twitter()
     |> extract_body_from_twitter_response()
     |> Map.get("data")

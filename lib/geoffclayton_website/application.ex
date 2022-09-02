@@ -5,6 +5,7 @@ defmodule GeoffclaytonWebsite.Application do
 
   use Application
 
+
   def start(_type, _args) do
     children = [
       # Start the Ecto repository
@@ -19,12 +20,16 @@ defmodule GeoffclaytonWebsite.Application do
       # {GeoffclaytonWebsite.Worker, arg}
     ]
 
-    SixMusic.start_job()
+
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: GeoffclaytonWebsite.Supervisor]
-    Supervisor.start_link(children, opts)
+    res = Supervisor.start_link(children, opts)
+
+    SixMusic.start_job({SixMusic, :get_latest_track, []})
+
+    res
   end
 
   # Tell Phoenix to update the endpoint configuration
