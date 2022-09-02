@@ -15,7 +15,9 @@ defmodule GeoffclaytonWebsiteWeb.SixMusicNowPlaying do
 
   def render(assigns) do
     ~L"""
-    <h1>Now playing: <%= @now_playing %>.</h1>
+    <div style="border: 10px solid black; border-radius: 50px; padding: 25px">
+      <h1>Now playing: <%= @now_playing %>.</h1>
+    </div>
     """
   end
 
