@@ -9,20 +9,20 @@ defmodule GeoffclaytonWebsiteWeb.SixMusicNowPlaying do
 
     GeoffclaytonWebsiteWeb.Endpoint.subscribe(@topic)
 
-    socket = assign(socket, :light_bulb_status, "...awaiting data...")
+    socket = assign(socket, :now_playing, "...awaiting data...")
     {:ok, socket}
   end
 
   def render(assigns) do
     ~L"""
-    <h1>Now playing: <%= @light_bulb_status %>.</h1>
+    <h1>Now playing: <%= @now_playing %>.</h1>
     """
   end
 
   def handle_info(step, socket) do
     #Logger.debug step.event
 
-    socket = assign(socket, :light_bulb_status, step.event)
+    socket = assign(socket, :now_playing, step.event)
     {:noreply, socket}
 
   end
