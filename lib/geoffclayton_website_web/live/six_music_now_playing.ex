@@ -90,7 +90,7 @@ defmodule SixMusic do
     #Logger.debug(artist)
     #Logger.debug(song)
 
-    GeoffclaytonWebsiteWeb.Endpoint.broadcast_from(self(), @topic, "#{artist} - #{song}", %{ddd: "COCKS"})
+    GeoffclaytonWebsiteWeb.Endpoint.broadcast_from(self(), @topic, "#{artist} - #{song}", %{})
 
     {:ok, artist, song}
   end
