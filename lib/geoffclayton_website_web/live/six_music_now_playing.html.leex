@@ -1,0 +1,24 @@
+<div>
+  <table>
+    <thead>
+      <tr>
+        <th>Artist</th>
+        <th>Song</th>
+        <th>Time</th>
+        <th>Geoff would like this</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for track <- @last_ten do %>
+      <tr>
+        <td><%= track.artist %></td>
+        <td><%= track.song %></td>
+        <td><%= track.inserted_at %></td>
+        <td>
+          <%= button("hello", to: "/world") %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

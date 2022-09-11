@@ -5,6 +5,8 @@ defmodule GeoffclaytonWebsite.Application do
 
   use Application
 
+  alias GeoffclaytonWebsite.SixMusicTwitterPoller
+
 
   def start(_type, _args) do
     children = [
@@ -27,7 +29,7 @@ defmodule GeoffclaytonWebsite.Application do
     opts = [strategy: :one_for_one, name: GeoffclaytonWebsite.Supervisor]
     res = Supervisor.start_link(children, opts)
 
-    SixMusic.start_job({SixMusic, :get_latest_track, []})
+    SixMusicTwitterPoller.start_job({SixMusicTwitterPoller, :get_latest_track, []})
 
     res
   end
