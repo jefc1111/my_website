@@ -5,7 +5,7 @@
         <th>Artist</th>
         <th>Song</th>
         <th>Time</th>
-        <th>Geoff would like this</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -18,7 +18,7 @@
         <td><%= raw(track.song) %></td>
         <td><%= track.inserted_at %></td>
         <td>
-          <%= button("hello", to: "/world") %>
+          <%= button(FontAwesome.icon("heart", type: "regular", class: "h-1 w-1"), to: "/ddd") %>
         </td>
       </tr>
       <% end %>
