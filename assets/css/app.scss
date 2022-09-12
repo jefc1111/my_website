@@ -88,3 +88,9 @@
   display: block;
   margin: -1rem 0 2rem;
 }
+table tr td img {
+  display: none;
+}
+table tr:first-child td img {
+  display: block;
+}
