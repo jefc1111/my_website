@@ -11,8 +11,11 @@
     <tbody>
       <%= for track <- @last_ten do %>
       <tr>
-        <td><%= track.artist %></td>
-        <td><%= track.song %></td>
+        <td>
+          <%= raw(track.artist) %><br />
+          <img style="height: 20px;" src="/images/animated-music-image-0073.gif">
+        </td>
+        <td><%= raw(track.song) %></td>
         <td><%= track.inserted_at %></td>
         <td>
           <%= button("hello", to: "/world") %>
