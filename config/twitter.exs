@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :geoffclayton_website, :six_music_twitter,
   account_id: "1405964075360792584",
