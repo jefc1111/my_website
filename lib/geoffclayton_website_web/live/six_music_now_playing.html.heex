@@ -1,4 +1,5 @@
 <div>
+  <%= @status %>
   <table>
     <thead>
       <tr>
@@ -16,7 +17,7 @@
           <img style="height: 20px;" src="/images/animated-music-image-0073.gif">
         </td>
         <td><%= raw(track.song) %></td>
-        <td><%= track.inserted_at %></td>
+        <td><%= "#{track.inserted_at.hour}:#{track.inserted_at.minute}:#{track.inserted_at.second}" %></td>
         <td>
           <%= button(FontAwesome.icon("heart", type: "regular", class: "h-1 w-1"), to: "/ddd") %>
         </td>

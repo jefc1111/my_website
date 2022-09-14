@@ -37,6 +37,10 @@ defmodule GeoffclaytonWebsite.Track do
     query = from p in __MODULE__,
       order_by: [desc: p.id],
       limit: 10
-    query |> GeoffclaytonWebsite.Repo.all
+
+    query
+    |> GeoffclaytonWebsite.Repo.all
+
+    # "#{track.inserted_at.hour}:#{track.inserted_at.minute}:#{track.inserted_at.second}"
   end
 end

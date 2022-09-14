@@ -30,10 +30,11 @@ defmodule GeoffclaytonWebsite.SixMusicTwitterPoller do
 
   defp extract_body_from_twitter_response(response) do
     case response do
-      {:ok, %{status_code: 200, body: body}} -> Poison.decode!(body)
+      {:ok, %{status_code: 200, body: body}} -> {:ok, Poison.decode!(body)}
       {:ok, %{status_code: 200}} -> {:error, "No body found"}
-      {:ok, %{status_code: 404}} -> "It was a 404"
-      {:error, %{reason: reason}} -> "Something bad happened: #{reason}"
+      {:ok, %{status_code: 404}} -> {:error, "It was a 404"}
+      {:ok, %{status_code: 429}} -> {:error, "Rate limit exceeded"}
+      {:error, %{reason: reason}} -> {:error, "Something bad happened: #{reason}"}
     end
   end
 
@@ -51,20 +52,30 @@ defmodule GeoffclaytonWebsite.SixMusicTwitterPoller do
   @topic "now_playing"
 
   def get_latest_track() do
-    body_from_response = get_data_from_twitter()
+    twitter_response = get_data_from_twitter()
     |> extract_body_from_twitter_response()
 
+    case twitter_response do
+      {:ok, twitter_response_body} -> handle_good_twitter_response(twitter_response_body)
+      {:error, msg} -> handle_bad_twitter_response(msg)
+    end
+  end
+
+  defp handle_bad_twitter_response(msg) do
+    IO.puts msg
+
+    GeoffclaytonWebsiteWeb.Endpoint.broadcast_from(self(), @topic, "twitter_down", %{msg: msg})
+  end
+
+  defp handle_good_twitter_response(twitter_response_body) do
     # Need to do something to handle no interet connection here
-    latest_tweet_text = body_from_response
+    latest_tweet_text = twitter_response_body
     |> Map.get("data")
     |> List.first()
     |> Map.get("text")
 
     artist = extract_artist_from_tweet_text(latest_tweet_text)
     song = extract_song_from_tweet_text(latest_tweet_text)
-
-    #Logger.debug(artist)
-    #Logger.debug(song)
 
     current = %Track{artist: artist, song: song}
 

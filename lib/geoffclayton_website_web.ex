@@ -87,6 +87,7 @@ defmodule GeoffclaytonWebsiteWeb do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
+      import GeoffclaytonWebsiteWeb.ViewHelper
       import GeoffclaytonWebsiteWeb.ErrorHelpers
       import GeoffclaytonWebsiteWeb.Gettext
       alias GeoffclaytonWebsiteWeb.Router.Helpers, as: Routes

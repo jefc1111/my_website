@@ -11,11 +11,18 @@ defmodule GeoffclaytonWebsiteWeb.SixMusicNowPlaying do
     GeoffclaytonWebsiteWeb.Endpoint.subscribe(@topic)
 
     socket = assign(socket, :last_ten, Track.last_ten)
+    socket = assign(socket, :status, "Getting new data...")
+
     {:ok, socket}
   end
 
-  def handle_info(data, socket) do
+  def handle_info(%{event: "last_ten"} = data, socket) do
     socket = assign(socket, :last_ten, data.payload.last_ten)
+    {:noreply, socket}
+  end
+
+  def handle_info(%{event: "twitter_down"} = data, socket) do
+    socket = assign(socket, :status, data.payload.msg)
     {:noreply, socket}
   end
 end
