@@ -62,8 +62,6 @@ defmodule GeoffclaytonWebsite.SixMusicTwitterPoller do
   end
 
   defp handle_bad_twitter_response(msg) do
-    IO.puts msg
-
     GeoffclaytonWebsiteWeb.Endpoint.broadcast_from(self(), @topic, "twitter_down", %{msg: msg})
   end
 
@@ -74,17 +72,19 @@ defmodule GeoffclaytonWebsite.SixMusicTwitterPoller do
     |> List.first()
     |> Map.get("text")
 
-    artist = extract_artist_from_tweet_text(latest_tweet_text)
-    song = extract_song_from_tweet_text(latest_tweet_text)
-
-    current = %Track{artist: artist, song: song}
+    current = %Track{
+      artist: extract_artist_from_tweet_text(latest_tweet_text),
+      song: extract_song_from_tweet_text(latest_tweet_text)
+    }
 
     if (! (current |> Track.equals(Track.last_inserted))) do
-      GeoffclaytonWebsite.Repo.insert(current)
-
-      GeoffclaytonWebsiteWeb.Endpoint.broadcast_from(self(), @topic, "new_track", %{last_ten: Track.last_ten})
+      handle_new_track(current)
     end
+  end
 
-    current
+  defp handle_new_track(new_track) do
+    GeoffclaytonWebsite.Repo.insert(new_track)
+
+    GeoffclaytonWebsiteWeb.Endpoint.broadcast_from(self(), @topic, "new_track", %{last_ten: Track.last_ten})
   end
 end

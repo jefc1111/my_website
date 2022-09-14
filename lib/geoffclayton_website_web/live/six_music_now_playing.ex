@@ -10,8 +10,9 @@ defmodule GeoffclaytonWebsiteWeb.SixMusicNowPlaying do
   def mount(_params, _session, socket) do
     GeoffclaytonWebsiteWeb.Endpoint.subscribe(@topic)
 
-    socket = assign(socket, :last_ten, Track.last_ten)
-    socket = assign(socket, :status, "Getting new data...")
+    socket = socket
+    |> assign(:last_ten, Track.last_ten)
+    |> assign(:status, "Getting new data...")
 
     {:ok, socket}
   end
