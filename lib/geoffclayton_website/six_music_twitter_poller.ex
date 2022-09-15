@@ -23,7 +23,8 @@ defmodule GeoffclaytonWebsite.SixMusicTwitterPoller do
   defp get_data_from_twitter() do
     source_twitter_account_id = Application.get_env(:geoffclayton_website, :six_music_twitter)[:account_id]
 
-    url = "https://api.twitter.com/2/users/#{source_twitter_account_id}/tweets"
+    # minimum max_results on the API is 5 (we only really need 1)
+    url = "https://api.twitter.com/2/users/#{source_twitter_account_id}/tweets?max_results=5"
 
     bearer_token = Application.get_env(:geoffclayton_website, :six_music_twitter)[:bearer_token]
 
