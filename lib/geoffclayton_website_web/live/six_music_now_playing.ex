@@ -3,7 +3,9 @@ defmodule GeoffclaytonWebsiteWeb.SixMusicNowPlaying do
 
   use GeoffclaytonWebsiteWeb, :live_view
 
-  alias GeoffclaytonWebsite.Track
+  alias GeoffclaytonWebsite.Repo
+  alias GeoffclaytonWebsite.Schemas.Track
+  alias GeoffclaytonWebsite.Schemas.Recommendation
   alias GeoffclaytonWebsiteWeb.Endpoint
 
   @topic "now_playing"
@@ -29,9 +31,18 @@ defmodule GeoffclaytonWebsiteWeb.SixMusicNowPlaying do
     {:noreply, socket}
   end
 
+  def handle_info(_, socket) do
+    socket = assign(socket, :status, "Something weird and unexpected happened")
+    {:noreply, socket}
+  end
+
   def handle_event("like", data, socket) do
-    Logger.info(data)
-    socket = assign(socket, :test, "on")
+    track = Repo.get(Track, data["track-id"])
+
+    Repo.insert(%Recommendation{name: "me", text: "stuff", track: track})
+
+    Endpoint.broadcast(@topic, "last_ten", %{last_ten: Track.last_ten})
+
     {:noreply, socket}
   end
 

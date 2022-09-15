@@ -1,5 +1,7 @@
 defmodule GeoffclaytonWebsite.SixMusicTwitterPoller do
-  alias GeoffclaytonWebsite.Track
+  alias GeoffclaytonWebsite.Schemas.Track
+  alias GeoffclaytonWebsite.Repo
+  alias GeoffclaytonWebsiteWeb.Endpoint
 
   require Logger
   require Periodic
@@ -62,7 +64,7 @@ defmodule GeoffclaytonWebsite.SixMusicTwitterPoller do
   end
 
   defp handle_bad_twitter_response(msg) do
-    GeoffclaytonWebsiteWeb.Endpoint.broadcast_from(self(), @topic, "twitter_down", %{msg: msg})
+    Endpoint.broadcast_from(self(), @topic, "twitter_down", %{msg: msg})
   end
 
   defp handle_good_twitter_response(twitter_response_body) do
@@ -83,8 +85,8 @@ defmodule GeoffclaytonWebsite.SixMusicTwitterPoller do
   end
 
   defp handle_new_track(new_track) do
-    GeoffclaytonWebsite.Repo.insert(new_track)
+    Repo.insert(new_track)
 
-    GeoffclaytonWebsiteWeb.Endpoint.broadcast_from(self(), @topic, "new_track", %{last_ten: Track.last_ten})
+    Endpoint.broadcast_from(self(), @topic, "new_track", %{last_ten: Track.last_ten})
   end
 end

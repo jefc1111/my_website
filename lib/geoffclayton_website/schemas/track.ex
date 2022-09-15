@@ -1,4 +1,4 @@
-defmodule GeoffclaytonWebsite.Track do
+defmodule GeoffclaytonWebsite.Schemas.Track do
   @moduledoc "The Track module"
 
   require Logger
@@ -7,9 +7,13 @@ defmodule GeoffclaytonWebsite.Track do
   import Ecto.Query
   import Ecto.Changeset
 
+  alias GeoffclaytonWebsite.Repo
+
   schema "tracks" do
     field :artist, :string
     field :song, :string
+
+    has_many :recommendations, GeoffclaytonWebsite.Schemas.Recommendation
 
     timestamps()
   end
@@ -30,7 +34,7 @@ defmodule GeoffclaytonWebsite.Track do
   def last_inserted do
     __MODULE__
     |> Ecto.Query.last(:inserted_at)
-    |> GeoffclaytonWebsite.Repo.one
+    |> Repo.one
   end
 
   def last_ten do
@@ -39,7 +43,8 @@ defmodule GeoffclaytonWebsite.Track do
       limit: 10
 
     query
-    |> GeoffclaytonWebsite.Repo.all
+    |> Repo.all
+    |> Repo.preload([:recommendations])
 
     # "#{track.inserted_at.hour}:#{track.inserted_at.minute}:#{track.inserted_at.second}"
   end

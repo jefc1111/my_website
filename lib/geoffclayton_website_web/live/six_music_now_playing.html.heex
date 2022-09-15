@@ -23,6 +23,7 @@
           <button phx-click="like" phx-value-track-id={track.id}>
             Recommend to Geoff
           </button>
+          <%= length(track.recommendations) %>
         </td>
       </tr>
       <% end %>
