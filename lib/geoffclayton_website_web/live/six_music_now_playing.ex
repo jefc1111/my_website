@@ -4,15 +4,17 @@ defmodule GeoffclaytonWebsiteWeb.SixMusicNowPlaying do
   use GeoffclaytonWebsiteWeb, :live_view
 
   alias GeoffclaytonWebsite.Track
+  alias GeoffclaytonWebsiteWeb.Endpoint
 
   @topic "now_playing"
 
   def mount(_params, _session, socket) do
-    GeoffclaytonWebsiteWeb.Endpoint.subscribe(@topic)
+    Endpoint.subscribe(@topic)
 
     socket = socket
     |> assign(:last_ten, Track.last_ten)
     |> assign(:status, "Getting new data...")
+    |> assign(:test, "off")
 
     {:ok, socket}
   end
@@ -26,4 +28,11 @@ defmodule GeoffclaytonWebsiteWeb.SixMusicNowPlaying do
     socket = assign(socket, :status, data.payload.msg)
     {:noreply, socket}
   end
+
+  def handle_event("like", data, socket) do
+    Logger.info(data)
+    socket = assign(socket, :test, "on")
+    {:noreply, socket}
+  end
+
 end

@@ -33,7 +33,7 @@ defmodule GeoffclaytonWebsite.SixMusicTwitterPoller do
       {:ok, %{status_code: 200, body: body}} -> {:ok, Poison.decode!(body)}
       {:ok, %{status_code: 200}} -> {:error, "No body found"}
       {:ok, %{status_code: 404}} -> {:error, "It was a 404"}
-      {:ok, %{status_code: 429}} -> {:error, "Rate limit exceeded"}
+      {:ok, %{status_code: 429}} -> {:error, "Rate limit exceeded - cannot get new data from Twitter"}
       {:error, %{reason: reason}} -> {:error, "Something bad happened: #{reason}"}
     end
   end

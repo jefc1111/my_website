@@ -1,5 +1,6 @@
 <div>
   <%= @status %>
+  <%= @test %>
   <table>
     <thead>
       <tr>
@@ -19,7 +20,9 @@
         <td><%= raw(track.song) %></td>
         <td><%= "#{track.inserted_at.hour}:#{track.inserted_at.minute}:#{track.inserted_at.second}" %></td>
         <td>
-          <%= button(FontAwesome.icon("heart", type: "regular", class: "h-1 w-1"), to: "/ddd") %>
+          <button phx-click="like" phx-value-track-id={track.id}>
+            Recommend to Geoff
+          </button>
         </td>
       </tr>
       <% end %>
