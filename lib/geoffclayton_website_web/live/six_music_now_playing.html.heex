@@ -20,7 +20,7 @@
         <td><%= "#{track.inserted_at.hour}:#{track.inserted_at.minute}:#{track.inserted_at.second}" %></td>
         <td>
           <button class="recommendation-btn" phx-click="like" phx-value-track-id={track.id}>
-            Recommend to Geoff
+            Geoff, I think you'd like this
             <%= if (length(track.recommendations) > 0) do %>
               <span class="recommendation-count">
                 <%= length(track.recommendations) %>
