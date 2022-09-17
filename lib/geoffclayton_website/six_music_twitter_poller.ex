@@ -62,8 +62,6 @@ defmodule GeoffclaytonWebsite.SixMusicTwitterPoller do
 
     seconds_since_last_track = Timex.diff(DateTime.utc_now, last_track_saved.inserted_at, :seconds)
 
-    IO.puts(seconds_since_last_track)
-
     case seconds_since_last_track do
       seconds_since_last_track when seconds_since_last_track < 60 ->
         {:noreply, "Not polling Twitter - track only started less than a minute ago"}
