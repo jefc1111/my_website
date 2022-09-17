@@ -54,12 +54,37 @@ defmodule GeoffclaytonWebsite.SixMusicTwitterPoller do
 
   @topic "now_playing"
 
-  def get_latest_track() do
+  defguard is_in_second_minute(seconds_elapsed) when seconds_elapsed < 120
+    and seconds_elapsed >= 60
+
+  def handle_poll() do
+    last_track_saved  = Track.last_inserted
+
+    seconds_since_last_track = Timex.diff(DateTime.utc_now, last_track_saved.inserted_at, :seconds)
+
+    IO.puts(seconds_since_last_track)
+
+    case seconds_since_last_track do
+      seconds_since_last_track when seconds_since_last_track < 60 ->
+        {:noreply, "Not polling Twitter - track only started less than a minute ago"}
+      seconds_since_last_track when is_in_second_minute(seconds_since_last_track)
+        and rem(seconds_since_last_track, 10) === 0 -> poll_twitter(last_track_saved)
+      _ -> poll_twitter(last_track_saved)
+    end
+  end
+
+  defp poll_twitter(last_track_saved) do
     twitter_response = get_data_from_twitter()
     |> extract_body_from_twitter_response()
 
     case twitter_response do
-      {:ok, twitter_response_body} -> handle_good_twitter_response(twitter_response_body)
+      {:ok, twitter_response_body} ->
+        current_track = extract_current_track(twitter_response_body)
+
+        # Can I get rid of this `if`?
+        if (! Track.equals(current_track, last_track_saved)) do
+          handle_new_track(current_track)
+        end
       {:error, msg} -> handle_bad_twitter_response(msg)
     end
   end
@@ -68,21 +93,17 @@ defmodule GeoffclaytonWebsite.SixMusicTwitterPoller do
     Endpoint.broadcast_from(self(), @topic, "twitter_down", %{msg: msg})
   end
 
-  defp handle_good_twitter_response(twitter_response_body) do
+  defp extract_current_track(twitter_response_body) do
     # Need to do something to handle no interet connection here
     latest_tweet_text = twitter_response_body
     |> Map.get("data")
     |> List.first()
     |> Map.get("text")
 
-    current = %Track{
+    %Track{
       artist: extract_artist_from_tweet_text(latest_tweet_text),
       song: extract_song_from_tweet_text(latest_tweet_text)
     }
-
-    if (! (current |> Track.equals(Track.last_inserted))) do
-      handle_new_track(current)
-    end
   end
 
   defp handle_new_track(new_track) do

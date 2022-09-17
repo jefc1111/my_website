@@ -29,7 +29,7 @@ defmodule GeoffclaytonWebsite.Application do
     opts = [strategy: :one_for_one, name: GeoffclaytonWebsite.Supervisor]
     res = Supervisor.start_link(children, opts)
 
-    SixMusicTwitterPoller.start_job({SixMusicTwitterPoller, :get_latest_track, []})
+    SixMusicTwitterPoller.start_job({SixMusicTwitterPoller, :handle_poll, []})
 
     res
   end

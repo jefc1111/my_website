@@ -50,6 +50,7 @@ defmodule GeoffclaytonWebsite.MixProject do
       {:parent, "~> 0.12.1"},
       {:httpoison, "~> 1.8"},
       {:poison, "~> 5.0"},
+      {:timex, "~> 3.0"},
       {:ex_fontawesome, "~> 0.7.2"},
       {:esbuild, "~> 0.4", runtime: Mix.env() == :dev}
     ]

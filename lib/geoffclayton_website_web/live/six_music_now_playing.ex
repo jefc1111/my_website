@@ -2,6 +2,7 @@ defmodule GeoffclaytonWebsiteWeb.SixMusicNowPlaying do
   require Logger
 
   use GeoffclaytonWebsiteWeb, :live_view
+  use Timex
 
   alias GeoffclaytonWebsite.Repo
   alias GeoffclaytonWebsite.Schemas.Track
@@ -16,7 +17,6 @@ defmodule GeoffclaytonWebsiteWeb.SixMusicNowPlaying do
     socket = socket
     |> assign(:last_ten, Track.last_ten)
     |> assign(:status, "Getting new data...")
-    |> assign(:test, "off")
 
     {:ok, socket}
   end
