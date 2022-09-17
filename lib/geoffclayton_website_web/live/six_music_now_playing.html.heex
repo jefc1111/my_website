@@ -19,10 +19,14 @@
         <td><%= raw(track.song) %></td>
         <td><%= "#{track.inserted_at.hour}:#{track.inserted_at.minute}:#{track.inserted_at.second}" %></td>
         <td>
-          <button phx-click="like" phx-value-track-id={track.id}>
+          <button class="recommendation-btn" phx-click="like" phx-value-track-id={track.id}>
             Recommend to Geoff
-          </button>
-          <%= length(track.recommendations) %>
+            <%= if (length(track.recommendations) > 0) do %>
+              <span class="recommendation-count">
+                <%= length(track.recommendations) %>
+              </span>
+            <% end %>
+          </button>          
         </td>
       </tr>
       <% end %>
