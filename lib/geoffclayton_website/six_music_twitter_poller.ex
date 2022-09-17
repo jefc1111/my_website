@@ -10,13 +10,23 @@ defmodule GeoffclaytonWebsite.SixMusicTwitterPoller do
   Documentation for `SixMusic`.
   """
 
+  @topic "now_playing"
+  @twitter_poll_interval_secs 5
+  @slow_poll_phase_multiplier 2
+  @dormant_secs_after_track_change 60
+  @slow_poll_secs_after_dormant 90
+
+  # The idea is, after the track changes, you go for some time (@dormant_secs_after_track_change) before starting to poll again,
+  # then for some further period of time (@slow_poll_secs_after_dormant) you poll at a less regular interval which is defined
+  # by @twitter_poll_interval_secs * @slow_poll_phase_multiplier (i.e. 5 * 2 = poll every 10 secconds during the 'slow poll phase')
+
   def start_job(run_spec) do
     Periodic.start_link(
       # https://elixirforum.com/t/crashes-in-periodic-after-a-code-reload/35865
       run: run_spec,
       # @todo: when a new track is detected, there's no need to be polling every 5 seconds straight away. Maybe wait 30 seconds, then poll
       # every 10 seconds, then at 60 seconds start going every 5 seconds again. Bit unnecessarily fancy I guess, but kinda cool.
-      every: :timer.seconds(5)
+      every: :timer.seconds(@twitter_poll_interval_secs)
     )
   end
 
@@ -52,10 +62,9 @@ defmodule GeoffclaytonWebsite.SixMusicTwitterPoller do
     |> String.replace(replace_str, "")
   end
 
-  @topic "now_playing"
-
-  defguard is_in_second_minute(seconds_elapsed) when seconds_elapsed < 120
-    and seconds_elapsed >= 60
+  defguard is_in_slow_poll_phase(seconds_elapsed)
+    when seconds_elapsed < @dormant_secs_after_track_change + @slow_poll_secs_after_dormant
+    and seconds_elapsed >= @dormant_secs_after_track_change
 
   def handle_poll() do
     last_track_saved  = Track.last_inserted
@@ -63,10 +72,11 @@ defmodule GeoffclaytonWebsite.SixMusicTwitterPoller do
     seconds_since_last_track = Timex.diff(DateTime.utc_now, last_track_saved.inserted_at, :seconds)
 
     case seconds_since_last_track do
-      seconds_since_last_track when seconds_since_last_track < 60 ->
-        {:noreply, "Not polling Twitter - track only started less than a minute ago"}
-      seconds_since_last_track when is_in_second_minute(seconds_since_last_track)
-        and rem(seconds_since_last_track, 10) === 0 -> poll_twitter(last_track_saved)
+      seconds_since_last_track when seconds_since_last_track < @dormant_secs_after_track_change ->
+        {:noreply, "Not polling Twitter - current track only started less than a minute ago"}
+      seconds_since_last_track when is_in_slow_poll_phase(seconds_since_last_track)
+        and rem(seconds_since_last_track, @slow_poll_phase_multiplier * @twitter_poll_interval_secs) === 0 ->
+           poll_twitter(last_track_saved)
       _ -> poll_twitter(last_track_saved)
     end
   end
@@ -80,9 +90,10 @@ defmodule GeoffclaytonWebsite.SixMusicTwitterPoller do
         current_track = extract_current_track(twitter_response_body)
 
         # Can I get rid of this `if`?
-        if (! Track.equals(current_track, last_track_saved)) do
+        unless (Track.equals(current_track, last_track_saved)) do
           handle_new_track(current_track)
         end
+        # No alternative action required as we have established that the track has not changed yet
       {:error, msg} -> handle_bad_twitter_response(msg)
     end
   end
