@@ -1,20 +1,9 @@
-# RadioTracker
+# Radio Tracker
 
-To start your Phoenix server:
+Shows the most recent ten songs playing on BBC 6 Music and adds a button next to each which records a recommendation. 
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Install Node.js dependencies with `npm install` inside the `assets` directory
-  * Start Phoenix endpoint with `mix phx.server`
+This was mainly conceived so that when I am cooking or whatever and hear a song I like on BBC 6 Music I 
+can easily record that. Then later on when I'm not cooking or whatever I can see if thete was anything
+new I heard on the radio recently that I liked. 
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
-
-## Learn more
-
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+I also wanted a little project I could use as a way of learning some more Elixir / Phoenix Framework (https://www.phoenixframework.org/).
