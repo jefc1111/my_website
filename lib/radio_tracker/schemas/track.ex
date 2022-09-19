@@ -1,4 +1,4 @@
-defmodule GeoffclaytonWebsite.Schemas.Track do
+defmodule RadioTracker.Schemas.Track do
   @moduledoc "The Track module"
 
   require Logger
@@ -7,13 +7,13 @@ defmodule GeoffclaytonWebsite.Schemas.Track do
   import Ecto.Query
   import Ecto.Changeset
 
-  alias GeoffclaytonWebsite.Repo
+  alias RadioTracker.Repo
 
   schema "tracks" do
     field :artist, :string
     field :song, :string
 
-    has_many :recommendations, GeoffclaytonWebsite.Schemas.Recommendation
+    has_many :recommendations, RadioTracker.Schemas.Recommendation
 
     timestamps()
   end

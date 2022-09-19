@@ -7,15 +7,15 @@
 # General application configuration
 import Config
 
-config :geoffclayton_website,
-  ecto_repos: [GeoffclaytonWebsite.Repo]
+config :radio_tracker,
+  ecto_repos: [RadioTracker.Repo]
 
 # Configures the endpoint
-config :geoffclayton_website, GeoffclaytonWebsiteWeb.Endpoint,
+config :radio_tracker, RadioTrackerWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "tiiIH9yAeMwvzaWgf7C8D0I/3l22+Tsz5Y3vEI6VbYx12mHL7R24FdTf1rbd0Lci",
-  render_errors: [view: GeoffclaytonWebsiteWeb.ErrorView, accepts: ~w(html json), layout: false],
-  pubsub_server: GeoffclaytonWebsite.PubSub,
+  render_errors: [view: RadioTrackerWeb.ErrorView, accepts: ~w(html json), layout: false],
+  pubsub_server: RadioTracker.PubSub,
   live_view: [signing_salt: "TasqEvgY"]
 
 # Configures Elixir's Logger

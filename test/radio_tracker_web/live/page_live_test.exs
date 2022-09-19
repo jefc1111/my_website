@@ -1,5 +1,5 @@
-defmodule GeoffclaytonWebsiteWeb.PageLiveTest do
-  use GeoffclaytonWebsiteWeb.ConnCase
+defmodule RadioTrackerWeb.PageLiveTest do
+  use RadioTrackerWeb.ConnCase
 
   import Phoenix.LiveViewTest
 

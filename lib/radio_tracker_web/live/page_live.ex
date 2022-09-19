@@ -1,5 +1,5 @@
-defmodule GeoffclaytonWebsiteWeb.PageLive do
-  use GeoffclaytonWebsiteWeb, :live_view
+defmodule RadioTrackerWeb.PageLive do
+  use RadioTrackerWeb, :live_view
 
   @impl true
   def mount(_params, _session, socket) do
@@ -26,7 +26,7 @@ defmodule GeoffclaytonWebsiteWeb.PageLive do
   end
 
   defp search(query) do
-    if not GeoffclaytonWebsiteWeb.Endpoint.config(:code_reloader) do
+    if not RadioTrackerWeb.Endpoint.config(:code_reloader) do
       raise "action disabled when not in development"
     end
 

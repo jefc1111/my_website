@@ -1,4 +1,4 @@
-defmodule GeoffclaytonWebsite.DataCase do
+defmodule RadioTracker.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -10,7 +10,7 @@ defmodule GeoffclaytonWebsite.DataCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use GeoffclaytonWebsite.DataCase, async: true`, although
+  by setting `use RadioTracker.DataCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -18,20 +18,20 @@ defmodule GeoffclaytonWebsite.DataCase do
 
   using do
     quote do
-      alias GeoffclaytonWebsite.Repo
+      alias RadioTracker.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import GeoffclaytonWebsite.DataCase
+      import RadioTracker.DataCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(GeoffclaytonWebsite.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(RadioTracker.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(GeoffclaytonWebsite.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(RadioTracker.Repo, {:shared, self()})
     end
 
     :ok

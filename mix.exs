@@ -1,9 +1,9 @@
-defmodule GeoffclaytonWebsite.MixProject do
+defmodule RadioTracker.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :geoffclayton_website,
+      app: :radio_tracker,
       version: "0.1.0",
       elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -19,7 +19,7 @@ defmodule GeoffclaytonWebsite.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {GeoffclaytonWebsite.Application, []},
+      mod: {RadioTracker.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

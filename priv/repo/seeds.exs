@@ -5,7 +5,7 @@
 # Inside the script, you can read and write to any of your
 # repositories directly:
 #
-#     GeoffclaytonWebsite.Repo.insert!(%GeoffclaytonWebsite.SomeSchema{})
+#     RadioTracker.Repo.insert!(%RadioTracker.SomeSchema{})
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.

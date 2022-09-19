@@ -1,4 +1,4 @@
-defmodule GeoffclaytonWebsiteWeb.ChannelCase do
+defmodule RadioTrackerWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -11,7 +11,7 @@ defmodule GeoffclaytonWebsiteWeb.ChannelCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use GeoffclaytonWebsiteWeb.ChannelCase, async: true`, although
+  by setting `use RadioTrackerWeb.ChannelCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -21,18 +21,18 @@ defmodule GeoffclaytonWebsiteWeb.ChannelCase do
     quote do
       # Import conveniences for testing with channels
       import Phoenix.ChannelTest
-      import GeoffclaytonWebsiteWeb.ChannelCase
+      import RadioTrackerWeb.ChannelCase
 
       # The default endpoint for testing
-      @endpoint GeoffclaytonWebsiteWeb.Endpoint
+      @endpoint RadioTrackerWeb.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(GeoffclaytonWebsite.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(RadioTracker.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(GeoffclaytonWebsite.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(RadioTracker.Repo, {:shared, self()})
     end
 
     :ok

@@ -1,5 +1,5 @@
-defmodule GeoffclaytonWebsiteWeb.LayoutViewTest do
-  use GeoffclaytonWebsiteWeb.ConnCase, async: true
+defmodule RadioTrackerWeb.LayoutViewTest do
+  use RadioTrackerWeb.ConnCase, async: true
 
   # When testing helpers, you may want to import Phoenix.HTML and
   # use functions such as safe_to_string() to convert the helper

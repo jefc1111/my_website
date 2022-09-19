@@ -1,4 +1,4 @@
-defmodule GeoffclaytonWebsiteWeb.Telemetry do
+defmodule RadioTrackerWeb.Telemetry do
   use Supervisor
   import Telemetry.Metrics
 
@@ -31,11 +31,11 @@ defmodule GeoffclaytonWebsiteWeb.Telemetry do
       ),
 
       # Database Metrics
-      summary("geoffclayton_website.repo.query.total_time", unit: {:native, :millisecond}),
-      summary("geoffclayton_website.repo.query.decode_time", unit: {:native, :millisecond}),
-      summary("geoffclayton_website.repo.query.query_time", unit: {:native, :millisecond}),
-      summary("geoffclayton_website.repo.query.queue_time", unit: {:native, :millisecond}),
-      summary("geoffclayton_website.repo.query.idle_time", unit: {:native, :millisecond}),
+      summary("radio_tracker.repo.query.total_time", unit: {:native, :millisecond}),
+      summary("radio_tracker.repo.query.decode_time", unit: {:native, :millisecond}),
+      summary("radio_tracker.repo.query.query_time", unit: {:native, :millisecond}),
+      summary("radio_tracker.repo.query.queue_time", unit: {:native, :millisecond}),
+      summary("radio_tracker.repo.query.idle_time", unit: {:native, :millisecond}),
 
       # VM Metrics
       summary("vm.memory.total", unit: {:byte, :kilobyte}),
@@ -49,7 +49,7 @@ defmodule GeoffclaytonWebsiteWeb.Telemetry do
     [
       # A module, function and arguments to be invoked periodically.
       # This function must call :telemetry.execute/3 and a metric must be added above.
-      # {GeoffclaytonWebsiteWeb, :count_users, []}
+      # {RadioTrackerWeb, :count_users, []}
     ]
   end
 end

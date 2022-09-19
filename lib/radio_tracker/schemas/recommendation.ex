@@ -1,4 +1,4 @@
-defmodule GeoffclaytonWebsite.Schemas.Recommendation do
+defmodule RadioTracker.Schemas.Recommendation do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -6,7 +6,7 @@ defmodule GeoffclaytonWebsite.Schemas.Recommendation do
     field :name, :string
     field :text, :string
 
-    belongs_to :track, GeoffclaytonWebsite.Schemas.Track
+    belongs_to :track, RadioTracker.Schemas.Track
 
     timestamps()
   end

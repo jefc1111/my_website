@@ -1,5 +1,5 @@
-defmodule GeoffclaytonWebsiteWeb.ErrorView do
-  use GeoffclaytonWebsiteWeb, :view
+defmodule RadioTrackerWeb.ErrorView do
+  use RadioTrackerWeb, :view
 
   # If you want to customize a particular status code
   # for a certain format, you may uncomment below.

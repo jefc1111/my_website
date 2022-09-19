@@ -1,12 +1,12 @@
-defmodule GeoffclaytonWebsiteWeb do
+defmodule RadioTrackerWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, views, channels and so on.
 
   This can be used in your application as:
 
-      use GeoffclaytonWebsiteWeb, :controller
-      use GeoffclaytonWebsiteWeb, :view
+      use RadioTrackerWeb, :controller
+      use RadioTrackerWeb, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -19,19 +19,19 @@ defmodule GeoffclaytonWebsiteWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: GeoffclaytonWebsiteWeb
+      use Phoenix.Controller, namespace: RadioTrackerWeb
 
       import Plug.Conn
-      import GeoffclaytonWebsiteWeb.Gettext
-      alias GeoffclaytonWebsiteWeb.Router.Helpers, as: Routes
+      import RadioTrackerWeb.Gettext
+      alias RadioTrackerWeb.Router.Helpers, as: Routes
     end
   end
 
   def view do
     quote do
       use Phoenix.View,
-        root: "lib/geoffclayton_website_web/templates",
-        namespace: GeoffclaytonWebsiteWeb
+        root: "lib/radio_tracker_web/templates",
+        namespace: RadioTrackerWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
@@ -45,7 +45,7 @@ defmodule GeoffclaytonWebsiteWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {GeoffclaytonWebsiteWeb.LayoutView, "live.html"}
+        layout: {RadioTrackerWeb.LayoutView, "live.html"}
 
       unquote(view_helpers())
     end
@@ -72,7 +72,7 @@ defmodule GeoffclaytonWebsiteWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import GeoffclaytonWebsiteWeb.Gettext
+      import RadioTrackerWeb.Gettext
     end
   end
 
@@ -87,10 +87,10 @@ defmodule GeoffclaytonWebsiteWeb do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
-      import GeoffclaytonWebsiteWeb.ViewHelper
-      import GeoffclaytonWebsiteWeb.ErrorHelpers
-      import GeoffclaytonWebsiteWeb.Gettext
-      alias GeoffclaytonWebsiteWeb.Router.Helpers, as: Routes
+      import RadioTrackerWeb.ViewHelper
+      import RadioTrackerWeb.ErrorHelpers
+      import RadioTrackerWeb.Gettext
+      alias RadioTrackerWeb.Router.Helpers, as: Routes
     end
   end
 

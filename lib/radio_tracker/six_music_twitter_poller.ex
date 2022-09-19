@@ -1,7 +1,7 @@
-defmodule GeoffclaytonWebsite.SixMusicTwitterPoller do
-  alias GeoffclaytonWebsite.Schemas.Track
-  alias GeoffclaytonWebsite.Repo
-  alias GeoffclaytonWebsiteWeb.Endpoint
+defmodule RadioTracker.SixMusicTwitterPoller do
+  alias RadioTracker.Schemas.Track
+  alias RadioTracker.Repo
+  alias RadioTrackerWeb.Endpoint
 
   require Logger
   require Periodic
@@ -31,12 +31,12 @@ defmodule GeoffclaytonWebsite.SixMusicTwitterPoller do
   end
 
   defp get_data_from_twitter() do
-    source_twitter_account_id = Application.get_env(:geoffclayton_website, :six_music_twitter)[:account_id]
+    source_twitter_account_id = Application.get_env(:radio_tracker, :six_music_twitter)[:account_id]
 
     # minimum max_results on the API is 5 (we only really need 1)
     url = "https://api.twitter.com/2/users/#{source_twitter_account_id}/tweets?max_results=5"
 
-    bearer_token = Application.get_env(:geoffclayton_website, :six_music_twitter)[:bearer_token]
+    bearer_token = Application.get_env(:radio_tracker, :six_music_twitter)[:bearer_token]
 
     HTTPoison.get(url, ["Authorization": "Bearer #{bearer_token}"])
   end

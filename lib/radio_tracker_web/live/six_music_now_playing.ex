@@ -1,13 +1,13 @@
-defmodule GeoffclaytonWebsiteWeb.SixMusicNowPlaying do
+defmodule RadioTrackerWeb.SixMusicNowPlaying do
   require Logger
 
-  use GeoffclaytonWebsiteWeb, :live_view
+  use RadioTrackerWeb, :live_view
   use Timex
 
-  alias GeoffclaytonWebsite.Repo
-  alias GeoffclaytonWebsite.Schemas.Track
-  alias GeoffclaytonWebsite.Schemas.Recommendation
-  alias GeoffclaytonWebsiteWeb.Endpoint
+  alias RadioTracker.Repo
+  alias RadioTracker.Schemas.Track
+  alias RadioTracker.Schemas.Recommendation
+  alias RadioTrackerWeb.Endpoint
 
   @topic "now_playing"
 

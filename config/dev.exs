@@ -1,7 +1,7 @@
 import Config
 
 # Configure your database
-config :geoffclayton_website, GeoffclaytonWebsite.Repo,
+config :radio_tracker, RadioTracker.Repo,
   username: "postgres",
   password: "postgres",
   database: "geoffclayton_website_dev",
@@ -15,7 +15,7 @@ config :geoffclayton_website, GeoffclaytonWebsite.Repo,
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
-config :geoffclayton_website, GeoffclaytonWebsiteWeb.Endpoint,
+config :radio_tracker, RadioTrackerWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
@@ -49,13 +49,13 @@ config :geoffclayton_website, GeoffclaytonWebsiteWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :geoffclayton_website, GeoffclaytonWebsiteWeb.Endpoint,
+config :radio_tracker, RadioTrackerWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/geoffclayton_website_web/(live|views)/.*(ex)$",
-      ~r"lib/geoffclayton_website_web/templates/.*(eex)$"
+      ~r"lib/radio_tracker_web/(live|views)/.*(ex)$",
+      ~r"lib/radio_tracker_web/templates/.*(eex)$"
     ]
   ]
 

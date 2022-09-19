@@ -1,4 +1,4 @@
-defmodule GeoffclaytonWebsiteWeb.ConnCase do
+defmodule RadioTrackerWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -11,7 +11,7 @@ defmodule GeoffclaytonWebsiteWeb.ConnCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use GeoffclaytonWebsiteWeb.ConnCase, async: true`, although
+  by setting `use RadioTrackerWeb.ConnCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -22,20 +22,20 @@ defmodule GeoffclaytonWebsiteWeb.ConnCase do
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
-      import GeoffclaytonWebsiteWeb.ConnCase
+      import RadioTrackerWeb.ConnCase
 
-      alias GeoffclaytonWebsiteWeb.Router.Helpers, as: Routes
+      alias RadioTrackerWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
-      @endpoint GeoffclaytonWebsiteWeb.Endpoint
+      @endpoint RadioTrackerWeb.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(GeoffclaytonWebsite.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(RadioTracker.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(GeoffclaytonWebsite.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(RadioTracker.Repo, {:shared, self()})
     end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}

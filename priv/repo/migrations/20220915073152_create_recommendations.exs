@@ -1,4 +1,4 @@
-defmodule GeoffclaytonWebsite.Repo.Migrations.CreateRecommendations do
+defmodule RadioTracker.Repo.Migrations.CreateRecommendations do
   use Ecto.Migration
 
   def change do

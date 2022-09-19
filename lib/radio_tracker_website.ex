@@ -1,6 +1,6 @@
-defmodule GeoffclaytonWebsite do
+defmodule RadioTracker do
   @moduledoc """
-  GeoffclaytonWebsite keeps the contexts that define your domain
+  RadioTracker keeps the contexts that define your domain
   and business logic.
 
   Contexts are also responsible for managing your data, regardless

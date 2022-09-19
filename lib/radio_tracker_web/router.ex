@@ -1,11 +1,11 @@
-defmodule GeoffclaytonWebsiteWeb.Router do
-  use GeoffclaytonWebsiteWeb, :router
+defmodule RadioTrackerWeb.Router do
+  use RadioTrackerWeb, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, {GeoffclaytonWebsiteWeb.LayoutView, :root}
+    plug :put_root_layout, {RadioTrackerWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -14,7 +14,7 @@ defmodule GeoffclaytonWebsiteWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", GeoffclaytonWebsiteWeb do
+  scope "/", RadioTrackerWeb do
     pipe_through :browser
 
     live "/", PageLive, :index
@@ -22,7 +22,7 @@ defmodule GeoffclaytonWebsiteWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", GeoffclaytonWebsiteWeb do
+  # scope "/api", RadioTrackerWeb do
   #   pipe_through :api
   # end
 
@@ -38,7 +38,7 @@ defmodule GeoffclaytonWebsiteWeb.Router do
 
     scope "/" do
       pipe_through :browser
-      live_dashboard "/dashboard", metrics: GeoffclaytonWebsiteWeb.Telemetry
+      live_dashboard "/dashboard", metrics: RadioTrackerWeb.Telemetry
     end
   end
 end

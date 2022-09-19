@@ -1,4 +1,4 @@
-defmodule GeoffclaytonWebsiteWeb.ErrorHelpers do
+defmodule RadioTrackerWeb.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.
   """
@@ -39,9 +39,9 @@ defmodule GeoffclaytonWebsiteWeb.ErrorHelpers do
     # should be written to the errors.po file. The :count option is
     # set by Ecto and indicates we should also apply plural rules.
     if count = opts[:count] do
-      Gettext.dngettext(GeoffclaytonWebsiteWeb.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(RadioTrackerWeb.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(GeoffclaytonWebsiteWeb.Gettext, "errors", msg, opts)
+      Gettext.dgettext(RadioTrackerWeb.Gettext, "errors", msg, opts)
     end
   end
 end

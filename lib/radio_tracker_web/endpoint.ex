@@ -1,16 +1,16 @@
-defmodule GeoffclaytonWebsiteWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :geoffclayton_website
+defmodule RadioTrackerWeb.Endpoint do
+  use Phoenix.Endpoint, otp_app: :radio_tracker
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
-    key: "_geoffclayton_website_key",
+    key: "_radio_tracker_key",
     signing_salt: "bIjfXgGc"
   ]
 
-  socket "/socket", GeoffclaytonWebsiteWeb.UserSocket,
+  socket "/socket", RadioTrackerWeb.UserSocket,
     websocket: true,
     longpoll: false
 
@@ -22,7 +22,7 @@ defmodule GeoffclaytonWebsiteWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/",
-    from: :geoffclayton_website,
+    from: :radio_tracker,
     gzip: false,
     only: ~w(assets fonts images favicon.ico robots.txt)
 
@@ -32,7 +32,7 @@ defmodule GeoffclaytonWebsiteWeb.Endpoint do
     socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
     plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
-    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :geoffclayton_website
+    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :radio_tracker
   end
 
   plug Phoenix.LiveDashboard.RequestLogger,
@@ -50,5 +50,5 @@ defmodule GeoffclaytonWebsiteWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug GeoffclaytonWebsiteWeb.Router
+  plug RadioTrackerWeb.Router
 end
