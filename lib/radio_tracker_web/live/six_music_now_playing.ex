@@ -21,7 +21,7 @@ defmodule RadioTrackerWeb.SixMusicNowPlaying do
     {:ok, socket}
   end
 
-  def handle_info(%{event: "last_ten"} = data, socket) do
+  def handle_info(%{event: "new_track"} = data, socket) do
     socket = assign(socket, :last_ten, data.payload.last_ten)
     {:noreply, socket}
   end
