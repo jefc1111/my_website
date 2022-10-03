@@ -11,6 +11,13 @@ defmodule RadioTracker.SixMusicTwitterPoller do
   """
 
   @topic "now_playing"
+
+  # Twitter's 'elevated access' API limit is 2_000_000 tweets pulled per month.
+  # It does not appear to be possible to pull fewer than 5 in one go.
+  # This results in an average of pulling 5 tweets around every 7.5 seconds.
+  # The dormant phase and slow poll phase mean it would probably be possible to poll more
+  # frequently. But every 7.5 seconds is probably enough anyway.
+  # Supporting other radio stations may impact how best to do this.
   @twitter_poll_interval_secs 8
   @slow_poll_phase_multiplier 2
   @dormant_secs_after_track_change 60
