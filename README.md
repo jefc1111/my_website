@@ -10,6 +10,8 @@ I also wanted a little project I could use as a way of learning some more Elixir
 
 ## Possible extra features
 - Only show debug info in dev mode
+- Set up CI pipeline
+- Use the time of the tweet as oppose dot the time the tweet was pulled
 - Ability to leave a note with a recommendation.
 - The page to see 'recent recommendations' and similar 'top 10s'.
 - Ability to undo a recommendation immediately after making it.
