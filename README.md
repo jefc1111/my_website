@@ -13,3 +13,4 @@ I also wanted a little project I could use as a way of learning some more Elixir
 - The page to see 'recent recommendations' and similar 'top 10s'.
 - Ability to undo a recommendation immediately after making it.
 - User accounts. Allow registered users to have their own page. Then we get overall aggregated 'most recommended' stats and so on.
+- Export selected tracks to Spotify playlist (automatically?)
