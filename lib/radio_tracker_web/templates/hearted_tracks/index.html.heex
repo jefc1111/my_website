@@ -1,0 +1,30 @@
+<div>
+  <table>
+    <thead>
+      <tr>
+        <th>Artist</th>
+        <th>Song</th>
+        <th>Time</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for track <- @hearted_tracks do %>
+      <tr>
+        <td><%= raw(track.artist) %></td>
+        <td><%= raw(track.song) %></td>
+        <td><%= "#{track.inserted_at.hour}:#{track.inserted_at.minute}:#{track.inserted_at.second}" %></td>
+        <td>
+            <span class="pink">
+                <%= if length(track.recommendations) < 10 do %>
+                <%= String.duplicate("♥", length(track.recommendations)) %>
+                <% else %>
+                <%= String.duplicate("♥", 10) %> (<%= length(track.recommendations) %>)
+                <% end %>
+            </span>                    
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

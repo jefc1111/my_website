@@ -20,6 +20,7 @@ defmodule RadioTrackerWeb.Router do
     #live "/", PageLive, :index
     #live "/six-music-now-playing", SixMusicNowPlaying
 
+    get "/hearted-tracks", HeartedTracksController, :index
     live "/", SixMusicNowPlaying
   end
 

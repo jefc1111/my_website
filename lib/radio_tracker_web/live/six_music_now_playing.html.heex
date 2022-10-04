@@ -1,5 +1,7 @@
 <div>
+  <%= if Mix.env() == :dev do %>  
   <%= @status %>
+  <% end %>
   <table>
     <thead>
       <tr>
@@ -19,8 +21,8 @@
         <td><%= raw(track.song) %></td>
         <td><%= "#{track.inserted_at.hour}:#{track.inserted_at.minute}:#{track.inserted_at.second}" %></td>
         <td>
-          <button class="recommendation-btn" phx-click="like" phx-value-track-id={track.id}>
-            Geoff, I think you'd like this
+          <button class="pink recommendation-btn" phx-click="like" phx-value-track-id={track.id}>
+            ♥
             <%= if (length(track.recommendations) > 0) do %>
               <span class="recommendation-count">
                 <%= length(track.recommendations) %>

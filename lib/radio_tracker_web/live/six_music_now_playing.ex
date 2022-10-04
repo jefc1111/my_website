@@ -41,7 +41,7 @@ defmodule RadioTrackerWeb.SixMusicNowPlaying do
 
     Repo.insert(%Recommendation{name: "me", text: "stuff", track: track})
 
-    Endpoint.broadcast(@topic, "last_ten", %{last_ten: Track.last_ten})
+    Endpoint.broadcast(@topic, "new_track", %{last_ten: Track.last_ten})
 
     {:noreply, socket}
   end

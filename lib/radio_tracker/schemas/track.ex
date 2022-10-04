@@ -38,14 +38,28 @@ defmodule RadioTracker.Schemas.Track do
   end
 
   def last_ten do
-    query = from p in __MODULE__,
-      order_by: [desc: p.id],
-      limit: 10
+    query =
+      from t in __MODULE__,
+      order_by: [desc: t.id],
+      limit: 10,
+      preload: [:recommendations]
 
-    query
-    |> Repo.all
-    |> Repo.preload([:recommendations])
+    Repo.all query
 
     # "#{track.inserted_at.hour}:#{track.inserted_at.minute}:#{track.inserted_at.second}"
+  end
+
+  def hearted do
+    query =
+      from t in __MODULE__,
+      left_join: r in assoc(t, :recommendations),
+      #where: t.inserted_at == ^ Timex.today,
+      where: not is_nil(r.id),
+      order_by: [desc: count(r.id)],
+      group_by: t.id,
+      select: t,
+      preload: [:recommendations]
+
+    Repo.all query
   end
 end
