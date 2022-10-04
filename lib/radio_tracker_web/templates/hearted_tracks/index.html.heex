@@ -19,7 +19,7 @@
                 <%= if length(track.recommendations) < 10 do %>
                 <%= String.duplicate("♥", length(track.recommendations)) %>
                 <% else %>
-                <%= String.duplicate("♥", 10) %> (<%= length(track.recommendations) %>)
+                <%= String.duplicate("♥", 10) %>... (<%= length(track.recommendations) %>)
                 <% end %>
             </span>                    
         </td>
