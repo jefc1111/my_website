@@ -1,17 +1,26 @@
 <div>
-  I built this for two reasons:
-  <br>
-  1. So I could keep track of tracks I am enjoying on BBC 6 Music when cooking and parenting and things like that.
-  <br>
-  2. To try out Phoenix Framework 
-  <br><br>
-  Link to Github
-  <br>
-  Link to my personal page 
-  <br><br>
-  Explain is hosted in home server, so you might not be able to read this if there is a power cut or my broadband goes funny.
-  <br><br>
-  License 
-  <br><br>
-  Contact info and 'socials'
+  <h3>About this application</h3>
+  <p>
+    I built this for two reasons
+  </p>
+  <ol>
+    <li>
+       So I could keep track of tracks I am enjoying on BBC 6 Music when cooking and parenting and things like that.
+    </li>
+    <li>
+       To try out 
+       <%= link("Phoenix Framework", to: URI.parse("https://www.phoenixframework.org/"), target: "_blank") %>
+       (a web framework written in <%= link("Elixir", to: URI.parse("https://elixir-lang.org/"), target: "_blank") %>).
+    </li>
+  </ol>
+  <h3>Notes</h3>
+  <p>
+    This application is hosted on my home server so is subject to outages.
+  </p>
+  <h3>Contact me</h3>
+  <ul class="list-unstyled">
+    <li><%= link("email", to: URI.parse("mailto:jefc_uk@hotmail.com")) %></li>
+    <li><%= link("Twitter", to: URI.parse("https://twitter.com/jefc1111"), target: "_blank") %></li>
+    <li><%= link("Github", to: URI.parse("https://github.com/jefc1111"), target: "_blank") %></li>
+  </ul>
 </div>
