@@ -135,3 +135,8 @@ https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_buttons_notificati
 .float-right {
   float: right;
 }
+
+footer {
+  padding-top: 2rem;
+  border-top: 1px solid #eaeaea;
+}
