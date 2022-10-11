@@ -38,7 +38,6 @@ defmodule RadioTracker.SixMusicTwitterPoller do
   end
 
   defp get_data_from_twitter() do
-    IO.puts("Polling twitter")
     source_twitter_account_id = Application.get_env(:radio_tracker, :six_music_twitter)[:account_id]
 
     # minimum max_results on the API is 5 (we only really need 1)
@@ -106,7 +105,6 @@ defmodule RadioTracker.SixMusicTwitterPoller do
         current_track = extract_current_track(twitter_response_body)
 
         unless (Track.equals(current_track, last_track_saved)) do
-          IO.puts("New track")
           handle_new_track(current_track)
         end
         # No alternative action required as we have established that the track has not changed yet
