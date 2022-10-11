@@ -25,9 +25,11 @@ defmodule RadioTracker.Schemas.Track do
     |> validate_required([:artist, :song])
   end
 
-  def equals(%__MODULE__{artist: a1, song: t1}, %__MODULE__{artist: a2, song: t2}) do
-    a1 === a2 && t1 === t2
+  def equals(%__MODULE__{artist: a1, song: s1}, %__MODULE__{artist: a2, song: s2}) do
+    a1 === a2 && s1 === s2
   end
+
+  def equals(%__MODULE__{}, _), do: false
 
   def as_summary(%__MODULE__{artist: a, song: s}), do: "#{a} - #{s}"
 

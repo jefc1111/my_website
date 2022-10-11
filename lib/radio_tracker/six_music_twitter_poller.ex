@@ -75,17 +75,23 @@ defmodule RadioTracker.SixMusicTwitterPoller do
     and seconds_elapsed >= @dormant_secs_after_track_change
 
   def handle_poll() do
-    last_track_saved = Track.last_inserted
+    qty_tracks = Repo.aggregate(Track, :count, :id)
 
-    seconds_since_last_track = Timex.diff(DateTime.utc_now, last_track_saved.inserted_at, :seconds)
-    IO.puts(seconds_since_last_track)
-    case seconds_since_last_track do
-      seconds_since_last_track when seconds_since_last_track < @dormant_secs_after_track_change ->
-        {:noreply, "Not polling Twitter - current track only started less than a minute ago"}
-      seconds_since_last_track when is_in_slow_poll_phase?(seconds_since_last_track)
-        and rem(seconds_since_last_track, @slow_poll_phase_multiplier * @twitter_poll_interval_secs) === 0 ->
-           poll_twitter(last_track_saved)
-      _ -> poll_twitter(last_track_saved)
+    cond do
+      qty_tracks === 0 -> poll_twitter(nil)
+      true ->
+        last_track_saved = Track.last_inserted
+
+        seconds_since_last_track = Timex.diff(DateTime.utc_now, last_track_saved.inserted_at, :seconds)
+
+        case seconds_since_last_track do
+          seconds_since_last_track when seconds_since_last_track < @dormant_secs_after_track_change ->
+            {:noreply, "Not polling Twitter - current track only started less than a minute ago"}
+          seconds_since_last_track when is_in_slow_poll_phase?(seconds_since_last_track)
+            and rem(seconds_since_last_track, @slow_poll_phase_multiplier * @twitter_poll_interval_secs) === 0 ->
+               poll_twitter(last_track_saved)
+          _ -> poll_twitter(last_track_saved)
+        end
     end
   end
 
