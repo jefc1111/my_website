@@ -4,6 +4,8 @@ defmodule RadioTracker.Schemas.Track do
   require Logger
 
   use Ecto.Schema
+  use Timex
+
   import Ecto.Query
   import Ecto.Changeset
 
@@ -38,6 +40,23 @@ defmodule RadioTracker.Schemas.Track do
     |> Ecto.Query.last(:inserted_at)
     |> Repo.one
   end
+
+  #def inserted_at_human_readable(track), do: "#{track.inserted_at.hour}:#{track.inserted_at.minute}:#{track.inserted_at.second}"
+
+  def inserted_at_human_readable(track) do
+    # Must be a nbetter way!
+    secs_to_shift = Timex.Timezone.total_offset(Timex.Timezone.local)
+
+    timex_res = track.inserted_at
+    |> Timex.shift(seconds: secs_to_shift)
+    |> Timex.format("{h24}:{m}:{s} {D}/{M}")
+
+    case timex_res do
+      {:ok, dt} -> dt
+      _ -> "Not recognised"
+    end
+  end
+
 
   def last_ten do
     query =

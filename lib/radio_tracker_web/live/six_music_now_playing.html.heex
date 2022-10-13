@@ -20,7 +20,7 @@
           <img style="height: 20px;" src="/images/animated-music-image-0073.gif">
         </td>
         <td><%= raw(track.song) %></td>
-        <td><%= "#{track.inserted_at.hour}:#{track.inserted_at.minute}:#{track.inserted_at.second}" %></td>
+        <td><%= Track.inserted_at_human_readable(track) %></td>
         <td>
           <button class="pink recommendation-btn" phx-click="like" phx-value-track-id={track.id}>
             ♥

@@ -13,7 +13,7 @@
       <tr>
         <td><%= raw(track.artist) %></td>
         <td><%= raw(track.song) %></td>
-        <td><%= "#{track.inserted_at.hour}:#{track.inserted_at.minute}:#{track.inserted_at.second}" %></td>
+        <td><%= Track.inserted_at_human_readable(track) %></td>
         <td>
             <span class="pink">
                 <%= if length(track.recommendations) < 10 do %>
