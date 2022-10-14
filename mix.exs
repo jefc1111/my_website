@@ -52,7 +52,9 @@ defmodule RadioTracker.MixProject do
       {:poison, "~> 5.0"},
       {:timex, "~> 3.0"},
       {:ex_fontawesome, "~> 0.7.2"},
-      {:esbuild, "~> 0.4", runtime: Mix.env() == :dev}
+      {:esbuild, "~> 0.4", runtime: Mix.env() == :dev},
+      {:dart_sass, "~> 0.1", runtime: Mix.env() == :dev},
+      {:bulma, "0.9.3"}
     ]
   end
 
@@ -68,7 +70,7 @@ defmodule RadioTracker.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.deploy": ["esbuild default --minify", "phx.digest"]
+      "assets.deploy": ["sass default --no-source-map --style=compressed", "esbuild default --minify", "phx.digest"]
     ]
   end
 end

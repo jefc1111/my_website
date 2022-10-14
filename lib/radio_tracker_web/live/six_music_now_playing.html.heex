@@ -1,38 +1,36 @@
-<div>
-  <h3>If you think I'd like one of these songs, just hit the heart button!</h3>
-  <%= if Mix.env() == :dev do %>  
-  <%= @status %>
-  <% end %>   
-  <table>
-    <thead>
-      <tr>
-        <th>Artist</th>
-        <th>Song</th>
-        <th>Time</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <%= for track <- @last_ten do %>
-      <tr>
-        <td>
-          <%= raw(track.artist) %><br />
-          <img style="height: 20px;" src="/images/animated-music-image-0073.gif">
-        </td>
-        <td><%= raw(track.song) %></td>
-        <td><%= Track.inserted_at_human_readable(track) %></td>
-        <td>
-          <button class="pink recommendation-btn" phx-click="like" phx-value-track-id={track.id}>
-            ♥
-            <%= if (length(track.recommendations) > 0) do %>
-              <span class="recommendation-count">
-                <%= length(track.recommendations) %>
-              </span>
-            <% end %>
-          </button>          
-        </td>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
+<h3 class="subtitle">If you think I'd like one of these songs, just hit the heart button!</h3>
+<table class="table is-fullwidth">
+  <thead>
+    <tr>
+      <th>Artist</th>
+      <th>Song</th>
+      <th>Time</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for track <- @last_ten do %>
+    <tr>
+      <td>
+        <%= raw(track.artist) %><br />
+        <img style="height: 20px;" src="/images/animated-music-image-0073.gif">
+      </td>
+      <td><%= raw(track.song) %></td>
+      <td><%= Track.inserted_at_human_readable(track) %></td>
+      <td>
+        <button class="button is-black" phx-click="like" phx-value-track-id={track.id}>
+          <span class="pink is-size-4">♥</span>            
+          <%= if (length(track.recommendations) > 0) do %>
+            <span class="recommendation-count">
+              <%= length(track.recommendations) %>
+            </span>
+          <% end %>
+        </button>          
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>  
+<%= if Mix.env() == :dev do %>  
+<%= @status %>
+<% end %>

@@ -35,6 +35,13 @@ config :esbuild,
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
 ]
 
+config :dart_sass,
+  version: "1.36.0",
+  default: [
+    args: ~w(--load-path=../deps/bulma css:../priv/static/assets),
+    cd: Path.expand("../assets", __DIR__)
+  ]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
