@@ -1,4 +1,4 @@
-<h3 class="subtitle">If you think I'd like one of these songs, just hit the heart button!</h3>
+<p class="is-size-5 is-size-6-mobile">If you think I'd like one of these songs, just hit the heart button!</p>
 <table class="table is-fullwidth">
   <thead>
     <tr>
@@ -36,7 +36,9 @@
     </tr>
     <% end %>
   </tbody>
-</table>  
-<%= if Mix.env() == :dev do %>  
-<%= @status %>
+</table>
+<%= if Mix.env() == :dev do %>
+<div class="mb-4">
+  <FontAwesome.LiveView.icon name="globe" type="solid" class="icon is-small" /> <%= @status %>
+</div>
 <% end %>

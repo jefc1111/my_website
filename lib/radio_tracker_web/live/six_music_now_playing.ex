@@ -22,21 +22,30 @@ defmodule RadioTrackerWeb.SixMusicNowPlaying do
     {:ok, socket}
   end
 
+  def handle_info(%{event: "new_track", payload: %{allow_undo_track_ids: allow_undo_track_ids}} = data, socket) do
+    socket = socket
+    |> assign(:last_ten, data.payload.last_ten)
+    |> assign(:allow_undo_track_ids, allow_undo_track_ids)
+
+    {:noreply, socket}
+  end
+
   def handle_info(%{event: "new_track"} = data, socket) do
     socket = socket
     |> assign(:last_ten, data.payload.last_ten)
-    |> assign(:allow_undo_track_ids, data.payload.allow_undo_track_ids)
 
     {:noreply, socket}
   end
 
   def handle_info(%{event: "twitter_down"} = data, socket) do
     socket = assign(socket, :status, data.payload.msg)
+
     {:noreply, socket}
   end
 
   def handle_info(_, socket) do
     socket = assign(socket, :status, "Something weird and unexpected happened")
+
     {:noreply, socket}
   end
 
