@@ -17,12 +17,16 @@ defmodule RadioTrackerWeb.SixMusicNowPlaying do
     socket = socket
     |> assign(:last_ten, Track.last_ten)
     |> assign(:status, "Getting new data...")
+    |> assign(:allow_undo_track_ids, [])
 
     {:ok, socket}
   end
 
   def handle_info(%{event: "new_track"} = data, socket) do
-    socket = assign(socket, :last_ten, data.payload.last_ten)
+    socket = socket
+    |> assign(:last_ten, data.payload.last_ten)
+    |> assign(:allow_undo_track_ids, data.payload.allow_undo_track_ids)
+
     {:noreply, socket}
   end
 
@@ -41,7 +45,14 @@ defmodule RadioTrackerWeb.SixMusicNowPlaying do
 
     Repo.insert(%Recommendation{name: "me", text: "stuff", track: track})
 
-    Endpoint.broadcast(@topic, "new_track", %{last_ten: Track.last_ten})
+    Endpoint.broadcast(
+      @topic,
+      "new_track",
+      %{
+        last_ten: Track.last_ten,
+        allow_undo_track_ids: [ track.id | socket.assigns.allow_undo_track_ids ]
+      }
+    )
 
     {:noreply, socket}
   end
@@ -53,7 +64,14 @@ defmodule RadioTrackerWeb.SixMusicNowPlaying do
     unless length(track.recommendations) === 0 do
         Repo.delete(List.last(track.recommendations))
 
-        Endpoint.broadcast(@topic, "new_track", %{last_ten: Track.last_ten})
+        Endpoint.broadcast(
+          @topic,
+          "new_track",
+          %{
+            last_ten: Track.last_ten,
+            allow_undo_track_ids: List.delete(socket.assigns.allow_undo_track_ids, track.id
+          )}
+        )
     end
 
     {:noreply, socket}

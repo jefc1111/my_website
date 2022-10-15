@@ -27,9 +27,11 @@
           <% end %>
         </button>
         <br />
-        <button class="button is-white is-small" phx-click="undo" phx-value-track-id={track.id}>
-          undo
-        </button>
+        <%= if (Enum.member?(@allow_undo_track_ids, track.id)) do %>
+          <button class="button is-white is-small" phx-click="undo" phx-value-track-id={track.id}>
+            undo
+          </button>
+        <% end %>
       </td>
     </tr>
     <% end %>
