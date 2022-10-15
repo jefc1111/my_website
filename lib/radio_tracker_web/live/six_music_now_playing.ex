@@ -46,4 +46,16 @@ defmodule RadioTrackerWeb.SixMusicNowPlaying do
     {:noreply, socket}
   end
 
+  def handle_event("undo", data, socket) do
+    track = Repo.get(Track, data["track-id"])
+    |> Repo.preload([:recommendations])
+
+    unless length(track.recommendations) === 0 do
+        Repo.delete(List.last(track.recommendations))
+
+        Endpoint.broadcast(@topic, "new_track", %{last_ten: Track.last_ten})
+    end
+
+    {:noreply, socket}
+  end
 end

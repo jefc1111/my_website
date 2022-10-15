@@ -80,7 +80,6 @@ defmodule RadioTracker.Schemas.Track do
       group_by: t.id,
       select: t,
       preload: [:recommendations]
-
     Repo.all query
   end
 end

@@ -1,5 +1,5 @@
 <div>
-  <table>
+  <table class="table is-fullwidth">
     <thead>
       <tr>
         <th>Artist</th>
@@ -15,13 +15,13 @@
         <td><%= raw(track.song) %></td>
         <td><%= Track.inserted_at_human_readable(track) %></td>
         <td>
-            <span class="pink">
-                <%= if length(track.recommendations) < 10 do %>
-                <%= String.duplicate("♥", length(track.recommendations)) %>
-                <% else %>
-                <%= String.duplicate("♥", 10) %>... (<%= length(track.recommendations) %>)
-                <% end %>
-            </span>                    
+          <span class="pink">
+            <%= if length(track.recommendations) < 10 do %>
+            <%= String.duplicate("♥", length(track.recommendations)) %>
+            <% else %>
+            <%= String.duplicate("♥", 10) %>... (<%= length(track.recommendations) %>)
+            <% end %>
+          </span>                    
         </td>
       </tr>
       <% end %>
