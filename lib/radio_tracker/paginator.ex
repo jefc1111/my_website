@@ -22,7 +22,7 @@ defmodule RadioTracker.Paginator do
 
   @results_per_page 10
 
-  def paginate(query, page) when is_nil(page) do
+  def paginate(query, page) when is_nil(page) or page < 1 do
     paginate(query, 1)
   end
 
