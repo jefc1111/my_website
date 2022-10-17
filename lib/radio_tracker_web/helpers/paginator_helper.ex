@@ -21,8 +21,8 @@ defmodule RadioTrackerWeb.Helpers.PaginatorHelper do
     params = build_params(page)
 
     content_tag(:li, disabled: disabled) do
-      link to: "?#{params}", rel: "prev" do
-        "<"
+      link to: "?#{params}", rel: "prev", class: "pagination-previous" do
+        "Previous"
       end
     end
   end
@@ -34,7 +34,7 @@ defmodule RadioTrackerWeb.Helpers.PaginatorHelper do
       params = build_params(page)
 
       content_tag(:li, class: class, disabled: disabled) do
-        link(page, to: "?#{params}")
+        link(page, to: "?#{params}", class: "pagination-link")
       end
     end
   end
@@ -43,10 +43,9 @@ defmodule RadioTrackerWeb.Helpers.PaginatorHelper do
     page = data.current_page + 1
     disabled = data.current_page >= data.total_pages
     params = build_params(page)
-
     content_tag(:li, disabled: disabled) do
-      link to: "?#{params}", rel: "next" do
-        ">"
+      link to: "?#{params}", rel: "next",  class: "pagination-next" do
+        "Next"
       end
     end
   end

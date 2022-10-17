@@ -27,5 +27,7 @@
       <% end %>
     </tbody>
   </table>
-  <%= RadioTrackerWeb.Helpers.PaginatorHelper.render(@conn, @hearted_tracks, class: "paginator-list") %>
+  <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+    <%= RadioTrackerWeb.Helpers.PaginatorHelper.render(@conn, @hearted_tracks, class: "paginator-list pagination-list") %>
+  </nav>
 </div>
