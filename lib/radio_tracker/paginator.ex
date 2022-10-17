@@ -1,4 +1,4 @@
-defmodule MyApp.Paginator do
+defmodule RadioTracker.Paginator do
   @moduledoc """
   Paginate your Ecto queries.
 
@@ -52,7 +52,15 @@ defmodule MyApp.Paginator do
   end
 
   defp count_total_results(query) do
-    Repo.aggregate(query, :count, :id)
+    #Repo.aggregate(query, :count, :id)
+
+    # The original code above  does not work when `query` has a group_by
+    # So I'm just running the qhole query then counting the results.
+    # This is before the actual paginated version of the same query runs.
+    # So this kind of defeats the object of the whole thing....
+    # ...and I promise to change it later!
+    # This way of doing it is clearly going to be slow on large data sets.
+    length(Repo.all(query))
   end
 
   defp count_total_pages(total_results) do

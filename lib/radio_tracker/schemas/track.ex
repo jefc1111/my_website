@@ -11,6 +11,7 @@ defmodule RadioTracker.Schemas.Track do
 
   alias RadioTracker.Repo
   alias RadioTracker.Paginator
+  alias RadioTracker.Schemas.Recommendation
 
   schema "tracks" do
     field :artist, :string
@@ -72,19 +73,15 @@ defmodule RadioTracker.Schemas.Track do
   end
 
   def hearted(params) do
-    Paginator.paginate(__MODULE__, params["page"])
-  end
-
-  def hearted do
     query =
       from t in __MODULE__,
-      left_join: r in assoc(t, :recommendations),
-      #where: t.inserted_at == ^ Timex.today,
-      where: not is_nil(r.id),
+      left_join: r in Recommendation,
+      on: r.track_id == t.id,
+      where: not is_nil(r.track_id),
+      select: t,
       order_by: [desc: count(r.id)],
       group_by: t.id,
-      select: t,
       preload: [:recommendations]
-    Repo.all query
+    Paginator.paginate(query, params["page"])
   end
 end

@@ -9,7 +9,7 @@
       </tr>
     </thead>
     <tbody>
-      <%= for track <- @hearted_tracks do %>
+      <%= for track <- @hearted_tracks.list do %>
       <tr>
         <td><%= raw(track.artist) %></td>
         <td><%= raw(track.song) %></td>
@@ -27,4 +27,5 @@
       <% end %>
     </tbody>
   </table>
+  <%= RadioTrackerWeb.Helpers.PaginatorHelper.render(@conn, @hearted_tracks, class: "paginator-list") %>
 </div>

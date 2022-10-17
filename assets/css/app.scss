@@ -136,9 +136,3 @@ footer {
   padding-top: 2rem;
   border-top: 1px solid #eaeaea;
 }
-
-// https://dev.to/ricardoruwer/create-a-paginator-using-elixir-and-phoenix-1hnk
-.paginator-list li[disabled] a {
-  opacity: .4;
-  pointer-events: none;
-}
