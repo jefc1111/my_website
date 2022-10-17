@@ -10,6 +10,7 @@ defmodule RadioTracker.Schemas.Track do
   import Ecto.Changeset
 
   alias RadioTracker.Repo
+  alias RadioTracker.Paginator
 
   schema "tracks" do
     field :artist, :string
@@ -68,6 +69,10 @@ defmodule RadioTracker.Schemas.Track do
     Repo.all query
 
     # "#{track.inserted_at.hour}:#{track.inserted_at.minute}:#{track.inserted_at.second}"
+  end
+
+  def hearted(params) do
+    Paginator.paginate(__MODULE__, params["page"])
   end
 
   def hearted do

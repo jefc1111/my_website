@@ -3,9 +3,7 @@ defmodule RadioTrackerWeb.HeartedTracksController do
 
   alias RadioTracker.Schemas.Track
 
-  def index(conn, _params) do
-    conn
-    |> assign(:hearted_tracks, Track.hearted)
-    |> render("index.html")
+  def index(conn, params) do
+    render(conn, "index.html", hearted_tracks: Track.hearted)
   end
 end
