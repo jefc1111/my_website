@@ -15,8 +15,8 @@
         - uses: actions/checkout@v2
         - uses: actions/setup-elixir@v1
           with:
-            elixir-version: ‘1.13.4’ # Define the elixir version [required]
-            otp-version: '25.0.3' # Define the OTP version [required]
+            elixir-version: ‘1.13.1’
+            otp-version: '24.0.5'
         - name: Restore dependencies cache
           uses: actions/cache@v2
           with:
