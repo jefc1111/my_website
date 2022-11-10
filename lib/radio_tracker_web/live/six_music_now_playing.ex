@@ -50,16 +50,16 @@ defmodule RadioTrackerWeb.SixMusicNowPlaying do
   end
 
   def handle_event("like", data, socket) do
-    track = Repo.get(Track, data["track-id"])
+    play = Repo.get(Track, data["play-id"])
 
-    Repo.insert(%Recommendation{name: "me", text: "stuff", track: track})
+    Repo.insert(%Recommendation{name: "me", text: "stuff", play: play})
 
     Endpoint.broadcast(
       @topic,
       "new_track",
       %{
         last_ten: Track.last_ten,
-        allow_undo_track_ids: [ track.id | socket.assigns.allow_undo_track_ids ]
+        allow_undo_track_ids: [ play.track.id | socket.assigns.allow_undo_track_ids ]
       }
     )
 

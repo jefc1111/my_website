@@ -3,7 +3,7 @@ defmodule RadioTracker.Repo.Migrations.CreateRecommendations do
 
   def change do
     create table ("recommendations") do
-      add :track_id, references (:tracks)
+      add :play_id, references (:plays)
       add :name, :text
       add :text, :text
 

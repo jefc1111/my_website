@@ -11,13 +11,13 @@ defmodule RadioTracker.Schemas.Track do
 
   alias RadioTracker.Repo
   alias RadioTracker.Paginator
-  alias RadioTracker.Schemas.Recommendation
+  alias RadioTracker.Schemas.Play
 
   schema "tracks" do
     field :artist, :string
     field :song, :string
 
-    has_many :recommendations, RadioTracker.Schemas.Recommendation
+    has_many :plays, Play
 
     timestamps()
   end
@@ -61,15 +61,14 @@ defmodule RadioTracker.Schemas.Track do
 
 
   def last_ten do
+    IO.inspect(%__MODULE__{})
     query =
       from t in __MODULE__,
       order_by: [desc: t.id],
       limit: 10,
-      preload: [:recommendations]
+      preload: [:plays]
 
     Repo.all query
-
-    # "#{track.inserted_at.hour}:#{track.inserted_at.minute}:#{track.inserted_at.second}"
   end
 
   def hearted(params) do

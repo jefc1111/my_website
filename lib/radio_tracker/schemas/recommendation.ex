@@ -1,12 +1,13 @@
 defmodule RadioTracker.Schemas.Recommendation do
   use Ecto.Schema
   import Ecto.Changeset
+  alias RadioTracker.Schemas.Play
 
   schema "recommendations" do
     field :name, :string
     field :text, :string
 
-    belongs_to :track, RadioTracker.Schemas.Track
+    belongs_to :play, Play
 
     timestamps()
   end

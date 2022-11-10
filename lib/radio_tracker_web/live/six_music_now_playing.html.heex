@@ -19,10 +19,10 @@
       <td><%= Track.inserted_at_human_readable(track) %></td>
       <td>
         <button class="button is-black is-responsive" phx-click="like" phx-value-track-id={track.id}>
-          <span class="pink is-size-3">♥</span>            
-          <%= if (length(track.recommendations) > 0) do %>
+          <span class="pink is-size-3">♥</span>
+          <%= if (length(track.plays) > 0) do %>
             <span class="recommendation-count">
-              <%= length(track.recommendations) %>
+              <%= length(track.plays) %>
             </span>
           <% end %>
         </button>
