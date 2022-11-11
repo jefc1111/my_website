@@ -61,12 +61,11 @@ defmodule RadioTracker.Schemas.Track do
 
 
   def last_ten do
-    IO.inspect(%__MODULE__{})
     query =
       from t in __MODULE__,
       order_by: [desc: t.id],
       limit: 10,
-      preload: [:plays]
+      preload: [plays: :recommendations]
 
     Repo.all query
   end
@@ -82,5 +81,11 @@ defmodule RadioTracker.Schemas.Track do
       group_by: t.id,
       preload: [:recommendations]
     Paginator.paginate(query, params["page"])
+  end
+
+  def total_recs(track) do
+    track.plays
+    |> Enum.map(fn p -> length(p.recommendations) end)
+    |> Enum.sum
   end
 end

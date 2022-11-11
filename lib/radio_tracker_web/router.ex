@@ -21,6 +21,7 @@ defmodule RadioTrackerWeb.Router do
     #live "/six-music-now-playing", SixMusicNowPlaying
 
     get "/hearted-tracks", HeartedTracksController, :index
+    get "/tracks/:id", TracksController, :index
     get "/about", AboutController, :index
     live "/", SixMusicNowPlaying
   end

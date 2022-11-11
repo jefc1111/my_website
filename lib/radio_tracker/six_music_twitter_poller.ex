@@ -1,5 +1,6 @@
 defmodule RadioTracker.SixMusicTwitterPoller do
   alias RadioTracker.Schemas.Track
+  alias RadioTracker.Schemas.Play
   alias RadioTracker.Repo
   alias RadioTrackerWeb.Endpoint
 
@@ -105,7 +106,7 @@ defmodule RadioTracker.SixMusicTwitterPoller do
         current_track = extract_current_track(twitter_response_body)
 
         unless (Track.equals(current_track, last_track_saved)) do
-          handle_new_track(current_track)
+          handle_new_play(current_track)
         end
         # No alternative action required as we have established that the track has not changed yet
       {:error, msg} -> handle_bad_twitter_response(msg)
@@ -129,8 +130,11 @@ defmodule RadioTracker.SixMusicTwitterPoller do
     }
   end
 
-  defp handle_new_track(new_track) do
-    Repo.insert(new_track)
+  defp handle_new_play(new_track) do
+    # Need to check if the track already exists
+    # If yes, add a Play to it,
+    # if not insert a new Track and add the Play to that
+    Repo.insert(%Play{track: new_track})
 
     Endpoint.broadcast_from(self(), @topic, "new_track", %{last_ten: Track.last_ten})
   end

@@ -15,14 +15,16 @@
         <%= raw(track.artist) %><br />
         <img style="height: 20px;" src="/images/animated-music-image-0073.gif">
       </td>
-      <td><%= raw(track.song) %></td>
+      <td>
+        <%= link(raw(track.song), to: "/tracks/#{track.id}") %>
+      </td>
       <td><%= Track.inserted_at_human_readable(track) %></td>
       <td>
         <button class="button is-black is-responsive" phx-click="like" phx-value-track-id={track.id}>
           <span class="pink is-size-3">♥</span>
-          <%= if (length(track.plays) > 0) do %>
+          <%= if (Track.total_recs(track) > 0) do %>
             <span class="recommendation-count">
-              <%= length(track.plays) %>
+              <%= Track.total_recs(track) %>
             </span>
           <% end %>
         </button>
