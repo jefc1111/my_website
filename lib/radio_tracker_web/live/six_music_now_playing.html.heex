@@ -18,7 +18,7 @@
       <td>
         <%= link(raw(track.song), to: "/tracks/#{track.id}") %>
       </td>
-      <td><%= Track.inserted_at_human_readable(track) %></td>
+      <td><%= RadioTracker.Helpers.Dates.human_readable(track.inserted_at) %></td>
       <td>
         <button class="button is-black is-responsive" phx-click="like" phx-value-track-id={track.id} phx-value-play-id={List.first(track.plays).id}>
           <span class="pink is-size-3">♥</span>

@@ -12,8 +12,8 @@
       <%= for track <- @hearted_tracks.list do %>
       <tr>
         <td><%= raw(track.artist) %></td>
-        <td><%= raw(track.song) %></td>
-        <td><%= Track.inserted_at_human_readable(track) %></td>
+        <td><%= link(raw(track.song), to: "/tracks/#{track.id}") %></td>
+        <td><%= Dates.human_readable(track.inserted_at) %></td>
         <td>
           <span class="pink">
             <%= if Track.total_recs(track) < 10 do %>

@@ -15,7 +15,7 @@
     <tbody>
       <%= for play <- @track.plays do %>
       <tr>
-        <td><%= play.inserted_at %></td>
+        <td><%= Dates.human_readable(play.inserted_at) %></td>
         <td><%= length(play.recommendations) %></td>
       </tr>
       <% end %>

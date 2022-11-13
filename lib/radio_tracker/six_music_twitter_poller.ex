@@ -21,7 +21,7 @@ defmodule RadioTracker.SixMusicTwitterPoller do
   # Supporting other radio stations may impact how best to do this.
   @twitter_poll_interval_secs 8
   @slow_poll_phase_multiplier 2
-  @dormant_secs_after_track_change 60
+  @dormant_secs_after_last_play 60
   @slow_poll_secs_after_dormant 30
 
   # The idea is, after the track changes, you go for some time (@dormant_secs_after_track_change) before starting to poll again,
@@ -71,8 +71,8 @@ defmodule RadioTracker.SixMusicTwitterPoller do
   end
 
   defguard is_in_slow_poll_phase?(seconds_elapsed)
-    when seconds_elapsed < @dormant_secs_after_track_change + @slow_poll_secs_after_dormant
-    and seconds_elapsed >= @dormant_secs_after_track_change
+    when seconds_elapsed < @dormant_secs_after_last_play + @slow_poll_secs_after_dormant
+    and seconds_elapsed >= @dormant_secs_after_last_play
 
   def handle_poll() do
     qty_tracks = Repo.aggregate(Track, :count, :id)
@@ -80,22 +80,22 @@ defmodule RadioTracker.SixMusicTwitterPoller do
     cond do
       qty_tracks === 0 -> poll_twitter(nil)
       true ->
-        last_track_saved = Track.last_inserted
+        last_play = Play.last_inserted
 
-        seconds_since_last_track = Timex.diff(DateTime.utc_now, last_track_saved.inserted_at, :seconds)
+        seconds_since_last_play = Timex.diff(DateTime.utc_now, last_play.inserted_at, :seconds)
 
-        case seconds_since_last_track do
-          seconds_since_last_track when seconds_since_last_track < @dormant_secs_after_track_change ->
+        case seconds_since_last_play do
+          seconds_since_last_play when seconds_since_last_play < @dormant_secs_after_last_play ->
             {:noreply, "Not polling Twitter - current track only started less than a minute ago"}
           seconds_since_last_track when is_in_slow_poll_phase?(seconds_since_last_track)
             and rem(seconds_since_last_track, @slow_poll_phase_multiplier * @twitter_poll_interval_secs) === 0 ->
-               poll_twitter(last_track_saved)
-          _ -> poll_twitter(last_track_saved)
+               poll_twitter(last_play)
+          _ -> poll_twitter(last_play)
         end
     end
   end
 
-  defp poll_twitter(last_track_saved) do
+  defp poll_twitter(last_play) do
     twitter_response = get_data_from_twitter()
     |> extract_body_from_twitter_response()
 
@@ -103,10 +103,10 @@ defmodule RadioTracker.SixMusicTwitterPoller do
       {:ok, twitter_response_body} ->
         # Note: the response bbdy does not include a timestamp for when the tweet was made.
         # I guess we would have to a separate reques for tweets of interest to get timestamps.
-        current_track = extract_current_track(twitter_response_body)
+        now_playing_track = extract_current_track(twitter_response_body)
 
-        unless (Track.equals(current_track, last_track_saved)) do
-          handle_new_play(current_track)
+        unless (Track.equals(now_playing_track, last_play.track)) do
+          handle_new_track(now_playing_track)
         end
         # No alternative action required as we have established that the track has not changed yet
       {:error, msg} -> handle_bad_twitter_response(msg)
@@ -130,11 +130,17 @@ defmodule RadioTracker.SixMusicTwitterPoller do
     }
   end
 
-  defp handle_new_play(new_track) do
-    # Need to check if the track already exists
-    # If yes, add a Play to it,
-    # if not insert a new Track and add the Play to that
-    Repo.insert(%Play{track: new_track})
+  defp handle_new_track(now_playing_track) do
+    res = Track.get_by_artist_song(now_playing_track.artist, now_playing_track.song)
+
+    #IO.inspect(res)
+
+    case res do
+      nil -> Repo.insert(%Play{track: now_playing_track})
+      existing_track = ^res -> Repo.insert(%Play{track_id: existing_track.id})
+    end
+
+
 
     Endpoint.broadcast_from(self(), @topic, "new_track", %{last_ten: Track.last_ten})
   end
