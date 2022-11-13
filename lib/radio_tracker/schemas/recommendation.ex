@@ -14,7 +14,7 @@ defmodule RadioTracker.Schemas.Recommendation do
 
   def changeset(post, params \\ %{}) do
     post
-    |> cast(params, [:name, :text])
-    |> validate_required([:name, :text])
+    |> cast(params, [:name, :text, :play_id])
+    |> validate_required([:name, :text, :play_id])
   end
 end

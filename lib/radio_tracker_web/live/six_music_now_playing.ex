@@ -7,6 +7,7 @@ defmodule RadioTrackerWeb.SixMusicNowPlaying do
   alias RadioTracker.Repo
   alias RadioTracker.Schemas.Track
   alias RadioTracker.Schemas.Recommendation
+  alias RadioTracker.Schemas.Play
   alias RadioTrackerWeb.Endpoint
 
   @topic "now_playing"
@@ -50,7 +51,8 @@ defmodule RadioTrackerWeb.SixMusicNowPlaying do
   end
 
   def handle_event("like", data, socket) do
-    play = Repo.get(Track, data["play-id"])
+    play = Repo.get(Play, data["play-id"])
+    |> Repo.preload([:track])
 
     Repo.insert(%Recommendation{name: "me", text: "stuff", play: play})
 
@@ -67,18 +69,18 @@ defmodule RadioTrackerWeb.SixMusicNowPlaying do
   end
 
   def handle_event("undo", data, socket) do
-    track = Repo.get(Track, data["track-id"])
-    |> Repo.preload([:recommendations])
+    play = Repo.get(Play, data["play-id"])
+    |> Repo.preload([:recommendations, :track])
 
-    unless length(track.recommendations) === 0 do
-        Repo.delete(List.last(track.recommendations))
+    unless length(play.recommendations) === 0 do
+        Repo.delete(List.last(play.recommendations))
 
         Endpoint.broadcast(
           @topic,
           "new_track",
           %{
             last_ten: Track.last_ten,
-            allow_undo_track_ids: List.delete(socket.assigns.allow_undo_track_ids, track.id
+            allow_undo_track_ids: List.delete(socket.assigns.allow_undo_track_ids, play.track.id
           )}
         )
     end

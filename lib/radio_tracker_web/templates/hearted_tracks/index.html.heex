@@ -16,10 +16,10 @@
         <td><%= Track.inserted_at_human_readable(track) %></td>
         <td>
           <span class="pink">
-            <%= if length(track.recommendations) < 10 do %>
-            <%= String.duplicate("♥", length(track.recommendations)) %>
+            <%= if Track.total_recs(track) < 10 do %>
+            <%= String.duplicate("♥", Track.total_recs(track)) %>
             <% else %>
-            <%= String.duplicate("♥", 10) %>... (<%= length(track.recommendations) %>)
+            <%= String.duplicate("♥", 10) %>... (<%= Track.total_recs(track) %>)
             <% end %>
           </span>
         </td>
