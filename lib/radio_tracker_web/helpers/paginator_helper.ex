@@ -27,14 +27,25 @@ defmodule RadioTrackerWeb.Helpers.PaginatorHelper do
     end
   end
 
+  # prev 1 2 ... 14 15 *16* 17 18 19 ... 56 57 next
+  defp render_page_link?(page_num, qty_pages, current_page) do
+    page_num < 3 # always show first two page links
+    || page_num > (qty_pages - 2) # always show last two page links
+    || (page_num > current_page - 3 && page_num < current_page + 3) # current page and two either side
+  end
+
   defp page_buttons(data) do
     for page <- 1..data.total_pages do
-      class = if data.current_page == page, do: "active"
-      disabled = data.current_page == page
-      params = build_params(page)
+      case render_page_link?(page, data.total_pages, data.current_page) do
+        true ->
+          class = if data.current_page == page, do: "active"
+          disabled = data.current_page == page
+          params = build_params(page)
 
-      content_tag(:li, class: class, disabled: disabled) do
-        link(page, to: "?#{params}", class: "pagination-link")
+          content_tag(:li, class: class, disabled: disabled) do
+            link(page, to: "?#{params}", class: "pagination-link")
+          end
+        _ -> "..."
       end
     end
   end
