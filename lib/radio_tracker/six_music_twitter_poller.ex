@@ -105,7 +105,7 @@ defmodule RadioTracker.SixMusicTwitterPoller do
         # I guess we would have to a separate reques for tweets of interest to get timestamps.
         now_playing_track = extract_current_track(twitter_response_body)
 
-        unless (Track.equals(now_playing_track, last_play.track)) do
+        unless (last_play == nil || Track.equals(now_playing_track, last_play.track)) do
           handle_new_track(now_playing_track)
         end
         # No alternative action required as we have established that the track has not changed yet
