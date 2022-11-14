@@ -13,6 +13,5 @@ defmodule RadioTrackerWeb.TracksController do
 
   def index(conn, params) do
     render(conn, "index.html", tracks: Track.all_paged(params))
-    |> Repo.preload(:plays)
   end
 end
