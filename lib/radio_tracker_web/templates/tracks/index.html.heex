@@ -1,28 +1,23 @@
 <div>
-  <h3 class="is-size-4">
-    Details for <span class="has-text-weight-bold"><%= raw(@track.artist) %></span> by <span class="has-text-weight-bold"><%= raw(@track.song) %></span>
-  </h3>
-  <h3 class="is-size-5 mt-5">
-    All plays
-  </h3>
   <table class="table is-fullwidth">
     <thead>
       <tr>
-        <th>Time</th>
-        <th>Qty Recommendations</th>
+        <th>Artist</th>
+        <th>Song</th>
+        <th>Plays</th>
       </tr>
     </thead>
     <tbody>
-      <%= for play <- @track.plays do %>
+      <%= for track <- @tracks.list do %>
       <tr>
-        <td><%= Dates.human_readable(play.inserted_at) %></td>
-        <td><%= length(play.recommendations) %></td>
+        <td><%= raw(track.artist) %></td>
+        <td><%= link(raw(track.song), to: "/tracks/#{track.id}") %></td>
+        <td><%= length(track.plays) %></td>
       </tr>
       <% end %>
-      <tr>
-        <td></td>
-        <td><%= @total_recs %></td>
-      </tr>
     </tbody>
   </table>
+  <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+    <%= RadioTrackerWeb.Helpers.PaginatorHelper.render(@conn, @tracks, class: "paginator-list pagination-list") %>
+  </nav>
 </div>

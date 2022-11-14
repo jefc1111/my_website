@@ -65,6 +65,17 @@ defmodule RadioTracker.Schemas.Track do
     Paginator.paginate(query, params["page"])
   end
 
+  def all_paged(params) do
+    query =
+      from t in __MODULE__,
+      inner_join: p in assoc(t, :plays),
+      select: t,
+      order_by: [desc: count(p.id)],
+      group_by: t.id,
+      preload: [:plays]
+    Paginator.paginate(query, params["page"])
+  end
+
   def total_recs(track) do
     track.plays
     |> Enum.map(fn p -> length(p.recommendations) end)

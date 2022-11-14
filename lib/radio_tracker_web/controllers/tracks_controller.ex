@@ -4,10 +4,15 @@ defmodule RadioTrackerWeb.TracksController do
   alias RadioTracker.Schemas.Track
   alias RadioTracker.Repo
 
-  def index(conn, params) do
+  def get(conn, params) do
     t = Repo.get(Track, params["id"])
     |> Repo.preload(plays: :recommendations)
 
-    render(conn, "index.html", track: t, total_recs: Track.total_recs(t))
+    render(conn, "track.html", track: t, total_recs: Track.total_recs(t))
+  end
+
+  def index(conn, params) do
+    render(conn, "index.html", tracks: Track.all_paged(params))
+    |> Repo.preload(:plays)
   end
 end
