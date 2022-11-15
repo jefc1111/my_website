@@ -72,8 +72,16 @@ defmodule RadioTracker.Schemas.Track do
     |> Enum.sum
   end
 
+  # It shouldn't really be necessary to do the LIMIT 1 because we should
+  # only ever have one record in `tracks` for a given artist / song combination
+  # Could enforce this at the DB level with a combined index I imagine ....
   def get_by_artist_song(artist, song) do
-    query = from(t in __MODULE__, where: t.artist == ^artist, where: t.song == ^song)
+    query =
+      from t in __MODULE__,
+      where: t.artist == ^artist,
+      where: t.song == ^song,
+      order_by: [desc: t.inserted_at],
+      limit: 1
 
     Repo.one(query)
   end
