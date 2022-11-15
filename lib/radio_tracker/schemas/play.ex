@@ -1,6 +1,8 @@
 defmodule RadioTracker.Schemas.Play do
   use Ecto.Schema
+
   import Ecto.Changeset
+  import Ecto.Query
 
   alias RadioTracker.Repo
   alias RadioTracker.Schemas.Track
@@ -26,5 +28,15 @@ defmodule RadioTracker.Schemas.Play do
     |> Ecto.Query.last(:inserted_at)
     |> Repo.one
     |> Repo.preload([:track])
+  end
+
+  def last_ten do
+    query =
+      from p in __MODULE__,
+      order_by: [desc: p.id],
+      limit: 10,
+      preload: [track: [plays: :recommendations]]
+
+    Repo.all query
   end
 end

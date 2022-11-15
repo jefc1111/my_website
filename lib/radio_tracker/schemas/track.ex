@@ -42,16 +42,6 @@ defmodule RadioTracker.Schemas.Track do
     |> Repo.one
   end
 
-  def last_ten do
-    query =
-      from t in __MODULE__,
-      order_by: [desc: t.id],
-      limit: 10,
-      preload: [plays: :recommendations]
-
-    Repo.all query
-  end
-
   def hearted(params) do
     query =
       from t in __MODULE__,

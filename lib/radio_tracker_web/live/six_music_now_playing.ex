@@ -16,7 +16,7 @@ defmodule RadioTrackerWeb.SixMusicNowPlaying do
     Endpoint.subscribe(@topic)
 
     socket = socket
-    |> assign(:last_ten, Track.last_ten)
+    |> assign(:last_ten_plays, Play.last_ten)
     |> assign(:status, "Getting new data...")
     |> assign(:allow_undo_track_ids, [])
 
@@ -25,7 +25,7 @@ defmodule RadioTrackerWeb.SixMusicNowPlaying do
 
   def handle_info(%{event: "new_track", payload: %{allow_undo_track_ids: allow_undo_track_ids}} = data, socket) do
     socket = socket
-    |> assign(:last_ten, data.payload.last_ten)
+    |> assign(:last_ten_plays, data.payload.last_ten_plays)
     |> assign(:allow_undo_track_ids, allow_undo_track_ids)
 
     {:noreply, socket}
@@ -33,7 +33,7 @@ defmodule RadioTrackerWeb.SixMusicNowPlaying do
 
   def handle_info(%{event: "new_track"} = data, socket) do
     socket = socket
-    |> assign(:last_ten, data.payload.last_ten)
+    |> assign(:last_ten_plays, data.payload.last_ten_plays)
 
     {:noreply, socket}
   end
@@ -60,7 +60,7 @@ defmodule RadioTrackerWeb.SixMusicNowPlaying do
       @topic,
       "new_track",
       %{
-        last_ten: Track.last_ten,
+        last_ten_plays: Play.last_ten,
         allow_undo_track_ids: [ play.track.id | socket.assigns.allow_undo_track_ids ]
       }
     )
@@ -79,7 +79,7 @@ defmodule RadioTrackerWeb.SixMusicNowPlaying do
           @topic,
           "new_track",
           %{
-            last_ten: Track.last_ten,
+            last_ten_plays: Play.last_ten,
             allow_undo_track_ids: List.delete(socket.assigns.allow_undo_track_ids, play.track.id
           )}
         )

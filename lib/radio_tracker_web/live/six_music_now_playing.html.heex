@@ -9,28 +9,28 @@
     </tr>
   </thead>
   <tbody>
-    <%= for track <- @last_ten do %>
+    <%= for play <- @last_ten_plays do %>
     <tr>
       <td>
-        <%= raw(track.artist) %><br />
+        <%= raw(play.track.artist) %><br />
         <img style="height: 20px;" src="/images/animated-music-image-0073.gif">
       </td>
       <td>
-        <%= link(raw(track.song), to: "/tracks/#{track.id}") %>
+        <%= link(raw(play.track.song), to: "/tracks/#{play.track_id}") %>
       </td>
-      <td><%= RadioTracker.Helpers.Dates.human_readable(track.inserted_at) %></td>
+      <td><%= RadioTracker.Helpers.Dates.human_readable(play.inserted_at) %></td>
       <td>
-        <button class="button is-black is-responsive" phx-click="like" phx-value-track-id={track.id} phx-value-play-id={List.first(track.plays).id}>
+        <button class="button is-black is-responsive" phx-click="like" phx-value-play-id={play.id}>
           <span class="pink is-size-3">♥</span>
-          <%= if (Track.total_recs(track) > 0) do %>
+          <%= if (Track.total_recs(play.track) > 0) do %>
             <span class="recommendation-count">
-              <%= Track.total_recs(track) %>
+              <%= Track.total_recs(play.track) %>
             </span>
           <% end %>
         </button>
         <br />
-        <%= if (Enum.member?(@allow_undo_track_ids, track.id)) do %>
-          <button class="button is-white is-small" phx-click="undo" phx-value-track-id={track.id} phx-value-play-id={List.first(track.plays).id}>
+        <%= if (Enum.member?(@allow_undo_track_ids, play.track.id)) do %>
+          <button class="button is-white is-small" phx-click="undo"phx-value-play-id={play.id}>
             undo
           </button>
         <% end %>

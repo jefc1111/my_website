@@ -140,8 +140,6 @@ defmodule RadioTracker.SixMusicTwitterPoller do
       existing_track = ^res -> Repo.insert(%Play{track_id: existing_track.id})
     end
 
-
-
-    Endpoint.broadcast_from(self(), @topic, "new_track", %{last_ten: Track.last_ten})
+    Endpoint.broadcast_from(self(), @topic, "new_track", %{last_ten_plays: Play.last_ten})
   end
 end
