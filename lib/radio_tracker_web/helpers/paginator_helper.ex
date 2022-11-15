@@ -45,7 +45,10 @@ defmodule RadioTrackerWeb.Helpers.PaginatorHelper do
           content_tag(:li, class: class, disabled: disabled) do
             link(page, to: "?#{params}", class: "pagination-link")
           end
-        _ -> "..."
+        _ -> case page do
+          page when page in [4, data.total_pages - 4] -> "....."
+          _ -> ""
+        end
       end
     end
   end
