@@ -43,7 +43,7 @@ config :dart_sass,
   ]
 
 config :radio_tracker, RadioTracker.Mailer,
-  adapter: Swoosh.Adapters.SMTP
+  adapter: Swoosh.Adapters.Local
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

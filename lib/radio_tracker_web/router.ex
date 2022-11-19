@@ -49,6 +49,11 @@ defmodule RadioTrackerWeb.Router do
       pipe_through :browser
       live_dashboard "/dashboard", metrics: RadioTrackerWeb.Telemetry
     end
+
+    scope "/dev" do
+      pipe_through [:browser]
+      forward "/mailbox", Plug.Swoosh.MailboxPreview
+    end
   end
 
   ## Authentication routes
