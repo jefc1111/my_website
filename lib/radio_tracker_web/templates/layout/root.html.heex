@@ -21,7 +21,7 @@
             <li><a href="/tracks">Most played</a></li>
           </ul>
         </nav>
-        <h1 class="is-size-2 is-size-4-mobile my-2">
+        <h1 class="is-size-1 is-size-4-mobile my-1 mb-6">
           <a href="/">Geoff's BBC 6 Music tracker</a>
         </h1>
       </section>
@@ -29,6 +29,7 @@
     <%= @inner_content %>
     <footer>
       <section class="container">
+        <%= render "_user_menu.html", assigns %>
         <%= link("geoffclayton.com", to: URI.parse("https://geoffclayton.com"), class: "float-right", target: "_blank") %>
       </section>
     </footer>

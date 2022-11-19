@@ -33,6 +33,7 @@ defmodule RadioTracker.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:bcrypt_elixir, "~> 3.0"},
       {:phoenix, "~> 1.6.12"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},
@@ -54,7 +55,9 @@ defmodule RadioTracker.MixProject do
       {:ex_fontawesome, "~> 0.7.2"},
       {:esbuild, "~> 0.4", runtime: Mix.env() == :dev},
       {:dart_sass, "~> 0.1", runtime: Mix.env() == :dev},
-      {:bulma, "0.9.3"}
+      {:bulma, "0.9.3"},
+      {:swoosh, "~> 1.8"},
+      {:gen_smtp, "~> 1.0"}
     ]
   end
 
