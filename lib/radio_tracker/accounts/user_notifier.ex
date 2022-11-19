@@ -12,6 +12,8 @@ defmodule RadioTracker.Accounts.UserNotifier do
       |> subject(subject)
       |> text_body(body)
 
+    IO.inspect(email)
+
     with {:ok, _metadata} <- Mailer.deliver(email) do
       {:ok, email}
     end
