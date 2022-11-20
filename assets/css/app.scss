@@ -6,6 +6,10 @@ $family-primary: $family-serif;
 
 @import "bulma";
 
+html {
+  background: $grey-lightest;
+}
+
 /* LiveView specific classes for your customizations */
 .phx-no-feedback.invalid-feedback,
 .phx-no-feedback .invalid-feedback {

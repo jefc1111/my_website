@@ -1,44 +1,46 @@
-<p class="is-size-5 is-size-6-mobile">If you think I'd like one of these songs, just hit the heart button!</p>
-<table class="table is-fullwidth">
-  <thead>
-    <tr>
-      <th>Artist</th>
-      <th>Song</th>
-      <th>Time</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <%= for play <- @last_ten_plays do %>
-    <tr>
-      <td>
-        <%= raw(play.track.artist) %><br />
-        <img style="height: 20px;" src="/images/animated-music-image-0073.gif">
-      </td>
-      <td>
-        <%= link(raw(play.track.song), to: "/tracks/#{play.track_id}") %>
-      </td>
-      <td><%= RadioTracker.Helpers.Dates.human_readable(play.inserted_at) %></td>
-      <td>
-        <button class="button is-black is-responsive" phx-click="like" phx-value-play-id={play.id}>
-          <span class="pink is-size-3">♥</span>
-          <%= if (Track.total_recs(play.track) > 0) do %>
-            <span class="recommendation-count">
-              <%= Track.total_recs(play.track) %>
-            </span>
-          <% end %>
-        </button>
-        <br />
-        <%= if (Enum.member?(@allow_undo_track_ids, play.track.id)) do %>
-          <button class="button is-white is-small" phx-click="undo"phx-value-play-id={play.id}>
-            undo
+<div class="box">
+  <p class="is-size-5 is-size-6-mobile">If you think I'd like one of these songs, just hit the heart button!</p>
+  <table class="table is-fullwidth">
+    <thead>
+      <tr>
+        <th>Artist</th>
+        <th>Song</th>
+        <th>Time</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for play <- @last_ten_plays do %>
+      <tr>
+        <td>
+          <%= raw(play.track.artist) %><br />
+          <img style="height: 20px;" src="/images/animated-music-image-0073.gif">
+        </td>
+        <td>
+          <%= link(raw(play.track.song), to: "/tracks/#{play.track_id}") %>
+        </td>
+        <td><%= RadioTracker.Helpers.Dates.human_readable(play.inserted_at) %></td>
+        <td>
+          <button class="button is-black is-responsive" phx-click="like" phx-value-play-id={play.id}>
+            <span class="pink is-size-3">♥</span>
+            <%= if (Track.total_recs(play.track) > 0) do %>
+              <span class="recommendation-count">
+                <%= Track.total_recs(play.track) %>
+              </span>
+            <% end %>
           </button>
-        <% end %>
-      </td>
-    </tr>
-    <% end %>
-  </tbody>
-</table>
+          <br />
+          <%= if (Enum.member?(@allow_undo_track_ids, play.track.id)) do %>
+            <button class="button is-white is-small" phx-click="undo"phx-value-play-id={play.id}>
+              undo
+            </button>
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 <%= if Mix.env() == :dev do %>
 <div class="mb-4">
   <FontAwesome.LiveView.icon name="globe" type="solid" class="icon is-small" /> <%= @status %>
