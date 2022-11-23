@@ -11,7 +11,7 @@ I also wanted a little project I could use as a way of learning some more Elixir
 
 It's not so little now. _Big surprise_. 
 
-Since there aren't really any users, I'm currently developing it scrappily and recklessly promoting half-baked features ot 'production'. 
+Since there aren't really any users, I'm currently developing it scrappily, recklessly promoting half-baked features to 'production'. 
 
 ## Roadmap
 - User accounts (in progress)
