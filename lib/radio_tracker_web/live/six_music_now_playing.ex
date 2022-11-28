@@ -10,6 +10,8 @@ defmodule RadioTrackerWeb.SixMusicNowPlaying do
   alias RadioTracker.Schemas.Play
   alias RadioTrackerWeb.Endpoint
 
+  import RadioTrackerWeb.Components.Icon
+
   @topic "now_playing"
 
   def mount(_params, _session, socket) do
