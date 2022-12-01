@@ -26,6 +26,8 @@ defmodule RadioTrackerWeb.ConnCase do
 
       alias RadioTrackerWeb.Router.Helpers, as: Routes
 
+      use RadioTrackerWeb, :verified_routes
+
       # The default endpoint for testing
       @endpoint RadioTrackerWeb.Endpoint
     end

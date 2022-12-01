@@ -6,7 +6,7 @@ defmodule RadioTrackerWeb do
   This can be used in your application as:
 
       use RadioTrackerWeb, :controller
-      use RadioTrackerWeb, :view
+      use RadioTrackerWeb, :html
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -17,6 +17,8 @@ defmodule RadioTrackerWeb do
   and import those modules here.
   """
 
+  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
+
   def controller do
     quote do
       use Phoenix.Controller, namespace: RadioTrackerWeb
@@ -24,14 +26,29 @@ defmodule RadioTrackerWeb do
       import Plug.Conn
       import RadioTrackerWeb.Gettext
       alias RadioTrackerWeb.Router.Helpers, as: Routes
+
+      unquote(verified_routes())
     end
   end
 
-  def view do
+  # def view do
+  #   quote do
+  #     use Phoenix.View,
+  #       root: "lib/radio_tracker_web/templates",
+  #       namespace: RadioTrackerWeb
+
+  #     # Import convenience functions from controllers
+  #     import Phoenix.Controller,
+  #       only: [get_flash: 1, get_flash: 2, view_module: 1, view_template: 1]
+
+  #     # Include shared imports and aliases for views
+  #     unquote(view_helpers())
+  #   end
+  # end
+
+  def html do
     quote do
-      use Phoenix.View,
-        root: "lib/radio_tracker_web/templates",
-        namespace: RadioTrackerWeb
+      use Phoenix.Component
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
@@ -82,15 +99,26 @@ defmodule RadioTrackerWeb do
       use Phoenix.HTML
 
       # Import LiveView helpers (live_render, live_component, live_patch, etc)
-      import Phoenix.LiveView.Helpers
+      import Phoenix.Component
 
       # Import basic rendering functionality (render, render_layout, etc)
-      import Phoenix.View
+      #import Phoenix.View
 
       import RadioTrackerWeb.ViewHelper
       import RadioTrackerWeb.ErrorHelpers
       import RadioTrackerWeb.Gettext
       alias RadioTrackerWeb.Router.Helpers, as: Routes
+
+      unquote(verified_routes())
+    end
+  end
+
+  def verified_routes do
+    quote do
+      use Phoenix.VerifiedRoutes,
+      endpoint: RadioTrackerWeb.Endpoint,
+      router: RadioTrackerWeb.Router,
+      statics: RadioTrackerWeb.static_paths()
     end
   end
 

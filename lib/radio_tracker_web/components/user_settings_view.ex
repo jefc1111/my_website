@@ -1,7 +1,7 @@
 defmodule RadioTrackerWeb.UserSettingsView do
-  use RadioTrackerWeb, :view
+  use RadioTrackerWeb, :html
 
   import RadioTrackerWeb.Components.FormField
-  import RadioTrackerWeb.Components.Icon
   import RadioTrackerWeb.Components.ButtonWithIcon
+  import RadioTrackerWeb.Components.FormValidationFail
 end

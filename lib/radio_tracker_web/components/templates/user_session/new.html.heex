@@ -1,0 +1,44 @@
+<div class="box columns is-desktop">
+  <div class="column is-quarter">
+  </div>
+  <div class="column is-half">
+    <div class="is-clearfix">
+      <h1>Log in</h1>
+      <.form let={f} for={@conn} action={Routes.user_session_path(@conn, :create)} as={:user}>
+        <%= if @error_message do %>
+            <.form_validation_fail text={ @error_message } />
+        <% end %>
+        <.input
+          label={label(f, :email, class: "label")}
+          input={email_input(f, :email, required: true, class: "input")}
+          error_tag={error_tag f, :email}
+        />
+        <.input
+          label={label(f, :password, class: "label")}
+          input={password_input(f, :password, required: true, class: "input")}
+          error_tag={error_tag f, :password}
+        />
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <%= label f, :remember_me, "Keep me logged in for 60 days" %>
+          </div>
+          <%= checkbox f, :remember_me %>
+        </div>
+        <.button_with_icon
+          icon_name="lock"
+          icon_type="solid"
+          text="Log in"
+          type="submit"
+          class="is-pulled-right"
+        />
+      </.form>
+    </div>
+  </div>
+  <div class="column is-quarter">
+  </div>
+</div>
+
+<p>
+  <%= link "Register", to: Routes.user_registration_path(@conn, :new) %> |
+  <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new) %>
+</p>

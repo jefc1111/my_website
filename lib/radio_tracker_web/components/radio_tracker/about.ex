@@ -1,3 +1,3 @@
 defmodule RadioTrackerWeb.AboutView do
-  use RadioTrackerWeb, :view
+  use RadioTrackerWeb, :html
 end

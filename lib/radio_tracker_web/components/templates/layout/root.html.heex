@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <%= csrf_meta_tag() %>
-    <%= live_title_tag assigns[:page_title] || "BBC 6 Music Tracker", suffix: "" %>
+    <.live_title suffix=" · Phoenix Framework">
++     <%= assigns[:page_title] || "BBC 6 Music Tracker" %>
++   </.live_title>
     <link phx-track-static rel="stylesheet" href={ Routes.static_path(@conn, "/assets/app.css") }/>
     <script defer phx-track-static type="text/javascript" src={ Routes.static_path(@conn, "/assets/app.js") }></script>
     <script defer data-domain="radio-tracker.geoffclayton.com" src="https://stats.geoffclayton.com/js/plausible.js"></script>
@@ -29,7 +31,7 @@
     <%= @inner_content %>
     <footer>
       <section class="container">
-        <%= render "_user_menu.html", assigns %>
+        <%= _user_menu assigns %>
         <%= link("geoffclayton.com", to: URI.parse("https://geoffclayton.com"), class: "float-right", target: "_blank") %>
       </section>
     </footer>

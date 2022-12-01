@@ -1,0 +1,38 @@
+<div class="box columns is-desktop">
+  <div class="column is-quarter">
+  </div>
+  <div class="column is-half">
+    <div class="is-clearfix">
+      <h1>Register</h1>
+      <.form let={f} for={@changeset} action={Routes.user_registration_path(@conn, :create)}>
+        <%= if @changeset.action do %>
+          <.form_validation_fail />
+        <% end %>
+        <.input
+          label={label(f, :email, class: "label")}
+          input={email_input(f, :email, required: true, class: "input")}
+          error_tag={error_tag f, :email}
+        />
+        <.input
+          label={label(f, :password, class: "label")}
+          input={password_input(f, :password, required: true, class: "input")}
+          error_tag={error_tag f, :password}
+        />
+        <.button_with_icon
+          icon_name="lock"
+          icon_type="solid"
+          text="Register"
+          type="submit"
+          class="is-pulled-right"
+        />
+      </.form>
+    </div>
+  </div>
+  <div class="column is-quarter">
+  </div>
+</div>
+
+<p>
+  <%= link "Log in", to: Routes.user_session_path(@conn, :new) %> |
+  <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new) %>
+</p>
