@@ -1,7 +1,9 @@
-defmodule RadioTrackerWeb.UserConfirmationView do
+defmodule RadioTrackerWeb.UserSessionView do
   use RadioTrackerWeb, :html
 
   import RadioTrackerWeb.Components.FormField
   import RadioTrackerWeb.Components.ButtonWithIcon
   import RadioTrackerWeb.Components.FormValidationFail
+
+  embed_templates "../templates/user_session/*"
 end

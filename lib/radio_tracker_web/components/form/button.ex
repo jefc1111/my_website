@@ -3,9 +3,9 @@ defmodule RadioTrackerWeb.Components.ButtonWithIcon do
 
   import RadioTrackerWeb.Components.Icon
 
-  def button_with_icon(assigns) do
-    assigns = assign_new(assigns, :class, fn -> "" end)
+  attr :class, :string, default: nil
 
+  def button_with_icon(assigns) do
     ~H"""
     <button class={ "button " <> @class }>
       <span class="icon">

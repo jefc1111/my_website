@@ -1,7 +1,9 @@
-defmodule RadioTrackerWeb.UserResetPasswordView do
+defmodule RadioTrackerWeb.UserSettingsView do
   use RadioTrackerWeb, :html
 
   import RadioTrackerWeb.Components.FormField
   import RadioTrackerWeb.Components.ButtonWithIcon
   import RadioTrackerWeb.Components.FormValidationFail
+
+  embed_templates "../templates/user_settings/*"
 end
