@@ -1,0 +1,21 @@
+<h1>Forgot your password?</h1>
+
+<.form let={f} for={:user} action={Routes.user_reset_password_path(@conn, :create)}>
+  <.input
+    label={label(f, :email, class: "label")}
+    input={email_input(f, :email, required: true, class: "input")}
+    error_tag={error_tag f, :email}
+  />
+  <.button_with_icon
+    icon_name="lock"
+    icon_type="solid"
+    text="Send instructions to reset password"
+    type="submit"
+    class="is-pulled-right"
+  />
+</.form>
+
+<p>
+  <%= link "Register", to: Routes.user_registration_path(@conn, :new) %> |
+  <%= link "Log in", to: Routes.user_session_path(@conn, :new) %>
+</p>

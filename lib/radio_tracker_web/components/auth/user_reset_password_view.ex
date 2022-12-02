@@ -5,5 +5,5 @@ defmodule RadioTrackerWeb.UserResetPasswordView do
   import RadioTrackerWeb.Components.ButtonWithIcon
   import RadioTrackerWeb.Components.FormValidationFail
 
-  embed_templates "../templates/user_reset_password/*"
+  embed_templates "../templates/auth/user_reset_password/*"
 end
