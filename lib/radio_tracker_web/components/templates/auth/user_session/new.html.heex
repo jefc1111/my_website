@@ -1,7 +1,4 @@
-<div class="box columns is-desktop">
-  <div class="column is-quarter">
-  </div>
-  <div class="column is-half">
+<.form_wrapper>
     <div class="is-clearfix">
       <h1>Log in</h1>
       <.form let={f} for={@conn} action={Routes.user_session_path(@conn, :create)} as={:user}>
@@ -33,10 +30,7 @@
         />
       </.form>
     </div>
-  </div>
-  <div class="column is-quarter">
-  </div>
-</div>
+</.form_wrapper>
 
 <p>
   <%= link "Register", to: Routes.user_registration_path(@conn, :new) %> |
