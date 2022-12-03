@@ -1,5 +1,4 @@
 <div class="box">
-  <p class="is-size-5 is-size-6-mobile">If you think I'd like one of these songs, just hit the heart button!</p>
   <table class="table is-fullwidth">
     <thead>
       <tr>
@@ -21,7 +20,7 @@
         </td>
         <td><%= RadioTracker.Helpers.Dates.human_readable(play.inserted_at) %></td>
         <td>
-          <button class="button is-black is-responsive" phx-click="like" phx-value-play-id={play.id}>
+          <button class="button is-black is-responsive" disabled phx-click="like" phx-value-play-id={play.id}>
             <span class="pink is-size-3">♥</span>
             <%= if (Track.total_recs(play.track) > 0) do %>
               <span class="recommendation-count">
