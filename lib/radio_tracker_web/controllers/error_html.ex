@@ -1,4 +1,4 @@
-defmodule RadioTrackerWeb.ErrorView do
+defmodule RadioTrackerWeb.ErrorHTML do
   use RadioTrackerWeb, :html
 
   # If you want to customize a particular status code
