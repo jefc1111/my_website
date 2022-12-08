@@ -1,12 +1,16 @@
 defmodule RadioTracker.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
+  alias RadioTracker.Schemas.Recommendation
 
   schema "users" do
     field :email, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
+
+    has_many :given_recommendations, Recommendation, foreign_key: :recommender_id
+    has_many :received_recommendations, Recommendation, foreign_key: :recommendee_id
 
     timestamps()
   end
