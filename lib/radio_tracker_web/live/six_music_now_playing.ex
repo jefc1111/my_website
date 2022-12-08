@@ -21,6 +21,7 @@ defmodule RadioTrackerWeb.SixMusicNowPlaying do
     |> assign(:last_ten_plays, Play.last_ten)
     |> assign(:status, "Getting new data...")
     |> assign(:allow_undo_track_ids, [])
+    |> assign(:disabled, true)
 
     {:ok, socket}
   end

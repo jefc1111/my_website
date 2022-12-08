@@ -20,7 +20,12 @@
         </td>
         <td><%= RadioTracker.Helpers.Dates.human_readable(play.inserted_at) %></td>
         <td>
-          <button class="button is-black is-responsive" disabled phx-click="like" phx-value-play-id={play.id}>
+          <button
+            class="button is-black is-responsive"
+            phx-click="like"
+            phx-value-play-id={play.id}
+            disabled={@disabled}
+          >
             <span class="pink is-size-3">♥</span>
             <%= if (Track.total_recs(play.track) > 0) do %>
               <span class="recommendation-count">
@@ -30,7 +35,7 @@
           </button>
           <br />
           <%= if (Enum.member?(@allow_undo_track_ids, play.track.id)) do %>
-            <button class="button is-white is-small" phx-click="undo"phx-value-play-id={play.id}>
+            <button class="button is-white is-small" phx-click="undo" phx-value-play-id={play.id}>
               undo
             </button>
           <% end %>
