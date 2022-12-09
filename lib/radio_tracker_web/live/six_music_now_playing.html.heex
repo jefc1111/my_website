@@ -27,9 +27,9 @@
             disabled={@disabled}
           >
             <span class="pink is-size-3">♥</span>
-            <%= if (Track.total_recs(play.track) > 0) do %>
+            <%= if (Track.qty_likes(play.track) > 0) do %>
               <span class="recommendation-count">
-                <%= Track.total_recs(play.track) %>
+                <%= Track.qty_likes(play.track) %>
               </span>
             <% end %>
           </button>
