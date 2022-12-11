@@ -16,6 +16,9 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
+import bulmaCalendar from "../vendor/bulma-calendar"
+
+
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}})
@@ -33,4 +36,31 @@ liveSocket.connect()
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
+
+var options = {
+    isRange: true,
+    displayMode: "dialog",
+    showHeader: false
+
+}
+// Initialize all input of type date
+var calendars = bulmaCalendar.attach('[type="date"]', options);
+
+// Loop on each calendar initialized
+for(var i = 0; i < calendars.length; i++) {
+	// Add listener to select event
+	calendars[i].on('select', date => {
+		console.log(date);
+	});
+}
+
+// To access to bulmaCalendar instance of an element
+var element = document.querySelector('#dateRangePicker');
+if (element) {
+	// bulmaCalendar instance is available as element.bulmaCalendar
+	element.bulmaCalendar.on('select', function(datepicker) {
+		console.log(datepicker.data.startDate);
+        console.log(datepicker.data.endDate);
+	});
+}
 

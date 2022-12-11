@@ -5,6 +5,7 @@ $family-serif: "Arial", serif;
 $family-primary: $family-serif;
 
 @import "bulma";
+@import "./bulma-calendar.css";
 
 html {
   background: $white-bis;
@@ -114,3 +115,11 @@ footer {
   opacity: .4;
   pointer-events: none;
 }
+
+
+
+
+
+
+
+
