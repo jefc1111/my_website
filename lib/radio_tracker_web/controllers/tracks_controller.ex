@@ -6,9 +6,9 @@ defmodule RadioTrackerWeb.TracksController do
 
   def get(conn, params) do
     t = Repo.get(Track, params["id"])
-    |> Repo.preload(plays: :recommendations)
+    |> Repo.preload(plays: :likes)
 
-    render(conn, "track.html", track: t, total_recs: Track.total_recs(t))
+    render(conn, "track.html", track: t, qty_likes: Track.qty_likes(t))
   end
 
   def index(conn, params) do

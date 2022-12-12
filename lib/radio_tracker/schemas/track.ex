@@ -46,12 +46,12 @@ defmodule RadioTracker.Schemas.Track do
     query =
       from t in __MODULE__,
       inner_join: p in assoc(t, :plays),
-      inner_join: r in assoc(p, :recommendations),
+      inner_join: r in assoc(p, :likes),
       on: r.play_id == p.id,
       select: t,
       order_by: [desc: count(r.id)],
       group_by: t.id,
-      preload: [plays: :recommendations],
+      preload: [plays: :likes],
       where: fragment("date(t0.inserted_at) >= ?", ^~D[2020-11-24]),
       where: fragment("date(t0.inserted_at) <= ?", ^~D[2022-11-26])
     Paginator.paginate(query, params["page"])
@@ -68,9 +68,9 @@ defmodule RadioTracker.Schemas.Track do
     Paginator.paginate(query, params["page"])
   end
 
-  def total_recs(track) do
+  def qty_likes(track) do
     track.plays
-    |> Enum.map(fn p -> length(p.recommendations) end)
+    |> Enum.map(fn p -> length(p.likes) end)
     |> Enum.sum
   end
 

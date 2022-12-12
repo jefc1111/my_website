@@ -9,19 +9,19 @@
     <thead>
       <tr>
         <th>Time</th>
-        <th>Qty Recommendations</th>
+        <th>Qty Likes</th>
       </tr>
     </thead>
     <tbody>
       <%= for play <- @track.plays do %>
       <tr>
         <td><%= Dates.human_readable(play.inserted_at) %></td>
-        <td><%= length(play.recommendations) %></td>
+        <td><%= length(play.likes) %></td>
       </tr>
       <% end %>
       <tr>
         <td></td>
-        <td><%= @total_recs %></td>
+        <td><%= @qty_likes %></td>
       </tr>
     </tbody>
   </table>

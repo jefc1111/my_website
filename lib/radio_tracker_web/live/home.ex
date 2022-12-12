@@ -4,9 +4,10 @@ defmodule RadioTrackerWeb.Home do
   use RadioTrackerWeb, :live_view
   use Timex
 
+  alias RadioTracker.Accounts
   alias RadioTracker.Repo
   alias RadioTracker.Schemas.Track
-  alias RadioTracker.Schemas.Recommendation
+  alias RadioTracker.Schemas.Like
   alias RadioTracker.Schemas.Play
   alias RadioTrackerWeb.Endpoint
 
@@ -14,16 +15,25 @@ defmodule RadioTrackerWeb.Home do
 
   @topic "now_playing"
 
-  def mount(_params, _session, socket) do
+  def mount(_params, session, socket) do
     Endpoint.subscribe(@topic)
 
     socket = socket
     |> assign(:last_ten_plays, Play.last_ten)
     |> assign(:status, "Getting new data...")
     |> assign(:allow_undo_track_ids, [])
-    |> assign(:disabled, true)
 
-    {:ok, socket}
+    case session do
+      %{"user_token" => user_token} ->
+        user = Accounts.get_user_by_session_token(user_token)
+
+        {:ok, socket
+        |> assign(:current_user, user)
+        |> assign(:disabled, false)}
+      _ ->
+        {:ok, socket
+        |> assign(:disabled, true)}
+    end
   end
 
   def handle_info(%{event: "new_track", payload: %{allow_undo_track_ids: allow_undo_track_ids}} = data, socket) do
@@ -57,7 +67,12 @@ defmodule RadioTrackerWeb.Home do
     play = Repo.get(Play, data["play-id"])
     |> Repo.preload([:track])
 
-    Repo.insert(%Recommendation{name: "me", text: "stuff", play: play})
+    Repo.insert(
+      %Like{
+        play: play,
+        user: socket.assigns.current_user
+      }
+    )
 
     Endpoint.broadcast(
       @topic,
@@ -73,10 +88,10 @@ defmodule RadioTrackerWeb.Home do
 
   def handle_event("undo", data, socket) do
     play = Repo.get(Play, data["play-id"])
-    |> Repo.preload([:recommendations, :track])
+    |> Repo.preload([:likes, :track])
 
-    unless length(play.recommendations) === 0 do
-        Repo.delete(List.last(play.recommendations))
+    unless length(play.likes) === 0 do
+        Repo.delete(List.last(play.likes))
 
         Endpoint.broadcast(
           @topic,

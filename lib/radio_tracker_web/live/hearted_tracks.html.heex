@@ -19,10 +19,10 @@
         <td><%= Dates.human_readable(track.inserted_at) %></td>
         <td>
           <span class="pink">
-            <%= if Track.total_recs(track) < 10 do %>
-            <%= String.duplicate("♥", Track.total_recs(track)) %>
+            <%= if Track.qty_likes(track) < 10 do %>
+            <%= String.duplicate("♥", Track.qty_likes(track)) %>
             <% else %>
-            <%= String.duplicate("♥", 10) %>... (<%= Track.total_recs(track) %>)
+            <%= String.duplicate("♥", 10) %>... (<%= Track.qty_likes(track) %>)
             <% end %>
           </span>
         </td>
