@@ -51,7 +51,9 @@ defmodule RadioTracker.Schemas.Track do
       select: t,
       order_by: [desc: count(r.id)],
       group_by: t.id,
-      preload: [plays: :recommendations]
+      preload: [plays: :recommendations],
+      where: fragment("date(t0.inserted_at) >= ?", ^~D[2020-11-24]),
+      where: fragment("date(t0.inserted_at) <= ?", ^~D[2022-11-26])
     Paginator.paginate(query, params["page"])
   end
 

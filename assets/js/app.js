@@ -40,7 +40,8 @@ window.liveSocket = liveSocket
 var options = {
     isRange: true,
     displayMode: "dialog",
-    showHeader: false
+    showHeader: false,
+	dateFormat: "dd-MM-yyyy"
 
 }
 // Initialize all input of type date
