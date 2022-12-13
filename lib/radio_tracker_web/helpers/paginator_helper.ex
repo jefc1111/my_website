@@ -7,7 +7,7 @@ defmodule RadioTrackerWeb.Helpers.PaginatorHelper do
 
   use Phoenix.HTML
 
-  def render(_conn, data, class: class) do
+  def render(data, class: class) do
     first = prev_button(data)
     pages = page_buttons(data)
     last = next_button(data)

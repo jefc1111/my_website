@@ -8,7 +8,6 @@ defmodule RadioTrackerWeb.HeartedTracks do
 
     socket = socket
     |> assign(hearted_tracks: Track.hearted(params))
-    |> assign(conn: params)
 
     {:ok, socket}
   end
