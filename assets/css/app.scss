@@ -5,6 +5,7 @@ $family-serif: "Arial", serif;
 $family-primary: $family-serif;
 
 @import "bulma";
+@import "./bulma-calendar.css";
 
 html {
   background: $white-bis;
@@ -75,7 +76,7 @@ table tr:first-child td img {
 /* 
 https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_buttons_notification
 */
-.recommendation-count {
+.like-count {
   font-size: 0.7em;
   position: absolute;
   top: -10px;
@@ -114,3 +115,11 @@ footer {
   opacity: .4;
   pointer-events: none;
 }
+
+
+
+
+
+
+
+

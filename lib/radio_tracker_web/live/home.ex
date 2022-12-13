@@ -1,4 +1,4 @@
-defmodule RadioTrackerWeb.SixMusicNowPlaying do
+defmodule RadioTrackerWeb.Home do
   require Logger
 
   use RadioTrackerWeb, :live_view

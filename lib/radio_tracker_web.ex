@@ -62,7 +62,7 @@ defmodule RadioTrackerWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {RadioTrackerWeb.LayoutView, "live.html"}
+        layout: {RadioTrackerWeb.LayoutView, :live}
 
       unquote(view_helpers())
     end

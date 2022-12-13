@@ -20,14 +20,12 @@ defmodule RadioTrackerWeb.Router do
   scope "/", RadioTrackerWeb do
     pipe_through :browser
 
-    #live "/", PageLive, :index
-    #live "/six-music-now-playing", SixMusicNowPlaying
-
-    get "/hearted-tracks", HeartedTracksController, :index
     get "/tracks/:id", TracksController, :get
     get "/tracks", TracksController, :index
     get "/about", AboutController, :index
-    live "/", SixMusicNowPlaying
+
+    live "/", Home
+    live "/hearted-tracks", HeartedTracks
   end
 
   # Other scopes may use custom stacks.

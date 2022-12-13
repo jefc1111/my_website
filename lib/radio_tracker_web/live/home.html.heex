@@ -28,7 +28,7 @@
           >
             <span class="pink is-size-3">♥</span>
             <%= if (Track.qty_likes(play.track) > 0) do %>
-              <span class="recommendation-count">
+              <span class="like-count">
                 <%= Track.qty_likes(play.track) %>
               </span>
             <% end %>
