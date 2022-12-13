@@ -6,10 +6,10 @@ defmodule RadioTracker.Schemas.Play do
 
   alias RadioTracker.Repo
   alias RadioTracker.Schemas.Track
-  alias RadioTracker.Schemas.Recommendation
+  alias RadioTracker.Schemas.Like
 
   schema "plays" do
-    has_many :recommendations, Recommendation
+    has_many :likes, Like
 
     belongs_to :track, Track
 
@@ -35,7 +35,7 @@ defmodule RadioTracker.Schemas.Play do
       from p in __MODULE__,
       order_by: [desc: p.id],
       limit: 10,
-      preload: [track: [plays: :recommendations]]
+      preload: [track: [plays: :likes]]
 
     Repo.all query
   end
