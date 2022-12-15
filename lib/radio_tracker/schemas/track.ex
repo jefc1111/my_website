@@ -11,6 +11,7 @@ defmodule RadioTracker.Schemas.Track do
   alias RadioTracker.Repo
   alias RadioTracker.Paginator
   alias RadioTracker.Schemas.Play
+  alias RadioTracker.Schemas.Like
 
   schema "tracks" do
     field :artist, :string
@@ -86,5 +87,15 @@ defmodule RadioTracker.Schemas.Track do
       limit: 1
 
     Repo.one(query)
+  end
+
+  def delete_all_likes(track) do
+    play_ids = Enum.map(track.plays, fn p -> p.id end)
+
+    query =
+      from l in Like,
+      where: l.play_id in ^play_ids
+
+    Repo.delete_all(query)
   end
 end

@@ -3,16 +3,16 @@ defmodule RadioTrackerWeb.Components.ButtonWithIcon do
 
   import RadioTrackerWeb.Components.Icon
 
-  attr :class, :string, default: nil
+  attr :class, :string, default: ""
   attr :icon_name, :string, default: nil
   attr :icon_type, :string, default: nil
-  attr :text, :string, default: nil
-  attr :type, :string, default: nil
+  attr :text, :string, default: ""
+  attr :type, :string, default: ""
 
   def button_with_icon(assigns) do
     ~H"""
     <button type={ @type } class={ "button " <> @class }>
-      <span class="icon">
+      <span class="">
         <.icon name={ @icon_name } type={ @icon_type } class="icon" />
       </span>
       <span><%= @text %></span>

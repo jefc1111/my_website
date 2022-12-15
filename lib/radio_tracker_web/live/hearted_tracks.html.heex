@@ -9,6 +9,7 @@
         <th>Song</th>
         <th>Time</th>
         <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -25,6 +26,11 @@
             <%= String.duplicate("♥", 10) %>... (<%= Track.qty_likes(track) %>)
             <% end %>
           </span>
+        </td>
+        <td>
+          <button phx-click="delete-all-likes-for-track" phx-value-track-id={track.id}>
+              <.icon name="trash-can" type="regular" class="icon" />
+          </button>
         </td>
       </tr>
       <% end %>
