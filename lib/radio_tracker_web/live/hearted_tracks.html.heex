@@ -27,10 +27,18 @@
             <% end %>
           </span>
         </td>
-        <td>
-          <button phx-click="delete-all-likes-for-track" phx-value-track-id={track.id}>
+        <td x-data="{ open: false }" style="width: 124px">
+          <button class="button is-small" x-on:click="open = ! open" x-show="! open" x-transition>
               <.icon name="trash-can" type="regular" class="icon" />
           </button>
+          <div class="buttons are-small" x-show="open" x-transition>
+            <button class="button is-success" phx-click="delete-all-likes-for-track" phx-value-track-id={track.id} x-on:click="open = ! open">
+                Sure?
+            </button>
+            <button class="button is-warning" x-on:click="open = ! open">
+                x
+            </button>
+          </div>
         </td>
       </tr>
       <% end %>
