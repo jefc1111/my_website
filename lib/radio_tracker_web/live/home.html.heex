@@ -28,7 +28,7 @@
             disabled={@like_disabled}
           >
             <span class="pink is-size-3">♥</span>
-            <%= if (Track.qty_likes_for_user(play.track, @current_user.id) > 0 && ! @like_disabled) do %>
+            <%= if (! @like_disabled && Track.qty_likes_for_user(play.track, @current_user.id) > 0) do %>
               <span class="like-count">
                 <%= Track.qty_likes_for_user(play.track, @current_user.id) %>
               </span>

@@ -8,14 +8,18 @@ defmodule RadioTrackerWeb.HeartedTracks do
 
   import RadioTrackerWeb.Components.Icon
 
-  def mount(params, session, socket) do
-    user = Accounts.get_user_by_session_token(session["user_token"])
+  def mount(params, %{"user_token" => user_token}, socket) do
+    user = Accounts.get_user_by_session_token(user_token)
 
     socket = socket
     |> assign(hearted_tracks: Track.hearted(params, user.id))
     |> assign(current_user: user)
 
     {:ok, socket}
+  end
+
+  def mount(_params, _session, socket) do
+    {:ok, redirect(socket, to: "/")}
   end
 
   def handle_event("delete-user-likes-for-track", data, socket) do

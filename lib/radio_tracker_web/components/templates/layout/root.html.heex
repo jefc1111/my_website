@@ -18,7 +18,9 @@
         <nav class="is-pulled-right has-text-right" role="navigation">
           <ul>
             <li><a href="/">Home</a></li>
+            <%= if @current_user do %>
             <li><a href="/hearted-tracks">He<span class="pink">♥</span>rted tracks</a></li>
+            <% end %>
             <li><a href="/about">About</a></li>
             <li><a href="/tracks">Most played</a></li>
           </ul>
