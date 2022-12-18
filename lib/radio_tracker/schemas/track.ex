@@ -75,6 +75,12 @@ defmodule RadioTracker.Schemas.Track do
     |> Enum.sum
   end
 
+  def qty_likes_for_user(track, user_id) do
+    track.plays
+    |> Enum.map(fn p -> length(Enum.filter(p.likes, fn l -> l.user_id == user_id end)) end)
+    |> Enum.sum
+  end
+
   # It shouldn't really be necessary to do the LIMIT 1 because we should
   # only ever have one record in `tracks` for a given artist / song combination
   # Could enforce this at the DB level with a combined index I imagine ....

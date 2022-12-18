@@ -24,12 +24,17 @@
             class="button is-black is-responsive"
             phx-click="like"
             phx-value-play-id={play.id}
-            disabled={@disabled}
+            disabled={@like_disabled}
           >
             <span class="pink is-size-3">♥</span>
             <%= if (Track.qty_likes(play.track) > 0) do %>
-              <span class="like-count">
-                <%= Track.qty_likes(play.track) %>
+              <%= if (! @like_disabled) do %>
+                <span class="like-count">
+                  <%= Track.qty_likes_for_user(play.track, @current_user.id) %>
+                </span>
+              <% end %>
+              <span class="">
+                All: <%= Track.qty_likes(play.track) %>
               </span>
             <% end %>
           </button>

@@ -29,10 +29,10 @@ defmodule RadioTrackerWeb.Home do
 
         {:ok, socket
         |> assign(:current_user, user)
-        |> assign(:disabled, false)}
+        |> assign(:like_disabled, false)}
       _ ->
         {:ok, socket
-        |> assign(:disabled, true)}
+        |> assign(:like_disabled, true)}
     end
   end
 

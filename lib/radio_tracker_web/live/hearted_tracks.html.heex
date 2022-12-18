@@ -9,7 +9,8 @@
         <th>Song</th>
         <th>Time</th>
         <th></th>
-        <th></th>
+        <th>Remove</th>
+        <th>Playlist control</th>
       </tr>
     </thead>
     <tbody>
@@ -28,10 +29,10 @@
           </span>
         </td>
         <td x-data="{ open: false }" style="width: 124px">
-          <button class="button is-small" x-on:click="open = ! open" x-show="! open" x-transition>
+          <button class="button is-small" x-on:click="open = ! open" x-show="! open">
               <.icon name="trash-can" type="regular" class="icon" />
           </button>
-          <div class="buttons are-small" x-show="open" x-transition>
+          <div class="buttons are-small" x-show="open">
             <button class="button is-success" phx-click="delete-all-likes-for-track" phx-value-track-id={track.id} x-on:click="open = ! open">
                 Sure?
             </button>
@@ -40,8 +41,21 @@
             </button>
           </div>
         </td>
+        <td class="">
+          <button class="button is-info is-small">
+            Add =>
+          </button>
+        </td>
       </tr>
       <% end %>
+      <tr>
+        <td colspan="5"></td>
+        <td>
+          <button class="button is-info is-small">
+            Add all (10) =>
+          </button>
+        </td>
+      </tr>
     </tbody>
   </table>
   <nav class="pagination is-centered" role="navigation" aria-label="pagination">
