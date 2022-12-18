@@ -63,10 +63,11 @@ defmodule RadioTracker.Schemas.Track do
     query =
       from t in __MODULE__,
       inner_join: p in assoc(t, :plays),
+      full_join: r in assoc(p, :likes),
       select: t,
       order_by: [desc: count(p.id)],
       group_by: t.id,
-      preload: [:plays]
+      preload: [plays: :likes]
     Paginator.paginate(query, params["page"])
   end
 

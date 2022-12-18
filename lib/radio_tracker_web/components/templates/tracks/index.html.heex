@@ -5,6 +5,7 @@
         <th>Artist</th>
         <th>Song</th>
         <th>Plays</th>
+        <th>All likes</th>
       </tr>
     </thead>
     <tbody>
@@ -13,6 +14,7 @@
         <td><%= raw(track.artist) %></td>
         <td><%= link(raw(track.song), to: "/tracks/#{track.id}") %></td>
         <td><%= length(track.plays) %></td>
+        <td><%= Track.qty_likes(track) %></td>
       </tr>
       <% end %>
     </tbody>

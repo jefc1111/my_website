@@ -79,7 +79,9 @@ defmodule RadioTrackerWeb.Home do
       "new_track",
       %{
         last_ten_plays: Play.last_ten,
-        allow_undo_track_ids: [ play.track.id | socket.assigns.allow_undo_track_ids ]
+        allow_undo_track_ids: [
+          {socket.assigns.current_user.id, play.track.id} | socket.assigns.allow_undo_track_ids
+        ]
       }
     )
 
@@ -98,8 +100,10 @@ defmodule RadioTrackerWeb.Home do
           "new_track",
           %{
             last_ten_plays: Play.last_ten,
-            allow_undo_track_ids: List.delete(socket.assigns.allow_undo_track_ids, play.track.id
-          )}
+            allow_undo_track_ids: List.delete(
+              socket.assigns.allow_undo_track_ids, {socket.assigns.current_user.id, play.track.id}
+            )
+          }
         )
     end
 

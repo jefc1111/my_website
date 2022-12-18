@@ -34,9 +34,9 @@
               </span>
             <% end %>
           </button>
-          <br />
-          <%= if (Enum.member?(@allow_undo_track_ids, play.track.id)) do %>
-            <button class="button is-white is-small" phx-click="undo" phx-value-play-id={play.id}>
+
+          <%= if (! @like_disabled && Enum.member?(@allow_undo_track_ids, {@current_user.id, play.track.id})) do %>
+            <button class="button is-ghost is-small" phx-click="undo" phx-value-play-id={play.id}>
               undo
             </button>
           <% end %>
