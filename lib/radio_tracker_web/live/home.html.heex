@@ -6,6 +6,7 @@
         <th>Song</th>
         <th>Time</th>
         <th></th>
+        <th class="has-text-centered">Likes (all users)</th>
       </tr>
     </thead>
     <tbody>
@@ -27,14 +28,9 @@
             disabled={@like_disabled}
           >
             <span class="pink is-size-3">♥</span>
-            <%= if (Track.qty_likes(play.track) > 0) do %>
-              <%= if (! @like_disabled) do %>
-                <span class="like-count">
-                  <%= Track.qty_likes_for_user(play.track, @current_user.id) %>
-                </span>
-              <% end %>
-              <span class="">
-                All: <%= Track.qty_likes(play.track) %>
+            <%= if (Track.qty_likes_for_user(play.track, @current_user.id) > 0 && ! @like_disabled) do %>
+              <span class="like-count">
+                <%= Track.qty_likes_for_user(play.track, @current_user.id) %>
               </span>
             <% end %>
           </button>
@@ -44,6 +40,9 @@
               undo
             </button>
           <% end %>
+        </td>
+        <td class="has-text-centered">
+          <%= Track.qty_likes(play.track) %>
         </td>
       </tr>
       <% end %>

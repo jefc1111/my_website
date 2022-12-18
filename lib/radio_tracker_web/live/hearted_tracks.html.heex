@@ -22,9 +22,9 @@
         <td>
           <span class="pink">
             <%= if Track.qty_likes(track) < 10 do %>
-            <%= String.duplicate("♥", Track.qty_likes(track)) %>
+            <%= String.duplicate("♥", Track.qty_likes_for_user(track, @current_user.id)) %>
             <% else %>
-            <%= String.duplicate("♥", 10) %>... (<%= Track.qty_likes(track) %>)
+            <%= String.duplicate("♥", 10) %>... (<%= Track.qty_likes_for_user(track, @current_user.id) %>)
             <% end %>
           </span>
         </td>
@@ -33,7 +33,7 @@
               <.icon name="trash-can" type="regular" class="icon" />
           </button>
           <div class="buttons are-small" x-show="open">
-            <button class="button is-success" phx-click="delete-all-likes-for-track" phx-value-track-id={track.id} x-on:click="open = ! open">
+            <button class="button is-success" phx-click="delete-user-likes-for-track" phx-value-track-id={track.id} x-on:click="open = ! open">
                 Sure?
             </button>
             <button class="button is-warning" x-on:click="open = ! open">

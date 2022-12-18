@@ -43,7 +43,7 @@ defmodule RadioTracker.Schemas.Track do
     |> Repo.one
   end
 
-  def hearted(params) do
+  def hearted(params, user_id) do
     query =
       from t in __MODULE__,
       inner_join: p in assoc(t, :plays),
@@ -54,7 +54,8 @@ defmodule RadioTracker.Schemas.Track do
       group_by: t.id,
       preload: [plays: :likes],
       where: fragment("date(t0.inserted_at) >= ?", ^~D[2020-12-09]),
-      where: fragment("date(t0.inserted_at) <= ?", ^~D[2023-12-09])
+      where: fragment("date(t0.inserted_at) <= ?", ^~D[2023-12-09]),
+      where: fragment("l2.user_id = ?", ^user_id)
     Paginator.paginate(query, params["page"])
   end
 
@@ -95,11 +96,12 @@ defmodule RadioTracker.Schemas.Track do
     Repo.one(query)
   end
 
-  def delete_all_likes(track) do
+  def delete_all_likes_for_user(track, user_id) do
     play_ids = Enum.map(track.plays, fn p -> p.id end)
 
     query =
       from l in Like,
+      where: l.user_id == ^user_id,
       where: l.play_id in ^play_ids
 
     Repo.delete_all(query)
