@@ -93,18 +93,21 @@ defmodule RadioTrackerWeb.Home do
     |> Repo.preload([:likes, :track])
 
     unless length(play.likes) === 0 do
-        Repo.delete(List.last(play.likes))
+      play.likes
+      |> Enum.filter(fn l -> l.user_id == socket.assigns.current_user.id end)
+      |> List.last()
+      |> Repo.delete
 
-        Endpoint.broadcast(
-          @topic,
-          "new_track",
-          %{
-            last_ten_plays: Play.last_ten,
-            allow_undo_track_ids: List.delete(
-              socket.assigns.allow_undo_track_ids, {socket.assigns.current_user.id, play.track.id}
-            )
-          }
-        )
+      Endpoint.broadcast(
+        @topic,
+        "new_track",
+        %{
+          last_ten_plays: Play.last_ten,
+          allow_undo_track_ids: List.delete(
+            socket.assigns.allow_undo_track_ids, {socket.assigns.current_user.id, play.track.id}
+          )
+        }
+      )
     end
 
     {:noreply, socket}
