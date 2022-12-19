@@ -20,7 +20,7 @@
           <%= link(raw(play.track.song), to: "/tracks/#{play.track_id}") %>
         </td>
         <td><%= RadioTracker.Helpers.Dates.human_readable(play.inserted_at) %></td>
-        <td>
+        <td style="width: 140px;">
           <button
             class="button is-black is-responsive"
             phx-click="like"
