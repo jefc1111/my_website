@@ -1,5 +1,5 @@
 <div id="dateRangePickerHolder" phx-update="ignore" class="box">
-  <input type="date">
+  <input id="dateRangePicker" type="date">
 </div>
 <div class="box">
   <table class="table is-fullwidth">
@@ -10,7 +10,9 @@
         <th>Time</th>
         <th></th>
         <th>Remove</th>
+        <!--
         <th>Playlist control</th>
+        -->
       </tr>
     </thead>
     <tbody>
@@ -41,13 +43,16 @@
             </button>
           </div>
         </td>
+        <!--
         <td class="">
           <button class="button is-info is-small">
             Add =>
           </button>
         </td>
+        -->
       </tr>
       <% end %>
+      <!--
       <tr>
         <td colspan="5"></td>
         <td>
@@ -56,6 +61,7 @@
           </button>
         </td>
       </tr>
+      -->
     </tbody>
   </table>
   <nav class="pagination is-centered" role="navigation" aria-label="pagination">
