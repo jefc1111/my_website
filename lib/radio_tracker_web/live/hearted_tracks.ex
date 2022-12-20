@@ -12,8 +12,15 @@ defmodule RadioTrackerWeb.HeartedTracks do
     user = Accounts.get_user_by_session_token(user_token)
 
     socket = socket
-    |> assign(hearted_tracks: Track.hearted(params, user.id))
     |> assign(current_user: user)
+    |> assign(hearted_tracks: Track.hearted(
+      params,
+      user.id,
+      %{
+        start: "2022-12-08",
+        end: "2022-12-10"
+      }
+    ))
 
     {:ok, socket}
   end
@@ -28,7 +35,30 @@ defmodule RadioTrackerWeb.HeartedTracks do
     |> Track.delete_all_likes_for_user(socket.assigns.current_user.id)
 
     socket = socket
-    |> assign(hearted_tracks: Track.hearted(socket.assigns, socket.assigns.current_user.id))
+    |> assign(hearted_tracks: Track.hearted(
+      socket.assigns,
+      socket.assigns.current_user.id,
+      %{
+        start: "2022-12-08",
+        end: "2022-12-10"
+      }
+    ))
+
+    {:noreply, socket}
+  end
+
+  def handle_event("set-date-range", data, socket) do
+    IO.inspect(data)
+
+    socket = socket
+    |> assign(hearted_tracks: Track.hearted(
+      socket.assigns,
+      socket.assigns.current_user.id,
+      %{
+        start: data["start"],
+        end: data["end"]
+      }
+    ))
 
     {:noreply, socket}
   end

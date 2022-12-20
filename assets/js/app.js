@@ -24,16 +24,47 @@ window.Alpine = Alpine
 Alpine.start()
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-//let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}})
+
+var dataPickerOptions = {
+  isRange: true,
+  displayMode: "dialog",
+  showHeader: false,
+  dateFormat: "dd-MM-yyyy"
+}
+
+DateRangeHook = {
+  mounted() { 	  
+    const picker = document.getElementById('dateRangePicker')
+    
+    if (! picker) return
+    
+    bulmaCalendar.attach(picker, dataPickerOptions)
+    
+    var that = this
+
+    var element = document.querySelector('#dateRangePicker')
+    
+    if (element) {
+      element.bulmaCalendar.on('select', function(datepicker) {
+        that.pushEvent("set-date-range", {
+          start: datepicker.data.startDate,
+          end: datepicker.data.endDate
+        })
+      })
+    }
+  }
+}
+
 
 let liveSocket = new LiveSocket("/live", Socket, {
   params: {_csrf_token: csrfToken},
+  hooks: {DateRangeHook},
   dom: {
-	onBeforeElUpdated(from, to) {
-	  if (from._x_dataStack) {
-	    window.Alpine.clone(from, to)
-	  }
-	}
+    onBeforeElUpdated(from, to) {
+      if (from._x_dataStack) {
+        window.Alpine.clone(from, to)
+      }
+    }
   }
 })
 
@@ -52,32 +83,3 @@ liveSocket.connect()
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
-
-var options = {
-    isRange: true,
-    displayMode: "dialog",
-    showHeader: false,
-	dateFormat: "dd-MM-yyyy"
-
-}
-// Initialize all input of type date
-var calendars = bulmaCalendar.attach('[type="date"]', options);
-
-// Loop on each calendar initialized
-for(var i = 0; i < calendars.length; i++) {
-	// Add listener to select event
-	calendars[i].on('select', date => {
-		console.log(date);
-	});
-}
-
-// To access to bulmaCalendar instance of an element
-var element = document.querySelector('#dateRangePicker');
-if (element) {
-	// bulmaCalendar instance is available as element.bulmaCalendar
-	element.bulmaCalendar.on('select', function(datepicker) {
-		console.log(datepicker.data.startDate);
-        console.log(datepicker.data.endDate);
-	});
-}
-
