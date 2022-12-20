@@ -44,14 +44,22 @@ defmodule RadioTracker.Schemas.Track do
     |> Repo.one
   end
 
+  # i.e. 2022-12-25
+  defp convert_date(date_str) do
+    components = date_str
+    |> String.split("-")
+    |> Enum.map(&Integer.parse(&1)
+    |> elem(0))
+
+    Date.new(
+      Enum.at(components, 0),
+      Enum.at(components, 1),
+      Enum.at(components, 2)
+    )
+    |> elem(1)
+  end
+
   def hearted(params, user_id, %{start: start_date, end: end_date}) do
-
-    start_date_components = start_date |> String.split("-") |> Enum.map(&Integer.parse(&1) |> elem(0))
-    start_date = Date.new(Enum.at(start_date_components, 0), Enum.at(start_date_components, 1), Enum.at(start_date_components, 2)) |> elem(1)
-
-    end_date_components = end_date |> String.split("-") |> Enum.map(&Integer.parse(&1) |> elem(0))
-    end_date = Date.new(Enum.at(end_date_components, 0), Enum.at(end_date_components, 1), Enum.at(end_date_components, 2)) |> elem(1)
-
     query =
       from t in __MODULE__,
       inner_join: p in assoc(t, :plays),
@@ -61,8 +69,8 @@ defmodule RadioTracker.Schemas.Track do
       order_by: [desc: count(r.id)],
       group_by: t.id,
       preload: [plays: :likes],
-      where: fragment("date(t0.inserted_at) >= ?", ^start_date),
-      where: fragment("date(t0.inserted_at) <= ?", ^end_date),
+      where: fragment("date(t0.inserted_at) >= ?", ^convert_date(start_date)),
+      where: fragment("date(t0.inserted_at) <= ?", ^convert_date(end_date)),
       where: fragment("l2.user_id = ?", ^user_id)
     Paginator.paginate(query, params["page"])
   end

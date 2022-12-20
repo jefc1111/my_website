@@ -17,8 +17,8 @@ defmodule RadioTrackerWeb.HeartedTracks do
       params,
       user.id,
       %{
-        start: "2022-12-08",
-        end: "2022-12-10"
+        start: "2020-12-08",
+        end: "2023-12-10"
       }
     ))
 
@@ -39,8 +39,8 @@ defmodule RadioTrackerWeb.HeartedTracks do
       socket.assigns,
       socket.assigns.current_user.id,
       %{
-        start: "2022-12-08",
-        end: "2022-12-10"
+        start: "2020-12-08",
+        end: "2023-12-10"
       }
     ))
 
