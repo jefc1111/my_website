@@ -25,6 +25,7 @@ defmodule RadioTrackerWeb.HeartedTracks do
     {:ok, socket}
   end
 
+  # If no user logged in, redirect
   def mount(_params, _session, socket) do
     {:ok, redirect(socket, to: "/")}
   end
