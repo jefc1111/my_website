@@ -5,6 +5,7 @@ defmodule RadioTracker.Schemas.Track do
 
   use Ecto.Schema
   use Timex
+  use Flop
 
   import Ecto.Query
   import Ecto.Changeset
@@ -13,6 +14,13 @@ defmodule RadioTracker.Schemas.Track do
   alias RadioTracker.Paginator
   alias RadioTracker.Schemas.Play
   alias RadioTracker.Schemas.Like
+
+  @derive {
+    Flop.Schema,
+    filterable: [],
+    sortable: [],
+    default_limit: 5
+  }
 
   schema "tracks" do
     field :artist, :string
@@ -122,5 +130,11 @@ defmodule RadioTracker.Schemas.Track do
       where: l.play_id in ^play_ids
 
     Repo.delete_all(query)
+  end
+
+  def list_tracks(params) do
+
+    IO.inspect(params)
+    Flop.validate_and_run(__MODULE__, params, for: __MODULE__)
   end
 end

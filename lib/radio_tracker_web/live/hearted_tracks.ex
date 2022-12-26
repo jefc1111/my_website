@@ -30,20 +30,31 @@ defmodule RadioTrackerWeb.HeartedTracks do
     {:ok, redirect(socket, to: "/")}
   end
 
+  #@impl Phoenix.LiveView
+  def handle_params(params, _, socket) do
+    case Track.list_tracks(params) do
+      {:ok, {tracks, meta}} ->
+        {:noreply, assign(socket, %{tracks: tracks, meta: meta})}
+
+      _ ->
+        {:noreply, push_navigate(socket, to: "/")}
+    end
+  end
+
   def handle_event("delete-user-likes-for-track", data, socket) do
     Repo.get(Track, data["track-id"])
     |> Repo.preload([plays: :likes])
     |> Track.delete_all_likes_for_user(socket.assigns.current_user.id)
 
-    socket = socket
-    |> assign(hearted_tracks: Track.hearted(
-      socket.assigns,
-      socket.assigns.current_user.id,
-      %{
-        start: "2020-12-08",
-        end: "2023-12-10"
-      }
-    ))
+    # socket = socket
+    # |> assign(hearted_tracks: Track.hearted(
+    #   socket.assigns,
+    #   socket.assigns.current_user.id,
+    #   %{
+    #     start: "2020-12-08",
+    #     end: "2023-12-10"
+    #   }
+    # ))
 
     {:noreply, socket}
   end
