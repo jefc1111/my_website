@@ -4,16 +4,17 @@ defmodule RadioTrackerWeb.HeartedTracks do
 
   alias RadioTracker.Helpers.Dates
   alias RadioTracker.Schemas.Track
-  alias RadioTracker.Repo
   alias RadioTracker.Accounts
-
-  import RadioTrackerWeb.Components.Icon
 
   def mount(_params, %{"user_token" => user_token}, socket) do
     user = Accounts.get_user_by_session_token(user_token)
 
     socket = socket
     |> assign(current_user: user)
+    |> assign(date_range: %{
+      start: "2022-12-01",
+      end: "2022-12-31"
+    })
 
     {:ok, socket}
   end
@@ -28,10 +29,7 @@ defmodule RadioTrackerWeb.HeartedTracks do
     case Track.list_liked(
       params,
       socket.assigns.current_user.id,
-      %{
-        start: "2020-12-08",
-        end: "2023-12-10"
-      }
+      socket.assigns.date_range
     ) do
       {:ok, {tracks, meta}} ->
         socket = socket
@@ -47,23 +45,22 @@ defmodule RadioTrackerWeb.HeartedTracks do
 
   def handle_info({:list_change, _data}, socket) do
     {:noreply,
-     push_redirect(socket,
+     push_patch(socket,
        to: Routes.live_path(socket, __MODULE__, socket.assigns.url_params)
      )
     }
   end
 
   def handle_info({:date_range_change, data}, socket) do
-    url_parms = Map.merge(
-      socket.assigns.url_params,
-      %{
-        start: data["start"],
-        end: data["end"]
-      }
-    )
+    socket = socket
+    |> assign(date_range: %{
+      start: data["start"],
+      end: data["end"]
+    })
+
     {:noreply,
-     push_redirect(socket,
-       to: Routes.live_path(socket, __MODULE__, url_parms)
+     push_patch(socket,
+       to: Routes.live_path(socket, __MODULE__, %{}) # last arg clears the pagination page
      )
     }
   end
