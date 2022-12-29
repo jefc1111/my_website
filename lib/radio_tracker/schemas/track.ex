@@ -19,7 +19,7 @@ defmodule RadioTracker.Schemas.Track do
     Flop.Schema,
     filterable: [],
     sortable: [],
-    default_limit: 5
+    default_limit: 10
   }
 
   schema "tracks" do
@@ -67,21 +67,45 @@ defmodule RadioTracker.Schemas.Track do
     |> elem(1)
   end
 
-  def hearted(params, user_id, %{start: start_date, end: end_date}) do
-    query =
+  def list_liked(params, user_id, %{start: start_date, end: end_date}) do
+    # @todo: this is a bit duplicated with scope/3
+    count_query = from(
       from t in __MODULE__,
+      distinct: t.id,
       inner_join: p in assoc(t, :plays),
       inner_join: r in assoc(p, :likes),
       on: r.play_id == p.id,
-      select: t,
-      order_by: [desc: count(r.id)],
-      group_by: t.id,
-      preload: [plays: :likes],
-      where: fragment("date(t0.inserted_at) >= ?", ^convert_date(start_date)),
-      where: fragment("date(t0.inserted_at) <= ?", ^convert_date(end_date)),
-      where: fragment("l2.user_id = ?", ^user_id)
-    Paginator.paginate(query, params["page"])
+      where: fragment("date(st0.inserted_at) >= ?", ^convert_date(start_date)),
+      where: fragment("date(st0.inserted_at) <= ?", ^convert_date(end_date)),
+      where: fragment("sl2.user_id = ?", ^user_id)
+    )
+
+    scope(user_id, start_date, end_date)
+    |> Flop.validate_and_run(
+      params,
+      for: __MODULE__,
+      count_query: count_query
+    )
   end
+
+  defp scope(user_id, start_date, end_date) do
+    from t in __MODULE__,
+    inner_join: p in assoc(t, :plays),
+    inner_join: r in assoc(p, :likes),
+    on: r.play_id == p.id,
+    select: t,
+    order_by: [
+      desc: count(r.id),
+      desc: t.inserted_at
+    ],
+    group_by: t.id,
+    preload: [plays: :likes],
+    where: fragment("date(t0.inserted_at) >= ?", ^convert_date(start_date)),
+    where: fragment("date(t0.inserted_at) <= ?", ^convert_date(end_date)),
+    where: fragment("l2.user_id = ?", ^user_id)
+  end
+  #defp scope(q, %User{role: :admin}), do: q
+  #defp scope(q, %User{id: user_id}), do: where(q, user_id: ^user_id)
 
   def all_paged(params) do
     query =
@@ -130,11 +154,5 @@ defmodule RadioTracker.Schemas.Track do
       where: l.play_id in ^play_ids
 
     Repo.delete_all(query)
-  end
-
-  def list_tracks(params) do
-
-    IO.inspect(params)
-    Flop.validate_and_run(__MODULE__, params, for: __MODULE__)
   end
 end

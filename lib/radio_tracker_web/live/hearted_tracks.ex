@@ -1,26 +1,19 @@
 defmodule RadioTrackerWeb.HeartedTracks do
   use RadioTrackerWeb, :live_view
 
-  alias RadioTracker.Repo
+
   alias RadioTracker.Helpers.Dates
   alias RadioTracker.Schemas.Track
+  alias RadioTracker.Repo
   alias RadioTracker.Accounts
 
   import RadioTrackerWeb.Components.Icon
 
-  def mount(params, %{"user_token" => user_token}, socket) do
+  def mount(_params, %{"user_token" => user_token}, socket) do
     user = Accounts.get_user_by_session_token(user_token)
 
     socket = socket
     |> assign(current_user: user)
-    |> assign(hearted_tracks: Track.hearted(
-      params,
-      user.id,
-      %{
-        start: "2020-12-08",
-        end: "2023-12-10"
-      }
-    ))
 
     {:ok, socket}
   end
@@ -32,46 +25,46 @@ defmodule RadioTrackerWeb.HeartedTracks do
 
   #@impl Phoenix.LiveView
   def handle_params(params, _, socket) do
-    case Track.list_tracks(params) do
+    case Track.list_liked(
+      params,
+      socket.assigns.current_user.id,
+      %{
+        start: "2020-12-08",
+        end: "2023-12-10"
+      }
+    ) do
       {:ok, {tracks, meta}} ->
-        {:noreply, assign(socket, %{tracks: tracks, meta: meta})}
+        socket = socket
+        |> assign(tracks: tracks)
+        |> assign(meta: meta)
+        |> assign(url_params: params) # idk, seems kinda shonky stuffing the url params on like this for use in handle_info
 
+        {:noreply, socket}
       _ ->
         {:noreply, push_navigate(socket, to: "/")}
     end
   end
 
-  def handle_event("delete-user-likes-for-track", data, socket) do
-    Repo.get(Track, data["track-id"])
-    |> Repo.preload([plays: :likes])
-    |> Track.delete_all_likes_for_user(socket.assigns.current_user.id)
-
-    # socket = socket
-    # |> assign(hearted_tracks: Track.hearted(
-    #   socket.assigns,
-    #   socket.assigns.current_user.id,
-    #   %{
-    #     start: "2020-12-08",
-    #     end: "2023-12-10"
-    #   }
-    # ))
-
-    {:noreply, socket}
+  def handle_info({:list_change, _data}, socket) do
+    {:noreply,
+     push_redirect(socket,
+       to: Routes.live_path(socket, __MODULE__, socket.assigns.url_params)
+     )
+    }
   end
 
-  def handle_event("set-date-range", data, socket) do
-    IO.inspect(data)
-
-    socket = socket
-    |> assign(hearted_tracks: Track.hearted(
-      socket.assigns,
-      socket.assigns.current_user.id,
+  def handle_info({:date_range_change, data}, socket) do
+    url_parms = Map.merge(
+      socket.assigns.url_params,
       %{
         start: data["start"],
         end: data["end"]
       }
-    ))
-
-    {:noreply, socket}
+    )
+    {:noreply,
+     push_redirect(socket,
+       to: Routes.live_path(socket, __MODULE__, url_parms)
+     )
+    }
   end
 end
