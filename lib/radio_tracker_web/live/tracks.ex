@@ -40,4 +40,18 @@ defmodule RadioTrackerWeb.Tracks do
         {:noreply, push_navigate(socket, to: "/")}
     end
   end
+
+  def handle_info({:date_range_change, data}, socket) do
+    socket = socket
+    |> assign(date_range: %{
+      start: data["start"],
+      end: data["end"]
+    })
+
+    {:noreply,
+     push_patch(socket,
+       to: Routes.live_path(socket, __MODULE__, %{}) # last arg clears the pagination page
+     )
+    }
+  end
 end
