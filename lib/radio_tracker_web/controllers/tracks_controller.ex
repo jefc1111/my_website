@@ -10,8 +10,4 @@ defmodule RadioTrackerWeb.TracksController do
 
     render(conn, "track.html", track: t, qty_likes: Track.qty_likes(t))
   end
-
-  def index(conn, params) do
-    render(conn, "index.html", tracks: Track.all_paged(params))
-  end
 end

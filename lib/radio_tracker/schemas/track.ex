@@ -68,7 +68,7 @@ defmodule RadioTracker.Schemas.Track do
   end
 
   def list_liked(params, user_id, %{start: start_date, end: end_date}) do
-    # @todo: this is a bit duplicated with scope/3
+    # @todo: this is a bit duplicated with list_liked_scope/3
     count_query = from(
       from t in __MODULE__,
       distinct: t.id,
@@ -80,7 +80,7 @@ defmodule RadioTracker.Schemas.Track do
       where: fragment("sl2.user_id = ?", ^user_id)
     )
 
-    scope(user_id, start_date, end_date)
+    list_liked_scope(user_id, start_date, end_date)
     |> Flop.validate_and_run(
       params,
       for: __MODULE__,
@@ -88,7 +88,7 @@ defmodule RadioTracker.Schemas.Track do
     )
   end
 
-  defp scope(user_id, start_date, end_date) do
+  defp list_liked_scope(user_id, start_date, end_date) do
     from t in __MODULE__,
     inner_join: p in assoc(t, :plays),
     inner_join: r in assoc(p, :likes),
@@ -107,16 +107,34 @@ defmodule RadioTracker.Schemas.Track do
   #defp scope(q, %User{role: :admin}), do: q
   #defp scope(q, %User{id: user_id}), do: where(q, user_id: ^user_id)
 
-  def all_paged(params) do
-    query =
+  def list_all(params, %{start: start_date, end: end_date}) do
+    count_query = from(
       from t in __MODULE__,
+      distinct: t.id,
       inner_join: p in assoc(t, :plays),
       full_join: r in assoc(p, :likes),
-      select: t,
-      order_by: [desc: count(p.id)],
-      group_by: t.id,
-      preload: [plays: :likes]
-    Paginator.paginate(query, params["page"])
+      where: fragment("date(st0.inserted_at) >= ?", ^convert_date(start_date)),
+      where: fragment("date(st0.inserted_at) <= ?", ^convert_date(end_date))
+    )
+
+    list_all_scope(start_date, end_date)
+    |> Flop.validate_and_run(
+      params,
+      for: __MODULE__,
+      count_query: count_query
+    )
+  end
+
+  defp list_all_scope(start_date, end_date) do
+    from t in __MODULE__,
+    inner_join: p in assoc(t, :plays),
+    full_join: r in assoc(p, :likes),
+    select: t,
+    order_by: [desc: count(p.id)],
+    group_by: t.id,
+    preload: [plays: :likes],
+    where: fragment("date(t0.inserted_at) >= ?", ^convert_date(start_date)),
+    where: fragment("date(t0.inserted_at) <= ?", ^convert_date(end_date))
   end
 
   def qty_likes(track) do

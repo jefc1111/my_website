@@ -21,11 +21,11 @@ defmodule RadioTrackerWeb.Router do
     pipe_through :browser
 
     get "/tracks/:id", TracksController, :get
-    get "/tracks", TracksController, :index
     get "/about", AboutController, :index
 
     live "/", Home
     live "/hearted-tracks", HeartedTracks
+    live "/tracks", Tracks
   end
 
   # Other scopes may use custom stacks.
