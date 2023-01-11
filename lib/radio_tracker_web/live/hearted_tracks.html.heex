@@ -9,7 +9,7 @@
     items={@tracks}
     meta={@meta}
     path={~p"/hearted-tracks"}
-    opts={[table_attrs: [class: "table is-fullwidth"]]}
+    opts={[table_attrs: [class: "table is-fullwidth gc-nowrap-desktop-table"]]}
   >
     <:col :let={track} label="Artist" field={:artist}><%= track.artist %></:col>
     <:col :let={track} label="Song" field={:song}><%= link(raw(track.song), to: "/tracks/#{track.id}") %></:col>
@@ -36,5 +36,6 @@
   <Flop.Phoenix.pagination
     meta={@meta}
     path={~p"/hearted-tracks"}
+    opts={[page_links: {:ellipsis, 3}]}
   />
 </div>

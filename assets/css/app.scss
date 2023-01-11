@@ -72,6 +72,11 @@ table tr td img {
 table tr:first-child td img {
   display: block;
 }
+.gc-nowrap-desktop-table th, .gc-nowrap-desktop-table td {
+  @include from(1024px) {
+    white-space: nowrap;
+  }
+}
 
 /* 
 https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_buttons_notification
@@ -109,17 +114,3 @@ footer {
   padding-top: 2rem;
   border-top: 1px solid #eaeaea;
 }
-
-// https://dev.to/ricardoruwer/create-a-paginator-using-elixir-and-phoenix-1hnk
-.paginator-list li[disabled] a {
-  opacity: .4;
-  pointer-events: none;
-}
-
-
-
-
-
-
-
-

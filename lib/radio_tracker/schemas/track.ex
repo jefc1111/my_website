@@ -11,7 +11,6 @@ defmodule RadioTracker.Schemas.Track do
   import Ecto.Changeset
 
   alias RadioTracker.Repo
-  alias RadioTracker.Paginator
   alias RadioTracker.Schemas.Play
   alias RadioTracker.Schemas.Like
 
@@ -112,7 +111,7 @@ defmodule RadioTracker.Schemas.Track do
       from t in __MODULE__,
       distinct: t.id,
       inner_join: p in assoc(t, :plays),
-      full_join: r in assoc(p, :likes),
+      left_join: r in assoc(p, :likes),
       where: fragment("date(st0.inserted_at) >= ?", ^convert_date(start_date)),
       where: fragment("date(st0.inserted_at) <= ?", ^convert_date(end_date))
     )
@@ -128,9 +127,10 @@ defmodule RadioTracker.Schemas.Track do
   defp list_all_scope(start_date, end_date) do
     from t in __MODULE__,
     inner_join: p in assoc(t, :plays),
-    full_join: r in assoc(p, :likes),
+    left_join: r in assoc(p, :likes),
     select: t,
-    order_by: [desc: count(p.id)],
+    order_by: [desc: count(p)],
+    #order_by: [asc: t.artist],
     group_by: t.id,
     preload: [plays: :likes],
     where: fragment("date(t0.inserted_at) >= ?", ^convert_date(start_date)),
