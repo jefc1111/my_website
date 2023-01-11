@@ -1,6 +1,5 @@
-defmodule RadioTrackerWeb.HeartedTracks do
+defmodule RadioTrackerWeb.Tracks do
   use RadioTrackerWeb, :live_view
-
 
   alias RadioTracker.Helpers.Dates
   alias RadioTracker.Schemas.Track
@@ -26,9 +25,8 @@ defmodule RadioTrackerWeb.HeartedTracks do
 
   #@impl Phoenix.LiveView
   def handle_params(params, _, socket) do
-    case Track.list_liked(
+    case Track.list_all(
       params,
-      socket.assigns.current_user.id,
       socket.assigns.date_range
     ) do
       {:ok, {tracks, meta}} ->
@@ -41,14 +39,6 @@ defmodule RadioTrackerWeb.HeartedTracks do
       _ ->
         {:noreply, push_navigate(socket, to: "/")}
     end
-  end
-
-  def handle_info({:list_change, _data}, socket) do
-    {:noreply,
-     push_patch(socket,
-       to: Routes.live_path(socket, __MODULE__, socket.assigns.url_params)
-     )
-    }
   end
 
   def handle_info({:date_range_change, data}, socket) do

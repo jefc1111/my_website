@@ -1,70 +1,41 @@
-<div id="dateRangePickerHolder" phx-update="ignore" class="box">
-  <input id="dateRangePicker" type="date" phx-hook="DateRangeHook">
-</div>
+<.live_component
+  module={RadioTrackerWeb.LiveComponents.DateRangePicker}
+  id={"date-range-picker"}
+  date_range={@date_range}
+/>
+
 <div class="box">
-  <table class="table is-fullwidth">
-    <thead>
-      <tr>
-        <th>Artist</th>
-        <th>Song</th>
-        <th>Time</th>
-        <th></th>
-        <th>Remove</th>
-        <!--
-        <th>Playlist control</th>
-        -->
-      </tr>
-    </thead>
-    <tbody>
-      <%= for track <- @hearted_tracks.list do %>
-      <tr>
-        <td><%= raw(track.artist) %></td>
-        <td><%= link(raw(track.song), to: "/tracks/#{track.id}") %></td>
-        <td><%= Dates.human_readable(track.inserted_at) %></td>
-        <td>
-          <span class="pink">
-            <%= if Track.qty_likes(track) < 10 do %>
-            <%= String.duplicate("♥", Track.qty_likes_for_user(track, @current_user.id)) %>
-            <% else %>
-            <%= String.duplicate("♥", 10) %>... (<%= Track.qty_likes_for_user(track, @current_user.id) %>)
-            <% end %>
-          </span>
-        </td>
-        <td x-data="{ open: false }" style="width: 124px">
-          <button class="button is-small" x-on:click="open = ! open" x-show="! open">
-              <.icon name="trash-can" type="regular" class="icon" />
-          </button>
-          <div class="buttons are-small" x-show="open">
-            <button class="button is-success" phx-click="delete-user-likes-for-track" phx-value-track-id={track.id} x-on:click="open = ! open">
-                Sure?
-            </button>
-            <button class="button is-warning" x-on:click="open = ! open">
-                x
-            </button>
-          </div>
-        </td>
-        <!--
-        <td class="">
-          <button class="button is-info is-small">
-            Add =>
-          </button>
-        </td>
-        -->
-      </tr>
-      <% end %>
-      <!--
-      <tr>
-        <td colspan="5"></td>
-        <td>
-          <button class="button is-info is-small">
-            Add all (10) =>
-          </button>
-        </td>
-      </tr>
-      -->
-    </tbody>
-  </table>
-  <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-    <%= RadioTrackerWeb.Helpers.PaginatorHelper.render(@hearted_tracks, class: "paginator-list pagination-list") %>
-  </nav>
+  <Flop.Phoenix.table
+    items={@tracks}
+    meta={@meta}
+    path={~p"/hearted-tracks"}
+    opts={[table_attrs: [class: "table is-fullwidth gc-nowrap-desktop-table"]]}
+  >
+    <:col :let={track} label="Artist" field={:artist}><%= track.artist %></:col>
+    <:col :let={track} label="Song" field={:song}><%= link(raw(track.song), to: "/tracks/#{track.id}") %></:col>
+    <:col :let={track} label="Time" field={:inserted_at}><%= Dates.human_readable(track.inserted_at) %></:col>
+    <:col :let={track} label="Likes">
+      <span class="pink">
+        <%= if Track.qty_likes_for_user(track, @current_user.id) < 10 do %>
+        <%= String.duplicate("♥", Track.qty_likes_for_user(track, @current_user.id)) %>
+        <% else %>
+        <%= String.duplicate("♥", 10) %>... (<%= Track.qty_likes_for_user(track, @current_user.id) %>)
+        <% end %>
+      </span>
+    </:col>
+    <:col :let={track} label="Tools">
+      <.live_component
+        module={RadioTrackerWeb.LiveComponents.TrackControlButtons}
+        id={"track-#{track.id}-controls"}
+        track={track}
+        user_id={@current_user.id}
+      />
+    </:col>
+  </Flop.Phoenix.table>
+
+  <Flop.Phoenix.pagination
+    meta={@meta}
+    path={~p"/hearted-tracks"}
+    opts={[page_links: {:ellipsis, 3}]}
+  />
 </div>

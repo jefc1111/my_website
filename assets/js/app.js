@@ -46,7 +46,7 @@ DateRangeHook = {
     
     if (element) {
       element.bulmaCalendar.on('select', function(datepicker) {
-        that.pushEvent("set-date-range", {
+        that.pushEventTo(element, "set-date-range", {
           start: datepicker.data.startDate,
           end: datepicker.data.endDate
         })
