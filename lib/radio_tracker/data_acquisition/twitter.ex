@@ -8,7 +8,8 @@ defmodule RadioTracker.DataAcquisition.Twitter do
   require Periodic
   require String
   @moduledoc """
-  Documentation for `SixMusic`.
+  This is effectively deprecated because of incoming charges for the Twitter API
+  which most likely mean the accounts I poll will no longer be posting.
   """
 
   @topic "now_playing"

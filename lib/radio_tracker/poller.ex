@@ -2,7 +2,7 @@ defmodule RadioTracker.Poller do
   alias RadioTracker.Schemas.Track
   alias RadioTracker.Schemas.Play
   alias RadioTracker.Repo
-  alias RadioTracker.DataAcquisition.Twitter
+  alias RadioTracker.DataAcquisition.BbcApi
 
   require Logger
   require Periodic
@@ -44,7 +44,7 @@ defmodule RadioTracker.Poller do
     qty_tracks = Repo.aggregate(Track, :count, :id)
 
     cond do
-      qty_tracks === 0 -> Twitter.poll(nil)
+      qty_tracks === 0 -> BbcApi.poll(nil)
       true ->
         last_play = Play.last_inserted
 
@@ -52,11 +52,11 @@ defmodule RadioTracker.Poller do
 
         case seconds_since_last_play do
           seconds_since_last_play when seconds_since_last_play < @dormant_secs_after_last_play ->
-            {:noreply, "Not polling Twitter - current track only started less than a minute ago"}
+            {:noreply, "Not polling - current track only started less than a minute ago"}
           seconds_since_last_track when is_in_slow_poll_phase?(seconds_since_last_track)
             and rem(seconds_since_last_track, @slow_poll_phase_multiplier * @twitter_poll_interval_secs) === 0 ->
-               Twitter.poll(last_play)
-          _ -> Twitter.poll(last_play)
+                BbcApi.poll(last_play)
+          _ -> BbcApi.poll(last_play)
         end
     end
   end
