@@ -36,7 +36,7 @@ defmodule RadioTrackerWeb.SpotifyController do
 
         body = [
           {"code", code},
-          {"redirect_uri", "http://localhost:4000/users/settings"},
+          {"redirect_uri", "http://localhost:4000/spotify-link-callback"},
           {"grant_type", "authorization_code"}
         ]
 
@@ -48,6 +48,10 @@ defmodule RadioTrackerWeb.SpotifyController do
 
         res = HTTPoison.post(url, {:form, body}, headers)
         IO.inspect(res)
+
+        # Use Poison to decode the body etc
+        # Store the main and refresh tokens
+        # Go back to profile page showing "linked to Spotify" and directions or option to unlink
       %{"code" => code, "state" => _} ->
         IO.inspect("EEE")
       _ ->
