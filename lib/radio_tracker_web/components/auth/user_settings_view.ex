@@ -5,6 +5,7 @@ defmodule RadioTrackerWeb.UserSettingsView do
   import RadioTrackerWeb.Components.ButtonWithIcon
   import RadioTrackerWeb.Components.FormValidationFail
   import RadioTrackerWeb.Components.Form.Wrapper
+  import RadioTrackerWeb.Components.Icon
 
   embed_templates "../templates/auth/user_settings/*"
 end
