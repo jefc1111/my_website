@@ -1,6 +1,8 @@
 defmodule RadioTrackerWeb.SpotifyController do
   use RadioTrackerWeb, :controller
 
+  use HTTPoison.Base
+
   def index(conn, _params) do
     state = random_string(16);
     scope = "playlist-modify-private playlist-modify-public";
@@ -30,6 +32,22 @@ defmodule RadioTrackerWeb.SpotifyController do
     case params do
       %{"code" => code, "state" => state} -> # Match on state being same as state on the user object
         IO.inspect("DDD")
+        url = "https://accounts.spotify.com/api/token"
+
+        body = [
+          {"code", code},
+          {"redirect_uri", "http://localhost:4000/users/settings"},
+          {"grant_type", "authorization_code"}
+        ]
+
+        encoded = Base.encode64("f76ee05f7ce74d0cb5720962bae8b2d1:SECRET")
+
+        headers = [
+          {"Authorization", "Basic #{encoded}"}
+        ]
+
+        res = HTTPoison.post(url, {:form, body}, headers)
+        IO.inspect(res)
       %{"code" => code, "state" => _} ->
         IO.inspect("EEE")
       _ ->
