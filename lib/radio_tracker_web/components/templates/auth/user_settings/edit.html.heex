@@ -60,11 +60,19 @@
   <hr />
   <div class="is-clearfix">
     <h3 class="is-size-4">Spotify integration</h3>
-      <a href="/link-to-spotify" class="button is-pulled-right">
-        <span class="mr-4">
-          <.icon name="spotify" type="brands" class="icon" />
-        </span>
-        <span>Link to Spotify</span>
-      </a>
+      <%= if Application.get_env(:radio_tracker, :spotify_api)[:client_id]
+        && Application.get_env(:radio_tracker, :spotify_api)[:client_secret] do %>
+        <a href="/link-to-spotify" class="button is-pulled-right">
+          <span class="mr-4">
+            <.icon name="spotify" type="brands" class="icon" />
+          </span>
+          <span>Link to Spotify</span>
+        </a>
+      <% else %>
+        <p class="mt-4">
+          <.icon name="triangle-exclamation" type="solid" class="icon" />
+          Spotify integration is not configured. Please contact the administrator.
+        </p>
+      <% end %>
   </div>
 </.form_wrapper>

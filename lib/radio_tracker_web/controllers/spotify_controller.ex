@@ -11,7 +11,7 @@ defmodule RadioTrackerWeb.SpotifyController do
 
     query_params = %{
       "response_type" => "code",
-      "client_id" => "f76ee05f7ce74d0cb5720962bae8b2d1",
+      "client_id" => Application.get_env(:radio_tracker, :spotify_api)[:client_id],
       "scope" => scope,
       "redirect_uri" => "http://localhost:4000/spotify-link-callback",
       "state" => state
@@ -31,7 +31,6 @@ defmodule RadioTrackerWeb.SpotifyController do
 
     case params do
       %{"code" => code, "state" => state} -> # Match on state being same as state on the user object
-        IO.inspect("DDD")
         url = "https://accounts.spotify.com/api/token"
 
         body = [
@@ -40,7 +39,10 @@ defmodule RadioTrackerWeb.SpotifyController do
           {"grant_type", "authorization_code"}
         ]
 
-        encoded = Base.encode64("f76ee05f7ce74d0cb5720962bae8b2d1:SECRET")
+        client_id = Application.get_env(:radio_tracker, :spotify_api)[:client_id]
+        client_secret = Application.get_env(:radio_tracker, :spotify_api)[:client_secret]
+
+        encoded = Base.encode64("#{client_id}:#{client_secret}")
 
         headers = [
           {"Authorization", "Basic #{encoded}"}
@@ -49,13 +51,15 @@ defmodule RadioTrackerWeb.SpotifyController do
         res = HTTPoison.post(url, {:form, body}, headers)
         IO.inspect(res)
 
+        # Don't hard code this app's callback URLs
+        # Put client id and secret and spotify URLs in config
         # Use Poison to decode the body etc
         # Store the main and refresh tokens
         # Go back to profile page showing "linked to Spotify" and directions or option to unlink
-      %{"code" => code, "state" => _} ->
-        IO.inspect("EEE")
+      %{"state" => _} ->
+        IO.inspect("The state did not match")
       _ ->
-        IO.inspect("Something unexpected happened")
+        IO.inspect("Something very unexpected happened")
     end
 
     redirect(conn, to: ~p"/users/settings")
