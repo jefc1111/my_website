@@ -7,7 +7,6 @@ defmodule RadioTrackerWeb.UserSettingsController do
   plug :assign_email_and_password_changesets
 
   def edit(conn, _params) do
-    IO.inspect(Application.get_env(:radio_tracker, :spotify_api)[:client_id])
     render(conn, "edit.html")
   end
 

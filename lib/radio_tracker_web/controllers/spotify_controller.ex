@@ -1,13 +1,15 @@
 defmodule RadioTrackerWeb.SpotifyController do
   use RadioTrackerWeb, :controller
-
   use HTTPoison.Base
+  alias RadioTracker.Repo
 
   def index(conn, _params) do
     state = random_string(16);
     scope = "playlist-modify-private playlist-modify-public";
 
-    # Write state on the user object
+    conn.assigns.current_user
+      |> Ecto.Changeset.change(%{spotify_state: state})
+      |> Repo.update()
 
     query_params = %{
       "response_type" => "code",
@@ -27,11 +29,12 @@ defmodule RadioTrackerWeb.SpotifyController do
   end
 
   def callback(conn, params) do
-    IO.inspect(params)
+    IO.inspect(conn.assigns.current_user.spotify_state)
+
 
     case params do
-      %{"code" => code, "state" => state} -> # Match on state being same as state on the user object
-        url = "https://accounts.spotify.com/api/token"
+      %{"code" => code, "state" => state} when state === conn.assigns.current_user.spotify_state ->
+         url = "https://accounts.spotify.com/api/token"
 
         body = [
           {"code", code},
@@ -48,13 +51,24 @@ defmodule RadioTrackerWeb.SpotifyController do
           {"Authorization", "Basic #{encoded}"}
         ]
 
-        res = HTTPoison.post(url, {:form, body}, headers)
+        {:ok, res} = HTTPoison.post(url, {:form, body}, headers)
         IO.inspect(res)
 
+        {:ok, body} = Poison.decode(res.body)
+
+        conn.assigns.current_user
+          |> Ecto.Changeset.change(
+            %{
+              spotify_linked_at: DateTime.utc_now |> DateTime.truncate(:second),
+              spotify_access_token: body["access_token"],
+              spotify_refresh_token: body["refresh_token"]
+            }
+          )
+        |> Repo.update()
+
         # Don't hard code this app's callback URLs
-        # Put client id and secret and spotify URLs in config
-        # Use Poison to decode the body etc
-        # Store the main and refresh tokens
+        # Use Poison to decode the body in res
+        # Store the main and refresh tokens and set the linked_at time
         # Go back to profile page showing "linked to Spotify" and directions or option to unlink
       %{"state" => _} ->
         IO.inspect("The state did not match")

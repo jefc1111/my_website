@@ -8,6 +8,11 @@ defmodule RadioTracker.Accounts.User do
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
 
+    field :spotify_state, :string, redact: true
+    field :spotify_access_token, :string, redact: true
+    field :spotify_refresh_token, :string, redact: true
+    field :spotify_linked_at, :utc_datetime
+
     timestamps()
   end
 

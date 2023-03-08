@@ -62,12 +62,25 @@
     <h3 class="is-size-4">Spotify integration</h3>
       <%= if Application.get_env(:radio_tracker, :spotify_api)[:client_id]
         && Application.get_env(:radio_tracker, :spotify_api)[:client_secret] do %>
-        <a href="/link-to-spotify" class="button is-pulled-right">
-          <span class="mr-4">
-            <.icon name="spotify" type="brands" class="icon" />
-          </span>
-          <span>Link to Spotify</span>
-        </a>
+        <%= if @current_user.spotify_linked_at === nil do %>
+          <a href="/link-to-spotify" class="button is-pulled-right">
+            <span class="mr-4">
+              <.icon name="spotify" type="brands" class="icon" />
+            </span>
+            <span>Link to Spotify</span>
+          </a>
+        <% else %>
+          <p class="mt-4">
+            <.icon name="check" type="solid" class="icon" />
+            Your 6 Music Tracker account is connected to Spotify.
+          </p>
+          <p class="mt-2">
+            You can remove this app from your Spotify account by logging in to Spotify and navigating to the 'apps' section of your settings.
+          </p>
+          <p class="mt-2">
+            If you need to recreate the link to Spotify CLICK HERE to remove the existing link.
+          </p>
+        <% end %>
       <% else %>
         <p class="mt-4">
           <.icon name="triangle-exclamation" type="solid" class="icon" />
