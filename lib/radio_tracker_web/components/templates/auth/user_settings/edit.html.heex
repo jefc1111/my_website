@@ -81,12 +81,22 @@
             You can also remove the link to Spotify from you BBC 6 Music Tracker profile.
           </p>
           <p class="mt-2">
-            <a href="/remove-spotify-link" class="button is-pulled-right">
-              <span class="mr-4">
-                <.icon name="link-slash" type="solid" class="icon" />
-              </span>
-              <span>Remove Spotify link</span>
-            </a>
+            <div x-data="{ open: false }">
+              <button class="button is-pulled-right" x-on:click="open = ! open" x-show="! open">
+                <span class="mr-4">
+                  <.icon name="link-slash" type="solid" class="icon" />
+                </span>
+                <span>Remove Spotify link</span>
+              </button>
+              <div x-show="open">
+                <button x-on:click="open = ! open" class="button is-pulled-right is-danger">
+                  <span>Cancel</span>
+                </button>
+                <a href="/remove-spotify-link" class="button is-pulled-right is-success">
+                  <span>Are you sure?</span>
+                </a>
+              </div>
+            </div>
           </p>
         <% end %>
       <% else %>

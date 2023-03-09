@@ -64,12 +64,26 @@ defmodule RadioTrackerWeb.SpotifyController do
               spotify_refresh_token: body["refresh_token"]
             }
           )
-        |> Repo.update()
+          |> Repo.update()
       %{"state" => _} ->
         IO.inspect("The state did not match")
       _ ->
         IO.inspect("Something very unexpected happened")
     end
+
+    redirect(conn, to: ~p"/users/settings")
+  end
+
+  def remove_link(conn, _params) do
+    conn.assigns.current_user
+      |> Ecto.Changeset.change(
+        %{
+          spotify_linked_at: nil,
+          spotify_access_token: nil,
+          spotify_refresh_token: nil
+        }
+      )
+      |> Repo.update()
 
     redirect(conn, to: ~p"/users/settings")
   end
