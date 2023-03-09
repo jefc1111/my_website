@@ -65,11 +65,6 @@ defmodule RadioTrackerWeb.SpotifyController do
             }
           )
         |> Repo.update()
-
-        # Don't hard code this app's callback URLs
-        # Use Poison to decode the body in res
-        # Store the main and refresh tokens and set the linked_at time
-        # Go back to profile page showing "linked to Spotify" and directions or option to unlink
       %{"state" => _} ->
         IO.inspect("The state did not match")
       _ ->
