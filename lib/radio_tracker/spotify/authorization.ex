@@ -18,7 +18,7 @@ defmodule RadioTracker.Spotify.Authorization do
   end
 
   def get_client_credentials_access_token() do
-    res_body = do_req({"grant_type", "client_credentials"})
+    res_body = do_req([{"grant_type", "client_credentials"}])
 
     res_body["access_token"]
   end
