@@ -64,6 +64,8 @@ defmodule RadioTracker.DataAcquisition.BbcApi do
   end
 
   defp save_play_for_new_track(now_playing_track) do
+    Track.set_spotify_data(now_playing_track)
+
     Repo.insert(%Play{track: now_playing_track})
   end
 
