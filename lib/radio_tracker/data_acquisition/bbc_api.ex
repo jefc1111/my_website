@@ -29,7 +29,9 @@ defmodule RadioTracker.DataAcquisition.BbcApi do
 
         # `last_play` is only likely to be nil if the database is empty of tracks
         # If the track hasn't changed since the last recorded play then do nothing
-        unless (last_play != nil && Track.equals(now_playing_track, last_play.track)) do
+        unless (now_playing_track == nil ||
+          (last_play != nil && Track.equals(now_playing_track, last_play.track))
+        ) do
           handle_track_change(now_playing_track)
         end
         # No alternative action required as we have established that the track has not changed yet
@@ -38,15 +40,22 @@ defmodule RadioTracker.DataAcquisition.BbcApi do
   end
 
   defp extract_current_track(api_response) do
-    latest_track_titles = Poison.decode!(api_response.body)
-    |> Map.get("data")
-    |> List.first()
-    |> Map.get("titles")
+    api_response_data = api_response |> Map.get("data")
 
-    %Track{
-      artist: Map.get(latest_track_titles, "secondary"),
-      song: Map.get(latest_track_titles, "primary")
-    }
+    case api_response_data do
+      nil ->
+        Logger.warn("Did not receive any actionable data from the BBC API")
+        nil
+      body ->
+        latest_track_titles = Poison.decode!(body)
+        |> List.first()
+        |> Map.get("titles")
+
+        %Track{
+          artist: Map.get(latest_track_titles, "secondary"),
+          song: Map.get(latest_track_titles, "primary")
+        }
+    end
   end
 
   defp handle_track_change(now_playing_track) do
