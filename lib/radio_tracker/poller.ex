@@ -44,7 +44,7 @@ defmodule RadioTracker.Poller do
     qty_tracks = Repo.aggregate(Track, :count, :id)
 
     cond do
-      qty_tracks === 0 -> BbcApi.poll(nil)
+      qty_tracks === 0 -> BbcApi.poll(nil) # Must have an empyy tracks table
       true ->
         last_play = Play.last_inserted
 
