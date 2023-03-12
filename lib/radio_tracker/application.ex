@@ -16,9 +16,10 @@ defmodule RadioTracker.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: RadioTracker.PubSub},
       # Start the Endpoint (http/https)
-      RadioTrackerWeb.Endpoint
+      RadioTrackerWeb.Endpoint,
       # Start a worker by calling: RadioTracker.Worker.start_link(arg)
       # {RadioTracker.Worker, arg}
+      RadioTracker.Spotify.ApiService
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

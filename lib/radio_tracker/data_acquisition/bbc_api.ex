@@ -20,6 +20,10 @@ defmodule RadioTracker.DataAcquisition.BbcApi do
   end
 
   def poll(last_play) do
+    IO.inspect("HERE")
+    GenServer.cast(RadioTracker.Spotify.ApiService, :world)
+    GenServer.call(RadioTracker.Spotify.ApiService, :world)
+
     full_response = get_data()
 
     case full_response do
