@@ -21,8 +21,7 @@ defmodule RadioTracker.DataAcquisition.BbcApi do
 
   def poll(last_play) do
     IO.inspect("HERE")
-    GenServer.cast(RadioTracker.Spotify.ApiService, :world)
-    GenServer.call(RadioTracker.Spotify.ApiService, :world)
+    GenServer.cast(RadioTracker.Spotify.ApiService, {:new_track, 888})
 
     full_response = get_data()
 
@@ -44,7 +43,7 @@ defmodule RadioTracker.DataAcquisition.BbcApi do
   end
 
   defp extract_current_track(api_response) do
-    api_response_data = api_response |> Map.get("data")
+    api_response_data = api_response.body
 
     case api_response_data do
       nil ->
@@ -52,6 +51,7 @@ defmodule RadioTracker.DataAcquisition.BbcApi do
         nil
       body ->
         latest_track_titles = Poison.decode!(body)
+        |> Map.get("data")
         |> List.first()
         |> Map.get("titles")
 

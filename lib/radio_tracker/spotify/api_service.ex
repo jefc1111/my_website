@@ -14,15 +14,15 @@ defmodule RadioTracker.Spotify.ApiService do
   end
 
   @impl true
-  def handle_cast(:world, state) do
+  def handle_cast({:new_track, track_id}, state) do
     IO.inspect("CAST")
+    IO.inspect(track_id)
+    # Get Track from DB
+    # Use Spotify search API to get URI
+    # Save URI to the DB
+    # If we had ot get a new access token (because there was none, or it had expired). Set new token on state.
+
     {:noreply, state}
-  end
-
-
-  @impl true
-  def handle_cast({:push, head}, tail) do
-    {:noreply, [head | tail]}
   end
 
   @impl true
@@ -30,5 +30,4 @@ defmodule RadioTracker.Spotify.ApiService do
     IO.inspect("CALL")
     {:reply, state, "D"}
   end
-
 end
