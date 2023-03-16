@@ -173,32 +173,4 @@ defmodule RadioTracker.Schemas.Track do
 
     Repo.delete_all(query)
   end
-
-  def set_spotify_data(track) do
-    # query_params = %{
-    #   "q" => "",
-    #   "type" => "track",
-    #   "market" => "GB"
-    # }
-
-    # headers = [
-    #   {"Authorization", "Bearer #{encoded}"},
-    #   {"Accept", "application/json"},
-    #   {"Content-Type", "application/json"}
-    # ]
-
-    # query_str = URI.encode_query(query_params)
-
-    # url = "https://api.spotify.com/v1/search?#{query_str}"
-
-    # {:ok, res} = HTTPoison.get(url)
-
-    # {:ok, body} = Poison.decode(res.body)
-
-
-
-    # curl -X "GET" "https://api.spotify.com/v1/search?q=%2520track%3ADon't%20Bring%20Me%20Down%2520artist%3AGoldrush&type=track&market=GB&limit=5" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer BQBBCA2MJuO4sDIpWSWCOeFhF8_xf-LYS9hloiD6MY_BTpAKYr83jvFGPnVjJhDlgMH33_MT3LbQ54aqsMkFcoafA1FbRN-xnoOnv8WCUKxtfFpL3OKUfFSnqHGirINwHfkYR7Zphqz2hMzrpwOC017ETLco2jNLQCCwUy2L-0wC"
-
-    # tracks.items[0].uri
-  end
 end

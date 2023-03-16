@@ -20,9 +20,6 @@ defmodule RadioTracker.DataAcquisition.BbcApi do
   end
 
   def poll(last_play) do
-    IO.inspect("HERE")
-    GenServer.cast(RadioTracker.Spotify.ApiService, {:new_track, 888})
-
     full_response = get_data()
 
     case full_response do
@@ -68,7 +65,7 @@ defmodule RadioTracker.DataAcquisition.BbcApi do
 
     case res do
       # We haven't had this track before so we record a new play alongside a new track
-      nil -> save_play_for_new_track(now_playing_track)
+      nil -> handle_previously_unseen_track(now_playing_track)
       # We've already seen this track so we record a new play for the exitsing track id
       existing_track = ^res -> Repo.insert(%Play{track_id: existing_track.id})
     end
@@ -76,10 +73,10 @@ defmodule RadioTracker.DataAcquisition.BbcApi do
     Endpoint.broadcast_from(self(), @topic, "new_track", %{last_ten_plays: Play.last_ten})
   end
 
-  defp save_play_for_new_track(now_playing_track) do
-    Track.set_spotify_data(now_playing_track)
-
+  defp handle_previously_unseen_track(now_playing_track) do
     Repo.insert(%Play{track: now_playing_track})
+
+    GenServer.cast(RadioTracker.Spotify.ApiService, {:new_track, now_playing_track})
   end
 
   defp handle_bad_response(msg) do
