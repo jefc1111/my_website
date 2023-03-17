@@ -1,7 +1,12 @@
 defmodule RadioTracker.Spotify.ApiService do
   use GenServer
 
+  alias RadioTracker.Repo
   alias RadioTracker.Spotify.Authorization
+  alias RadioTrackerWeb.Endpoint
+  alias RadioTracker.Schemas.Play
+
+  @topic "now_playing"
 
   def start_link(_) do
     GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
@@ -19,17 +24,8 @@ defmodule RadioTracker.Spotify.ApiService do
 
   @impl true
   def handle_cast({:new_track, track}, state) do
-    IO.inspect("CAST")
-    IO.inspect(track.artist)
-    IO.inspect(state.access_token)
-
-    # Get Track from DB
-    # Use Spotify search API to get URI
-    # Save URI to the DB
-    # If we had ot get a new access token (because there was none, or it had expired). Set new token on state.
-
-
-
+    # If we had to get a new access token (because there was none, or it had expired). Set new token on state.
+    # Put BBC URLs in config
 
     query_params = %{
       "q" => "track:\"#{track.song}\" artist:\"#{track.artist}\"",
@@ -45,21 +41,24 @@ defmodule RadioTracker.Spotify.ApiService do
     ]
 
     query_str = URI.encode_query(query_params)
-    IO.inspect(query_str)
+
     url = "https://api.spotify.com/v1/search?#{query_str}"
 
     {:ok, res} = HTTPoison.get(url, headers)
 
     {:ok, body} = Poison.decode(res.body)
 
-    IO.inspect(body)
+    IO.inspect(body["tracks"])
+
+    track
+    |> Ecto.Changeset.change(%{spotify_uri: body["tracks"]["items"] |> List.first() |> Map.get("uri")})
+    |> Repo.update()
+
+    Endpoint.broadcast_from(self(), @topic, "new_track", %{last_ten_plays: Play.last_ten})
 
     # curl -X "GET" "https://api.spotify.com/v1/search?q=%2520track%3ADon't%20Bring%20Me%20Down%2520artist%3AGoldrush&type=track&market=GB&limit=5" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer BQBBCA2MJuO4sDIpWSWCOeFhF8_xf-LYS9hloiD6MY_BTpAKYr83jvFGPnVjJhDlgMH33_MT3LbQ54aqsMkFcoafA1FbRN-xnoOnv8WCUKxtfFpL3OKUfFSnqHGirINwHfkYR7Zphqz2hMzrpwOC017ETLco2jNLQCCwUy2L-0wC"
 
     # tracks.items[0].uri
-
-
-
 
     {:noreply, state}
   end

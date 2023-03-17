@@ -31,6 +31,9 @@
           <img style="height: 20px;" src="/images/animated-music-image-0073.gif">
         </td>
         <td>
+          <%= if (play.track.spotify_uri !== nil) do %>
+            <%= link("Spotify", to: {:spotify, String.replace(play.track.spotify_uri, "spotify:", "")}) %> |
+          <% end %>
           <%= link(raw(play.track.song), to: "/tracks/#{play.track_id}") %>
         </td>
         <td><%= RadioTracker.Helpers.Dates.human_readable(play.inserted_at) %></td>

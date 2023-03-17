@@ -74,9 +74,9 @@ defmodule RadioTracker.DataAcquisition.BbcApi do
   end
 
   defp handle_previously_unseen_track(now_playing_track) do
-    Repo.insert(%Play{track: now_playing_track})
+    {:ok, play} = Repo.insert(%Play{track: now_playing_track})
 
-    GenServer.cast(RadioTracker.Spotify.ApiService, {:new_track, now_playing_track})
+    GenServer.cast(RadioTracker.Spotify.ApiService, {:new_track, play.track})
   end
 
   defp handle_bad_response(msg) do
