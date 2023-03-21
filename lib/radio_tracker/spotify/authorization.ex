@@ -2,6 +2,10 @@ defmodule RadioTracker.Spotify.Authorization do
 
   use HTTPoison.Base
 
+  alias RadioTracker.Repo
+
+  require Logger
+
   def get_authorization_code_tokens(code) do
     body = [
       {"code", code},
@@ -42,10 +46,45 @@ defmodule RadioTracker.Spotify.Authorization do
     [{"Authorization", "Basic #{encoded}"}]
   end
 
-  def get_authorization_code_headers(user) do
+  defp get_authorization_code_headers(user) do
     [
       {"Authorization", "Bearer #{user.spotify_access_token}"},
       {"Content-Type", "application/json"}
     ]
+  end
+
+  defp refresh_user_access_token(user) do
+    body = [
+      {"refresh_token", user.spotify_refresh_token},
+      {"grant_type", "refresh_token"}
+    ]
+
+    res_body = do_req(body)
+
+    user
+    |> Ecto.Changeset.change(%{spotify_access_token: res_body["access_token"]})
+    |> Repo.update()
+  end
+
+  def do_user_req(user, url) do
+    response = HTTPoison.get(url, get_authorization_code_headers(user))
+
+    case response do
+      {:ok, %{status_code: 200, body: body}} -> Poison.decode(body)
+      {:ok, %{status_code: 401}} ->
+        Logger.info("User's access token has expired - refreshing it now")
+
+        refresh_user_access_token(user)
+
+        response_from_retry = HTTPoison.get(url, get_authorization_code_headers(user))
+
+        case response_from_retry do
+          {:ok, %{status_code: 200, body: body}} -> Poison.decode(body)
+          _ -> Logger.error("This is really bad. Even after trying to refresh the access code it still seems like it didn't work.")
+        end
+      {:ok, %{status_code: 200}} -> Logger.error("no body found")
+      {:ok, %{status_code: 404}} -> Logger.error("It was a 404")
+      {:error, %{reason: reason}} -> Logger.error("Something bad happened: #{reason}")
+    end
   end
 end

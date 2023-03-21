@@ -4,12 +4,8 @@ defmodule RadioTracker.Spotify.Playlists do
   alias RadioTracker.Spotify.Authorization
 
   def get_all(user) do
-    url = "https://api.spotify.com/v1/me/playlists"
+    {:ok, res_body} = Authorization.do_user_req(user, "https://api.spotify.com/v1/me/playlists")
 
-    {:ok, res} = HTTPoison.get(url, Authorization.get_authorization_code_headers(user))
-
-    {:ok, res_body} = Poison.decode(res.body)
-IO.inspect(res_body)
     res_body["items"]
   end
 end
