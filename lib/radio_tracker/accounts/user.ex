@@ -9,13 +9,22 @@ defmodule RadioTracker.Accounts.User do
     field :confirmed_at, :naive_datetime
 
     field :spotify_state, :string, redact: true
-    field :spotify_access_token, :string, redact: true
-    field :spotify_refresh_token, :string, redact: true
+    field :spotify_access_token, :string, redact: false
+    field :spotify_refresh_token, :string, redact: false
     field :spotify_linked_at, :utc_datetime
 
     timestamps()
   end
 
+  @spec registration_changeset(
+          {map, map}
+          | %{
+              :__struct__ => atom | %{:__changeset__ => map, optional(any) => any},
+              optional(atom) => any
+            },
+          :invalid | %{optional(:__struct__) => none, optional(atom | binary) => any},
+          keyword
+        ) :: Ecto.Changeset.t()
   @doc """
   A user changeset for registration.
 

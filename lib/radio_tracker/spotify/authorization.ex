@@ -26,19 +26,26 @@ defmodule RadioTracker.Spotify.Authorization do
   defp do_req(body) do
     url = "https://accounts.spotify.com/api/token"
 
-    {:ok, res} = HTTPoison.post(url, {:form, body}, get_headers())
+    {:ok, res} = HTTPoison.post(url, {:form, body}, get_client_credentials_headers())
 
     {:ok, res_body} = Poison.decode(res.body)
 
     res_body
   end
 
-  defp get_headers() do
+  defp get_client_credentials_headers() do
     client_id = Application.get_env(:radio_tracker, :spotify_api)[:client_id]
     client_secret = Application.get_env(:radio_tracker, :spotify_api)[:client_secret]
 
     encoded = Base.encode64("#{client_id}:#{client_secret}")
 
     [{"Authorization", "Basic #{encoded}"}]
+  end
+
+  def get_authorization_code_headers(user) do
+    [
+      {"Authorization", "Bearer #{user.spotify_access_token}"},
+      {"Content-Type", "application/json"}
+    ]
   end
 end

@@ -1,4 +1,4 @@
-defmodule RadioTracker.Spotify.ApiService do
+defmodule RadioTracker.Spotify.ClientApiService do
   use GenServer
 
   alias RadioTracker.Repo

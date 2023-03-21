@@ -19,7 +19,7 @@ defmodule RadioTracker.Application do
       RadioTrackerWeb.Endpoint,
       # Start a worker by calling: RadioTracker.Worker.start_link(arg)
       # {RadioTracker.Worker, arg}
-      RadioTracker.Spotify.ApiService
+      RadioTracker.Spotify.ClientApiService
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

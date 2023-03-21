@@ -2,6 +2,9 @@
 <%= if @current_user do %>
   <li><%= @current_user.email %></li>
   <li><%= link "Profile", to: Routes.user_settings_path(@conn, :edit) %></li>
+  <%= if RadioTracker.Helpers.Spotify.is_fully_integrated?(@current_user) do %>
+    <li><%= link "Spotify playlists", to: ~p"/spotify-playlists" %></li>
+  <% end %>
   <li><%= link "Log out", to: Routes.user_session_path(@conn, :delete), method: :delete %></li>
 <% else %>
   <li><%= link "Register", to: Routes.user_registration_path(@conn, :new) %></li>

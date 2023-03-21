@@ -7,5 +7,7 @@ defmodule RadioTrackerWeb.UserSettingsView do
   import RadioTrackerWeb.Components.Form.Wrapper
   import RadioTrackerWeb.Components.Icon
 
+  alias RadioTracker.Helpers.Spotify
+
   embed_templates "../templates/auth/user_settings/*"
 end

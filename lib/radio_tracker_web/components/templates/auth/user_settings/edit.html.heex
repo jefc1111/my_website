@@ -60,9 +60,8 @@
   <hr />
   <div class="is-clearfix">
     <h3 class="is-size-4">Spotify integration</h3>
-      <%= if Application.get_env(:radio_tracker, :spotify_api)[:client_id]
-        && Application.get_env(:radio_tracker, :spotify_api)[:client_secret] do %>
-        <%= if @current_user.spotify_linked_at === nil do %>
+      <%= if Spotify.is_integrated_at_client_level? do %>
+        <%= if ! Spotify.is_integrated_at_user_level?(@current_user) do %>
           <a href="/link-to-spotify" class="button is-pulled-right">
             <span class="mr-4">
               <.icon name="spotify" type="brands" class="icon" />

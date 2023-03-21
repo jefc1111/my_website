@@ -3,6 +3,7 @@ defmodule RadioTrackerWeb.SpotifyController do
   alias RadioTracker.Repo
 
   alias RadioTracker.Spotify.Authorization
+  alias RadioTracker.Spotify.Playlists
 
   def index(conn, _params) do
     state = random_string(16);
@@ -38,8 +39,8 @@ defmodule RadioTrackerWeb.SpotifyController do
           |> Ecto.Changeset.change(
             %{
               spotify_linked_at: DateTime.utc_now |> DateTime.truncate(:second),
-              spotify_access_token: tokens["access_token"],
-              spotify_refresh_token: tokens["refresh_token"]
+              spotify_access_token: tokens.access_token,
+              spotify_refresh_token: tokens.refresh_token
             }
           )
           |> Repo.update()
@@ -64,5 +65,16 @@ defmodule RadioTrackerWeb.SpotifyController do
       |> Repo.update()
 
     conn |> put_flash(:info, "Spotify link removed.") |> redirect(to: ~p"/users/settings")
+  end
+
+  def show_playlists(conn, _params) do
+    playlists = Playlists.get_all(conn.assigns.current_user)
+
+    names = playlists |> Enum.map(fn item -> item["name"] end)
+    IO.inspect(names)
+
+    conn
+    |> assign(:playlists, names)
+    |> render("index.html")
   end
 end
