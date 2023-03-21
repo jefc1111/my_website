@@ -9,7 +9,7 @@ defmodule RadioTracker.Spotify.Playlists do
     {:ok, res} = HTTPoison.get(url, Authorization.get_authorization_code_headers(user))
 
     {:ok, res_body} = Poison.decode(res.body)
-
+IO.inspect(res_body)
     res_body["items"]
   end
 end
