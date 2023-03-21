@@ -69,9 +69,8 @@ defmodule RadioTrackerWeb.SpotifyController do
 
   def show_playlists(conn, _params) do
     playlists = Playlists.get_all(conn.assigns.current_user)
-    IO.inspect(playlists)
-    names = playlists |> Enum.map(fn item -> item["name"] end)
 
+    names = playlists |> Enum.map(fn item -> item["name"] end)
 
     conn
     |> assign(:playlists, names)

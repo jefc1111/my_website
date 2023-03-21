@@ -13,15 +13,15 @@
 - <br>
 -->
 <div class="box">
-  <table class="table is-fullwidth">
+  <table class="table is-fullwidth is-hoverable">
     <thead>
       <tr>
         <th>Artist</th>
         <th>Song</th>
         <th>Time</th>
-        <th></th>
-        <th class="has-text-centered">Likes (all users)</th>
+        <th>Likes (all users)</th>
         <th>Spotify links</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -35,6 +35,21 @@
           <%= link(raw(play.track.song), to: "/tracks/#{play.track_id}") %>
         </td>
         <td><%= RadioTracker.Helpers.Dates.human_readable(play.inserted_at) %></td>
+        <td>
+          <%= Track.qty_likes(play.track) %>
+        </td>
+        <td>
+          <%= if (play.track.spotify_uri !== nil) do %>
+            <%= link("App", to: {:spotify, String.replace(play.track.spotify_uri, "spotify:", "")}) %>
+            |
+            <%=
+              link("Web", to: String.replace(play.track.spotify_uri, "spotify:track:", "https://open.spotify.com/track/"),
+              target: "_blank")
+            %>
+            |
+            Add to playlist
+          <% end %>
+        </td>
         <td style="width: 140px;">
           <button
             class="button is-black is-responsive"
@@ -54,21 +69,6 @@
             <button class="button is-ghost is-small" phx-click="undo" phx-value-play-id={play.id}>
               undo
             </button>
-          <% end %>
-        </td>
-        <td class="has-text-centered">
-          <%= Track.qty_likes(play.track) %>
-        </td>
-        <td>
-          <%= if (play.track.spotify_uri !== nil) do %>
-            <%= link("App", to: {:spotify, String.replace(play.track.spotify_uri, "spotify:", "")}) %>
-            |
-            <%=
-              link("Web", to: String.replace(play.track.spotify_uri, "spotify:track:", "https://open.spotify.com/track/"),
-              target: "_blank")
-            %>
-            |
-            Add to playlist
           <% end %>
         </td>
       </tr>
