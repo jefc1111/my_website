@@ -27,7 +27,6 @@ defmodule RadioTracker.Spotify.ClientApiService do
   @impl true
   def handle_cast({:new_track, track}, state) do
     # If we had to get a new access token (because there was none, or it had expired). Set new token on state.
-    # Put BBC URLs in config
 
     query_params = %{
       "q" => "track:\"#{track.song}\" artist:\"#{track.artist}\"",

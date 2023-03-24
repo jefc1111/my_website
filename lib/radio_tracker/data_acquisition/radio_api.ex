@@ -1,4 +1,4 @@
-defmodule RadioTracker.DataAcquisition.BbcApi do
+defmodule RadioTracker.DataAcquisition.RadioApi do
   alias RadioTracker.Schemas.Track
   alias RadioTracker.Schemas.Play
   alias RadioTracker.Repo
@@ -44,7 +44,7 @@ defmodule RadioTracker.DataAcquisition.BbcApi do
 
     case api_response_data do
       nil ->
-        Logger.warn("Did not receive any actionable data from the BBC API")
+        Logger.warn("Did not receive any actionable data from the radio API")
         nil
       body ->
         latest_track_titles = Poison.decode!(body)
