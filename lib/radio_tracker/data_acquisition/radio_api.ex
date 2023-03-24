@@ -14,7 +14,7 @@ defmodule RadioTracker.DataAcquisition.RadioApi do
   @topic "now_playing"
 
   defp get_data() do
-    url = "https://rms.api.bbc.co.uk/v2/services/bbc_6music/tracks/latest/playable"
+    url = Application.get_env(:radio_tracker, :radio_api)[:now_playing_url]
 
     HTTPoison.get(url)
   end
