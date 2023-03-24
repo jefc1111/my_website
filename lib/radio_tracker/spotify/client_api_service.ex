@@ -6,6 +6,8 @@ defmodule RadioTracker.Spotify.ClientApiService do
   alias RadioTrackerWeb.Endpoint
   alias RadioTracker.Schemas.Play
 
+  require Logger
+
   @topic "now_playing"
 
   def start_link(_) do
@@ -43,18 +45,23 @@ defmodule RadioTracker.Spotify.ClientApiService do
     query_str = URI.encode_query(query_params)
 
     url = "https://api.spotify.com/v1/search?#{query_str}"
-
+    IO.inspect(url)
     {:ok, res} = HTTPoison.get(url, headers)
 
     {:ok, body} = Poison.decode(res.body)
 
-    IO.inspect(body["tracks"])
+    items = body["tracks"]["items"]
 
-    track
-    |> Ecto.Changeset.change(%{spotify_uri: body["tracks"]["items"] |> List.first() |> Map.get("uri")})
-    |> Repo.update()
-
-    Endpoint.broadcast_from(self(), @topic, "new_track", %{last_ten_plays: Play.last_ten})
+    case items do
+      [item] -> # We should only get one item because of limit = 1
+        track
+        |> Ecto.Changeset.change(%{spotify_uri: item |> Map.get("uri")})
+        |> Repo.update()
+        Endpoint.broadcast_from(self(), @topic, "new_track", %{last_ten_plays: Play.last_ten})
+      _ ->
+        Logger.info("No results from Spotify search API.")
+        nil # The search did not reap any results so we're not going to do anything
+    end
 
     # curl -X "GET" "https://api.spotify.com/v1/search?q=%2520track%3ADon't%20Bring%20Me%20Down%2520artist%3AGoldrush&type=track&market=GB&limit=5" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer BQBBCA2MJuO4sDIpWSWCOeFhF8_xf-LYS9hloiD6MY_BTpAKYr83jvFGPnVjJhDlgMH33_MT3LbQ54aqsMkFcoafA1FbRN-xnoOnv8WCUKxtfFpL3OKUfFSnqHGirINwHfkYR7Zphqz2hMzrpwOC017ETLco2jNLQCCwUy2L-0wC"
 
