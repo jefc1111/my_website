@@ -15,7 +15,6 @@ jobs:
         ports: ['5432:5432']
         env:
           POSTGRES_PASSWORD: postgres
-          RADIO_API_URL: ${{ secrets.radio_api_url }}
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -27,5 +26,7 @@ jobs:
         with:
           otp-version: ${{matrix.otp}}
           elixir-version: ${{matrix.elixir}}
+        env:
+          RADIO_API_URL: ${{ secrets.radio_api_url }}
       - run: mix deps.get
       - run: mix test
