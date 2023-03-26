@@ -5,6 +5,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     name: OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
+    env:
+      RADIO_API_URL: ${{ secrets.radio_api_url }}
     strategy:
       matrix:
         otp: ['24.0']
@@ -26,8 +28,6 @@ jobs:
         with:
           otp-version: ${{matrix.otp}}
           elixir-version: ${{matrix.elixir}}
-        env:
-          RADIO_API_URL: ${{ secrets.radio_api_url }}
       - run: env
       - run: mix deps.get
       - run: mix test
