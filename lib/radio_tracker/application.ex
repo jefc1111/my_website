@@ -5,8 +5,7 @@ defmodule RadioTracker.Application do
 
   use Application
 
-  alias RadioTracker.SixMusicTwitterPoller
-
+  alias RadioTracker.Poller
 
   def start(_type, _args) do
     children = [
@@ -17,19 +16,18 @@ defmodule RadioTracker.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: RadioTracker.PubSub},
       # Start the Endpoint (http/https)
-      RadioTrackerWeb.Endpoint
+      RadioTrackerWeb.Endpoint,
       # Start a worker by calling: RadioTracker.Worker.start_link(arg)
       # {RadioTracker.Worker, arg}
+      RadioTracker.Spotify.ClientApiService
     ]
-
-
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: RadioTracker.Supervisor]
     res = Supervisor.start_link(children, opts)
 
-    SixMusicTwitterPoller.start_job({SixMusicTwitterPoller, :handle_poll, []})
+    Poller.start_job({Poller, :handle_poll, []})
 
     res
   end

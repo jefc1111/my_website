@@ -50,4 +50,5 @@ config :flop, repo: RadioTracker.Repo
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
-import_config "twitter.exs"
+import_config "radio_api.exs"
+import_config "spotify.exs"

@@ -12,15 +12,34 @@
 - <br>
 - <br>
 -->
+<%= if (! assigns[:current_user]) do %>
+  <article class="message is-link">
+    <div class="message-header">
+      <p>What is this website?</p>
+    </div>
+    <div class="message-body">
+      <p>This website is intended for 6 Music listeners who want to streamline their new music discover workflows when listening.</p>
+      <div class="content">
+        <ul>
+          <li>You can see what is playing now and recently on BBC 6 Music.</li>
+          <li>If you sign up for an account you can make note of which tracks you like.</li>
+          <li>Once you have an account you can link to Spotify and send tracks you like into your Spotify playlists.</li>
+          <li>Meanwhile, you can see what other tracks people are enjoying and browse detailed history of what has been played on BBC 6 Music.</li>
+        </ul>
+      </div>
+    </div>
+  </article>
+<% end %>
 <div class="box">
-  <table class="table is-fullwidth">
+  <table class="table is-fullwidth is-hoverable">
     <thead>
       <tr>
         <th>Artist</th>
         <th>Song</th>
         <th>Time</th>
+        <th>Likes (all users)</th>
+        <th>Spotify links</th>
         <th></th>
-        <th class="has-text-centered">Likes (all users)</th>
       </tr>
     </thead>
     <tbody>
@@ -34,6 +53,23 @@
           <%= link(raw(play.track.song), to: "/tracks/#{play.track_id}") %>
         </td>
         <td><%= RadioTracker.Helpers.Dates.human_readable(play.inserted_at) %></td>
+        <td>
+          <%= Track.qty_likes(play.track) %>
+        </td>
+        <td>
+          <%= if (play.track.spotify_uri !== nil) do %>
+            <%= link("App", to: {:spotify, String.replace(play.track.spotify_uri, "spotify:", "")}) %>
+            |
+            <%=
+              link("Web", to: String.replace(play.track.spotify_uri, "spotify:track:", "https://open.spotify.com/track/"),
+              target: "_blank")
+            %>
+            <%= if (assigns[:current_user]) do %>
+            |
+            Add to playlist
+            <% end %>
+          <% end %>
+        </td>
         <td style="width: 140px;">
           <button
             class="button is-black is-responsive"
@@ -54,9 +90,6 @@
               undo
             </button>
           <% end %>
-        </td>
-        <td class="has-text-centered">
-          <%= Track.qty_likes(play.track) %>
         </td>
       </tr>
       <% end %>

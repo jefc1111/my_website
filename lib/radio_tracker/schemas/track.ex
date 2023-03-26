@@ -24,6 +24,7 @@ defmodule RadioTracker.Schemas.Track do
   schema "tracks" do
     field :artist, :string
     field :song, :string
+    field :spotify_uri, :string
 
     has_many :plays, Play
 

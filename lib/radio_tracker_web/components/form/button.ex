@@ -12,7 +12,7 @@ defmodule RadioTrackerWeb.Components.ButtonWithIcon do
   def button_with_icon(assigns) do
     ~H"""
     <button type={ @type } class={ "button " <> @class }>
-      <span class="">
+      <span class="mr-4">
         <.icon name={ @icon_name } type={ @icon_type } class="icon" />
       </span>
       <span><%= @text %></span>

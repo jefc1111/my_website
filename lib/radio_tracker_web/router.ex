@@ -22,6 +22,10 @@ defmodule RadioTrackerWeb.Router do
 
     get "/tracks/:id", TracksController, :get
     get "/about", AboutController, :index
+    get "/link-to-spotify", SpotifyController, :index
+    get "/remove-spotify-link", SpotifyController, :remove_link
+    get "/spotify-playlists", SpotifyController, :show_playlists
+    get "/spotify-link-callback", SpotifyController, :callback
 
     live "/", Home
     live "/hearted-tracks", HeartedTracks
