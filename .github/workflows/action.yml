@@ -28,6 +28,5 @@ jobs:
         with:
           otp-version: ${{matrix.otp}}
           elixir-version: ${{matrix.elixir}}
-      - run: env
       - run: mix deps.get
       - run: mix test
