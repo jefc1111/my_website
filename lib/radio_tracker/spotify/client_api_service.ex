@@ -46,7 +46,7 @@ defmodule RadioTracker.Spotify.ClientApiService do
     url = "https://api.spotify.com/v1/search?#{query_str}"
     IO.inspect(url)
     {:ok, res} = HTTPoison.get(url, headers)
-
+    IO.inspect(res)
     {:ok, body} = Poison.decode(res.body)
 
     items = body["tracks"]["items"]
