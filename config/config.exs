@@ -14,7 +14,10 @@ config :radio_tracker,
 config :radio_tracker, RadioTrackerWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "tiiIH9yAeMwvzaWgf7C8D0I/3l22+Tsz5Y3vEI6VbYx12mHL7R24FdTf1rbd0Lci",
-  render_errors: [view: RadioTrackerWeb.ErrorView, accepts: ~w(html json), layout: false],
+  render_errors: [
+    formats: [html: RadioTrackerWeb.ErrorHTML, json: RadioTrackerWeb.ErrorJSON],
+    layout: false
+  ],
   pubsub_server: RadioTracker.PubSub,
   live_view: [signing_salt: "TasqEvgY"]
 

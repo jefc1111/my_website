@@ -7,6 +7,8 @@ defmodule RadioTrackerWeb.ErrorHTML do
   #   "Internal Server Error"
   # end
 
+  embed_templates "error_html/*"
+
   # By default, Phoenix returns the status message from
   # the template name. For example, "404.html" becomes
   # "Not Found".
