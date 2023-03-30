@@ -26,8 +26,6 @@ defmodule RadioTracker.Spotify.ClientApiService do
 
   @impl true
   def handle_cast({:new_track, track}, state) do
-    # If we had to get a new access token (because there was none, or it had expired). Set new token on state.
-
     query_params = %{
       "q" => "track:\"#{track.song}\" artist:\"#{track.artist}\"",
       "type" => "track",
@@ -35,21 +33,11 @@ defmodule RadioTracker.Spotify.ClientApiService do
       "limit" => 1
     }
 
-    headers = [
-      {"Authorization", "Bearer #{state.access_token}"},
-      {"Accept", "application/json"},
-      {"Content-Type", "application/json"}
-    ]
-
     query_str = URI.encode_query(query_params)
 
     url = "https://api.spotify.com/v1/search?#{query_str}"
-    IO.inspect(url)
-    IO.inspect(state.access_token)
-    {:ok, res} = HTTPoison.get(url, headers)
-    IO.inspect(res)
-    # Need to to proper handling here
-    {:ok, body} = Poison.decode(res.body)
+
+    {:ok, body} = Authorization.do_client_req(url, state.access_token)
 
     items = body["tracks"]["items"]
 
