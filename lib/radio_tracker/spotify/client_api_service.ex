@@ -37,9 +37,14 @@ defmodule RadioTracker.Spotify.ClientApiService do
 
     url = "https://api.spotify.com/v1/search?#{query_str}"
 
-    {:ok, body} = Authorization.do_client_req(url, state.access_token)
+    result = Authorization.do_client_req(url, state.access_token)
 
-    items = body["tracks"]["items"]
+    items = case result do
+      {:ok, body} -> body["tracks"]["items"]
+      %{result: {:ok, body}, new_access_token: new_access_token} ->
+        Map.put(state, :access_token, new_access_token)
+        body["tracks"]["items"]
+    end
 
     case items do
       [item] -> # We should only get one item because of limit = 1

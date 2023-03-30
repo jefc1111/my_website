@@ -92,38 +92,34 @@ defmodule RadioTracker.Spotify.Authorization do
     end
   end
 
-  # For requets to the public API (non-scoped)
-  def do_client_req(url, access_token) do
-    headers = [
+  defp client_req_headers(access_token) do
+    [
       {"Authorization", "Bearer #{access_token}"},
       {"Accept", "application/json"},
       {"Content-Type", "application/json"}
     ]
+  end
 
-    response = HTTPoison.get(url, headers)
+  # For requets to the public API (non-scoped)
+  def do_client_req(url, access_token) do
+    response = HTTPoison.get(url, client_req_headers(access_token))
 
-    {:ok, res} = HTTPoison.get(url, headers)
-    IO.inspect(res)
+    case response do
+      {:ok, %{status_code: 200, body: body}} -> Poison.decode(body)
+      {:ok, %{status_code: 401}} ->
+        Logger.info("The client access token has expired - getting a new one")
 
-    Poison.decode(res.body)
+        new_access_token = get_client_credentials_access_token()
 
+        response_from_retry = HTTPoison.get(url, client_req_headers(new_access_token))
 
-    # case response do
-    #   {:ok, %{status_code: 200, body: body}} -> Poison.decode(body)
-    #   {:ok, %{status_code: 401}} ->
-    #     Logger.info("User's access token has expired - refreshing it now")
-
-    #     refresh_user_access_token(user)
-
-    #     response_from_retry = HTTPoison.get(url, get_authorization_code_headers(user))
-
-    #     case response_from_retry do
-    #       {:ok, %{status_code: 200, body: body}} -> Poison.decode(body)
-    #       _ -> Logger.error("This is really bad. Even after trying to refresh the access code it still seems like it didn't work.")
-    #     end
-    #   {:ok, %{status_code: 200}} -> Logger.error("no body found")
-    #   {:ok, %{status_code: 404}} -> Logger.error("It was a 404")
-    #   {:error, %{reason: reason}} -> Logger.error("Something bad happened: #{reason}")
-    # end
+        case response_from_retry do
+          {:ok, %{status_code: 200, body: body}} -> %{result: Poison.decode(body), new_access_token: new_access_token}
+          _ -> Logger.error("Got a new token but it still did not work :(")
+        end
+      {:ok, %{status_code: 200}} -> Logger.error("no body found")
+      {:ok, %{status_code: 404}} -> Logger.error("It was a 404")
+      {:error, %{reason: reason}} -> Logger.error("Something bad happened: #{reason}")
+    end
   end
 end
