@@ -18,7 +18,7 @@ defmodule RadioTracker.Spotify.ClientApiService do
 
   @impl true
   def init(state) do
-
+    # When the app starts we'll get a fresh token.
     state = Map.put(state, :access_token, Authorization.get_client_credentials_access_token())
 
     {:ok, state}
@@ -52,9 +52,10 @@ defmodule RadioTracker.Spotify.ClientApiService do
         |> Ecto.Changeset.change(%{spotify_uri: item |> Map.get("uri")})
         |> Repo.update()
         Endpoint.broadcast_from(self(), @topic, "new_track", %{last_ten_plays: Play.last_ten})
+      [_head | tail] when length(tail) > 0 ->
+        Logger.info("Received more than one result from Spotifly search API.")
       _ ->
         Logger.info("No results from Spotify search API.")
-        nil # The search did not reap any results so we're not going to do anything
     end
 
     # curl -X "GET" "https://api.spotify.com/v1/search?q=%2520track%3ADon't%20Bring%20Me%20Down%2520artist%3AGoldrush&type=track&market=GB&limit=5" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer BQBBCA2MJuO4sDIpWSWCOeFhF8_xf-LYS9hloiD6MY_BTpAKYr83jvFGPnVjJhDlgMH33_MT3LbQ54aqsMkFcoafA1FbRN-xnoOnv8WCUKxtfFpL3OKUfFSnqHGirINwHfkYR7Zphqz2hMzrpwOC017ETLco2jNLQCCwUy2L-0wC"
