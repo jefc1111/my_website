@@ -1,5 +1,6 @@
 defmodule RadioTrackerWeb.SpotifyController do
   use RadioTrackerWeb, :controller
+
   alias RadioTracker.Repo
 
   alias RadioTracker.Spotify.Authorization

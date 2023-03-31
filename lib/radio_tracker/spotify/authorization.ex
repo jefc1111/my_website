@@ -1,7 +1,7 @@
 defmodule RadioTracker.Spotify.Authorization do
 
   use HTTPoison.Base
-
+  use RadioTrackerWeb, :html
   alias RadioTracker.Repo
 
   require Logger
