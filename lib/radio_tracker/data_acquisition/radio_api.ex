@@ -40,22 +40,22 @@ defmodule RadioTracker.DataAcquisition.RadioApi do
   end
 
   defp extract_current_track(api_response) do
-    api_response_data = api_response.body
+    decoded_body = latest_track_titles = Poison.decode!(api_response.body)
 
-    case api_response_data do
-      nil ->
-        Logger.warn("Did not receive any actionable data from the radio API")
-        nil
-      body ->
-        latest_track_titles = Poison.decode!(body)
-        |> Map.get("data")
-        |> List.first()
-        |> Map.get("titles")
+    case decoded_body["data"] do
+      [head | _tail] ->
+        latest_track_titles = head |> Map.get("titles")
 
         %Track{
           artist: Map.get(latest_track_titles, "secondary"),
           song: Map.get(latest_track_titles, "primary")
         }
+      [] ->
+        Logger.warn("No tracks received from the radio API")
+        nil
+      nil ->
+        Logger.warn("Did not receive any actionable data from the radio API")
+        nil
     end
   end
 
