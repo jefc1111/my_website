@@ -63,11 +63,21 @@ defmodule RadioTracker.DataAcquisition.RadioApi do
     # Let's see if the track now playing has ever been played before
     res = Track.get_by_artist_song(now_playing_track.artist, now_playing_track.song)
 
-    case res do
+    track = case res do
       # We haven't had this track before so we record a new play alongside a new track
       nil -> handle_previously_unseen_track(now_playing_track)
       # We've already seen this track so we record a new play for the exitsing track id
-      existing_track = ^res -> Repo.insert(%Play{track_id: existing_track.id})
+      existing_track = ^res ->
+        Repo.insert(%Play{track_id: existing_track.id})
+
+        existing_track
+    end
+
+    # Even if we have seen a given track before we want to check again for Spotify we
+    # don't already have them in case Spotify has added it to the catalogue since last time.
+    if track.spotify_uri === nil do
+      Logger.info "Attempting to fetch Spotify meta data for #{track.song} by #{track.artist}"
+      tag_with_spotify_meta_data(track)
     end
 
     Endpoint.broadcast_from(self(), @topic, "new_track", %{last_ten_plays: Play.last_ten})
@@ -76,7 +86,11 @@ defmodule RadioTracker.DataAcquisition.RadioApi do
   defp handle_previously_unseen_track(now_playing_track) do
     {:ok, play} = Repo.insert(%Play{track: now_playing_track})
 
-    GenServer.cast(RadioTracker.Spotify.ClientApiService, {:new_track, play.track})
+    play.track
+  end
+
+  defp tag_with_spotify_meta_data(track) do
+    GenServer.cast(RadioTracker.Spotify.ClientApiService, {:new_track, track})
   end
 
   defp handle_bad_response(msg) do

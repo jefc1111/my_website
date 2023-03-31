@@ -105,7 +105,7 @@ defmodule RadioTracker.Spotify.Authorization do
     response = HTTPoison.get(url, client_req_headers(access_token))
 
     case response do
-      {:ok, %{status_code: 200, body: body}} -> Poison.decode(body)
+      {:ok, %{status_code: 200, body: body}} -> [result: Poison.decode(body), access_token: access_token]
       {:ok, %{status_code: 401}} ->
         Logger.info("The client access token has expired - getting a new one")
 
@@ -114,7 +114,7 @@ defmodule RadioTracker.Spotify.Authorization do
         response_from_retry = HTTPoison.get(url, client_req_headers(new_access_token))
 
         case response_from_retry do
-          {:ok, %{status_code: 200, body: body}} -> %{result: Poison.decode(body), new_access_token: new_access_token}
+          {:ok, %{status_code: 200, body: body}} -> [result: Poison.decode(body), access_token: new_access_token]
           _ -> Logger.error("Got a new token but it still did not work :(")
         end
       {:ok, %{status_code: 200}} -> Logger.error("no body found")

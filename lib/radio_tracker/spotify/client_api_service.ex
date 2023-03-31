@@ -37,13 +37,15 @@ defmodule RadioTracker.Spotify.ClientApiService do
 
     url = "https://api.spotify.com/v1/search?#{query_str}"
 
-    result = Authorization.do_client_req(url, state.access_token)
+    [result: result, access_token: access_token] = Authorization.do_client_req(url, state.access_token)
+
+    Map.put(state, :access_token, access_token)
+
+    IO.inspect(result)
 
     items = case result do
       {:ok, body} -> body["tracks"]["items"]
-      %{result: {:ok, body}, new_access_token: new_access_token} ->
-        Map.put(state, :access_token, new_access_token)
-        body["tracks"]["items"]
+      _ -> Logger.info("Did not find any items in the Spotify search API response")
     end
 
     case items do
