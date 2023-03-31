@@ -80,10 +80,11 @@ defmodule RadioTracker.Spotify.Authorization do
         refresh_user_access_token(user)
 
         response_from_retry = HTTPoison.get(url, get_authorization_code_headers(user))
-
+IO.inspect(response_from_retry)
         case response_from_retry do
           {:ok, %{status_code: 200, body: body}} -> Poison.decode(body)
-          _ -> Logger.error("This is really bad. Even after trying to refresh the access code it still seems like it didn't work.")
+          {:ok, %{status_code: status_code}} -> Logger.error(status_code)
+          _ -> Logger.error("Even after trying to refresh the access code it still seems like it didn't work.")
         end
       {:ok, %{status_code: 200}} -> Logger.error("no body found")
       {:ok, %{status_code: 404}} -> Logger.error("It was a 404")
