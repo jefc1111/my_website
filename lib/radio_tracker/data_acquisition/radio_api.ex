@@ -40,7 +40,7 @@ defmodule RadioTracker.DataAcquisition.RadioApi do
   end
 
   defp extract_current_track(api_response) do
-    decoded_body = latest_track_titles = Poison.decode!(api_response.body)
+    decoded_body = Poison.decode!(api_response.body)
 
     case decoded_body["data"] do
       [head | _tail] ->
