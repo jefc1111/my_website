@@ -7,8 +7,8 @@ config :radio_tracker, RadioTracker.Repo,
   database: "geoffclayton_website_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
-  pool_size: 10
-  #log: false
+  pool_size: 10,
+  log: false # This stops all DB queries being logged
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
