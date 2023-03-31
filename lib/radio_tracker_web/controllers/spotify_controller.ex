@@ -17,7 +17,7 @@ defmodule RadioTrackerWeb.SpotifyController do
       "response_type" => "code",
       "client_id" => Application.get_env(:radio_tracker, :spotify_api)[:client_id],
       "scope" => scope,
-      "redirect_uri" => "http://localhost:4000/spotify-link-callback",
+      "redirect_uri" => ~p"/spotify-link-callback",
       "state" => state
     }
 

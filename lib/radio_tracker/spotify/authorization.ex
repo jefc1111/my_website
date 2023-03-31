@@ -9,7 +9,7 @@ defmodule RadioTracker.Spotify.Authorization do
   def get_authorization_code_tokens(code) do
     body = [
       {"code", code},
-      {"redirect_uri", "http://localhost:4000/spotify-link-callback"},
+      {"redirect_uri", ~p"/spotify-link-callback"},
       {"grant_type", "authorization_code"}
     ]
 
