@@ -54,8 +54,10 @@ defmodule RadioTracker.Spotify.ClientApiService do
         Endpoint.broadcast_from(self(), @topic, "new_track", %{last_ten_plays: Play.last_ten})
       [_head | tail] when length(tail) > 0 ->
         Logger.info("Received more than one result from Spotifly search API.")
-      _ ->
+      [] ->
         Logger.info("No results from Spotify search API.")
+      _ ->
+        Logger.info("Something unexpected happened when using the Spotify search API.")
     end
 
     # curl -X "GET" "https://api.spotify.com/v1/search?q=%2520track%3ADon't%20Bring%20Me%20Down%2520artist%3AGoldrush&type=track&market=GB&limit=5" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer BQBBCA2MJuO4sDIpWSWCOeFhF8_xf-LYS9hloiD6MY_BTpAKYr83jvFGPnVjJhDlgMH33_MT3LbQ54aqsMkFcoafA1FbRN-xnoOnv8WCUKxtfFpL3OKUfFSnqHGirINwHfkYR7Zphqz2hMzrpwOC017ETLco2jNLQCCwUy2L-0wC"
