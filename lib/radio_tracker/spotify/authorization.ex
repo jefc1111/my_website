@@ -1,7 +1,6 @@
 defmodule RadioTracker.Spotify.Authorization do
 
   use HTTPoison.Base
-  use RadioTrackerWeb, :html
   alias RadioTracker.Repo
 
   require Logger
@@ -9,7 +8,7 @@ defmodule RadioTracker.Spotify.Authorization do
   def get_authorization_code_tokens(code) do
     body = [
       {"code", code},
-      {"redirect_uri", ~p"/spotify-link-callback"},
+      {"redirect_uri", "#{RadioTrackerWeb.Endpoint.url()}/spotify-link-callback"},
       {"grant_type", "authorization_code"}
     ]
 
