@@ -77,10 +77,10 @@ defmodule RadioTracker.Spotify.Authorization do
       {:ok, %{status_code: 401}} ->
         Logger.info("User's access token has expired - refreshing it now")
 
-        refresh_user_access_token(user)
+        {:ok, user} = refresh_user_access_token(user)
 
         response_from_retry = HTTPoison.get(url, get_authorization_code_headers(user))
-IO.inspect(response_from_retry)
+
         case response_from_retry do
           {:ok, %{status_code: 200, body: body}} -> Poison.decode(body)
           {:ok, %{status_code: status_code}} -> Logger.error(status_code)
@@ -110,7 +110,7 @@ IO.inspect(response_from_retry)
         Logger.info("The client access token has expired - getting a new one")
 
         new_access_token = get_client_credentials_access_token()
-IO.inspect("New access token: #{new_access_token}")
+
         response_from_retry = HTTPoison.get(url, client_req_headers(new_access_token))
 
         case response_from_retry do
