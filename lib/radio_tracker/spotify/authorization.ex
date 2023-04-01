@@ -110,7 +110,7 @@ IO.inspect(response_from_retry)
         Logger.info("The client access token has expired - getting a new one")
 
         new_access_token = get_client_credentials_access_token()
-
+IO.inspect("New access token: #{new_access_token}")
         response_from_retry = HTTPoison.get(url, client_req_headers(new_access_token))
 
         case response_from_retry do
