@@ -57,7 +57,10 @@ defmodule RadioTracker.MixProject do
       {:bulma, "0.9.3"},
       {:swoosh, "~> 1.8"},
       {:gen_smtp, "~> 1.0"},
-      {:flop_phoenix, "~> 0.17.1"}
+      {:flop_phoenix, "~> 0.17.1"},
+      {:phoenix_view, "~> 2.0.2"},
+      {:kaffy, "~> 0.9.2"},
+      {:pow, "~> 1.0.29"}
     ]
   end
 

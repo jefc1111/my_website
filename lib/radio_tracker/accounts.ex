@@ -8,6 +8,8 @@ defmodule RadioTracker.Accounts do
 
   alias RadioTracker.Accounts.{User, UserToken, UserNotifier}
 
+  @type t :: %User{}
+
   ## Database getters
 
   @doc """
@@ -349,5 +351,20 @@ defmodule RadioTracker.Accounts do
       {:ok, %{user: user}} -> {:ok, user}
       {:error, :user, changeset, _} -> {:error, changeset}
     end
+  end
+
+  @spec create_admin(map()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
+  def create_admin(params) do
+    %User{}
+    |> User.changeset(params)
+    |> User.changeset_role(%{role: "admin"})
+    |> Repo.insert()
+  end
+
+  @spec set_admin_role(t()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
+  def set_admin_role(user) do
+    user
+    |> User.changeset_role(%{role: "admin"})
+    |> Repo.update()
   end
 end

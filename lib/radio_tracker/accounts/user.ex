@@ -13,6 +13,8 @@ defmodule RadioTracker.Accounts.User do
     field :spotify_refresh_token, :string, redact: false
     field :spotify_linked_at, :utc_datetime
 
+    field :role, :string, default: "user"
+
     timestamps()
   end
 
@@ -150,5 +152,11 @@ defmodule RadioTracker.Accounts.User do
     else
       add_error(changeset, :current_password, "is not valid")
     end
+  end
+
+  def changeset_role(user_or_changeset, attrs) do
+    user_or_changeset
+    |> Ecto.Changeset.cast(attrs, [:role])
+    |> Ecto.Changeset.validate_inclusion(:role, ~w(user admin))
   end
 end

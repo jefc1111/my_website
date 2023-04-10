@@ -50,6 +50,15 @@ config :radio_tracker, RadioTracker.Mailer,
 
 config :flop, repo: RadioTracker.Repo
 
+config :kaffy,
+  otp_app: :radio_tracker,
+  ecto_repo: RadioTracker.Repo,
+  router: RadioTrackerWeb.Router
+
+config :radio_tracker, :pow,
+  user: RadioTracker.Users.User,
+  repo: RadioTracker.Repo
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
