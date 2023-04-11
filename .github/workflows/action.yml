@@ -9,8 +9,8 @@ jobs:
       RADIO_API_URL: ${{ secrets.radio_api_url }}
     strategy:
       matrix:
-        otp: ['24.0']
-        elixir: ['1.13.2']
+        otp: ['25.0']
+        elixir: ['1.14.0']
     services:
       db:
         image: postgres:11
