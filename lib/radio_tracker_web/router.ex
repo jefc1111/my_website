@@ -1,7 +1,7 @@
 defmodule RadioTrackerWeb.Router do
   use RadioTrackerWeb, :router
   use Pow.Phoenix.Router
-  use Kaffy.Routes, scope: "/admin", pipe_through: [:browser]
+  use Kaffy.Routes, scope: "/admin", pipe_through: [:browser, :require_admin]
 
   import RadioTrackerWeb.UserAuth
 
