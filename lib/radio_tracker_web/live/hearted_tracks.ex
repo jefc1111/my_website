@@ -12,8 +12,8 @@ defmodule RadioTrackerWeb.HeartedTracks do
     socket = socket
     |> assign(current_user: user)
     |> assign(date_range: %{
-      start: "2022-12-01",
-      end: "2022-12-31"
+      start: Dates.default_start,
+      end: Dates.default_end
     })
 
     {:ok, socket}
