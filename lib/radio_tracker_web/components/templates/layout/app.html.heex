@@ -1,5 +1,5 @@
 <main role="main" class="container">
-  <p class="is-info"><%= get_flash(@conn, :info) %></p>
-  <p class="is-danger"><%= get_flash(@conn, :error) %></p>
+  <p class="is-info"><%= Phoenix.Flash.get(@conn, :info) %></p>
+  <p class="is-danger"><%= Phoenix.Flash.get(@conn, :error) %></p>
   <%= @inner_content %>
 </main>
