@@ -32,7 +32,7 @@ defmodule RadioTracker.Spotify.ClientApiService do
       "market" => "GB",
       "limit" => 1
     }
-    IO.inspect("Access token: #{state.access_token}")
+
     query_str = URI.encode_query(query_params)
 
     url = "https://api.spotify.com/v1/search?#{query_str}"

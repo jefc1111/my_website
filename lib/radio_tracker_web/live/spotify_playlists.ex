@@ -1,21 +1,15 @@
-defmodule RadioTrackerWeb.HeartedTracks do
+defmodule RadioTrackerWeb.SpotifyPlaylists do
   use RadioTrackerWeb, :live_view
 
-  alias RadioTracker.Helpers.Dates
-  alias RadioTracker.Schemas.Track
+  alias RadioTracker.Spotify.Playlist
   alias RadioTracker.Accounts
+
+  import RadioTrackerWeb.Components.Icon
 
   def mount(_params, %{"user_token" => user_token}, socket) do
     user = Accounts.get_user_by_session_token(user_token)
 
-    socket = socket
-    |> assign(current_user: user)
-    |> assign(date_range: %{
-      start: Dates.default_start,
-      end: Dates.default_end
-    })
-
-    {:ok, socket}
+    {:ok, socket |> assign(current_user: user)}
   end
 
   # If no user logged in, redirect
@@ -25,14 +19,10 @@ defmodule RadioTrackerWeb.HeartedTracks do
 
   #@impl Phoenix.LiveView
   def handle_params(params, _, socket) do
-    case Track.list_liked(
-      params,
-      socket.assigns.current_user.id,
-      socket.assigns.date_range
-    ) do
-      {:ok, {tracks, meta}} ->
+    case Playlist.get_user_playlists(socket.assigns.current_user, params) do
+      {:ok, {playlists, meta}} ->
         socket = socket
-        |> assign(tracks: tracks)
+        |> assign(playlists: playlists)
         |> assign(meta: meta)
         |> assign(url_params: params) # idk, seems kinda shonky stuffing the url params on like this for use in handle_info
 
@@ -46,20 +36,6 @@ defmodule RadioTrackerWeb.HeartedTracks do
     {:noreply,
      push_patch(socket,
        to: Routes.live_path(socket, __MODULE__, socket.assigns.url_params)
-     )
-    }
-  end
-
-  def handle_info({:date_range_change, data}, socket) do
-    socket = socket
-    |> assign(date_range: %{
-      start: data["start"],
-      end: data["end"]
-    })
-
-    {:noreply,
-     push_patch(socket,
-       to: Routes.live_path(socket, __MODULE__, %{}) # last arg clears the pagination page
      )
     }
   end

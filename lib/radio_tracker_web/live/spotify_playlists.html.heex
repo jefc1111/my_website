@@ -1,0 +1,35 @@
+<div class="box">
+  <h3 class="is-size-3">Your Spotify playlists</h3>
+  <p class="is-size-5 mt-2">Select playlists you want to use for 'quick add' functionality from track list pages.</p>
+  <p class="mt-2">
+    <.icon name="circle-info" type="solid" class="icon" />
+    If you select only one playlist you will be able to add tracks you like with one click. Otherwise you will see a dropdown list to choose from.
+  </p>
+  <ul class="list-unstyled m-4">
+    <Flop.Phoenix.table
+      items={@playlists}
+      meta={@meta}
+      path={~p"/spotify-playlists"}
+      opts={[table_attrs: [class: "table is-fullwidth gc-nowrap-desktop-table"]]}
+    >
+      <:col :let={playlist} label="id" field={:id}><%= playlist.id %></:col>
+      <:col :let={playlist} label="Name" field={:name}><%= link(raw(playlist.name), to: playlist.id) %></:col>
+      <:col :let={playlist} label="Selected">
+        <button class="button is-info">
+          <span class="icon is-small">
+            <.icon name="square" type="regular" class="icon" />
+          </span>
+        </button>
+      </:col>
+    </Flop.Phoenix.table>
+<label class="checkbox">
+  <input type="checkbox">
+  Remember me
+</label>
+    <Flop.Phoenix.pagination
+      meta={@meta}
+      path={~p"/spotify-playlists"}
+      opts={[page_links: {:ellipsis, 3}]}
+    />
+  </ul>
+</div>

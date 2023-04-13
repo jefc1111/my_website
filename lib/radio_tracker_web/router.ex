@@ -36,12 +36,12 @@ defmodule RadioTrackerWeb.Router do
     get "/about", AboutController, :index
     get "/link-to-spotify", SpotifyController, :index
     get "/remove-spotify-link", SpotifyController, :remove_link
-    get "/spotify-playlists", SpotifyController, :show_playlists
     get "/spotify-link-callback", SpotifyController, :callback
 
     live "/", Home
     live "/hearted-tracks", HeartedTracks
     live "/tracks", Tracks
+    live "/spotify-playlists", SpotifyPlaylists
   end
 
   # Other scopes may use custom stacks.

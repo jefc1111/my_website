@@ -4,7 +4,6 @@ defmodule RadioTrackerWeb.SpotifyController do
   alias RadioTracker.Repo
 
   alias RadioTracker.Spotify.Authorization
-  alias RadioTracker.Spotify.Playlists
 
   def index(conn, _params) do
     state = random_string(16);
@@ -65,16 +64,6 @@ defmodule RadioTrackerWeb.SpotifyController do
       )
       |> Repo.update()
 
-    conn |> put_flash(:info, "Spotify link removed.") |> redirect(to: ~p"/users/settings")
-  end
-
-  def show_playlists(conn, _params) do
-    playlists = Playlists.get_all(conn.assigns.current_user)
-
-    names = playlists |> Enum.map(fn item -> item["name"] end)
-
-    conn
-    |> assign(:playlists, names)
-    |> render("index.html")
+    conn |> put_flash(:info, "Your link with Spotify is removed.") |> redirect(to: ~p"/users/settings")
   end
 end
