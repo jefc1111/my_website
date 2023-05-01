@@ -19,6 +19,8 @@ defmodule RadioTrackerWeb.LiveComponents.SpotifyLinks do
         |
         Add to playlist
         <% end %>
+        |
+        URI source: <%= @track.spotify_uri_source %>
       <% else %>
         <%= if (@show_warning) do %>
           Spotify URI could not be found

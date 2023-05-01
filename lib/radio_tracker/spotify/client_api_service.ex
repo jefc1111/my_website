@@ -26,9 +26,40 @@ defmodule RadioTracker.Spotify.ClientApiService do
 
   @impl true
   def handle_cast({:new_track, track}, state) do
+    result = do_api_query(
+      track,
+      state.access_token,
+      "track:\"#{track.song}\" artist:\"#{track.artist}\"",
+      :spotify_api_filtered_search
+    )
+
+    access_token = case result do
+      {:ok, access_token} ->
+        access_token
+      {_, _} ->
+        Logger.info("No result from filtered search, trying free text search.")
+
+        # Now try free text based search
+        # Doesn't really matter what happens here, we just want to pass on the
+        # access token regardless
+        {_, access_token} = do_api_query(
+          track,
+          state.access_token,
+          "#{track.song} #{track.artist}",
+          :spotify_api_general_search
+        )
+
+        access_token
+    end
+
+
+
+    {:noreply, Map.put(state, :access_token, access_token)}
+  end
+
+  defp do_api_query(track, access_token, search_query, spotify_uri_source) do
     query_params = %{
-      # "q" => "track:\"#{track.song}\" artist:\"#{track.artist}\"",
-      "q" => "#{track.song} #{track.artist}",
+      "q" => search_query,
       "type" => "track",
       "market" => "GB",
       "limit" => 1
@@ -38,7 +69,7 @@ defmodule RadioTracker.Spotify.ClientApiService do
 
     url = "https://api.spotify.com/v1/search?#{query_str}"
 
-    [result: result, access_token: access_token] = Authorization.do_client_req(url, state.access_token)
+    [result: result, access_token: new_access_token] = Authorization.do_client_req(url, access_token)
 
     items = case result do
       {:ok, body} -> body["tracks"]["items"]
@@ -48,24 +79,29 @@ defmodule RadioTracker.Spotify.ClientApiService do
     case items do
       [item] -> # We should only get one item because of limit = 1
         track
-        |> Ecto.Changeset.change(%{spotify_uri: item |> Map.get("uri")})
+        |> Ecto.Changeset.change(
+            %{
+              spotify_uri: item |> Map.get("uri"),
+              spotify_uri_source: spotify_uri_source
+            }
+          )
         |> Repo.update()
 
         Endpoint.broadcast_from(self(), @topic, "new_track", %{last_ten_plays: Play.last_ten})
+
+        {:ok, new_access_token}
       [_|_] ->
-        Logger.info("Received more than one result from Spotifly search API.")
+        Logger.info("Received more than one result from Spotify search API.")
+
+        {:too_many_result, new_access_token}
       [] ->
         Logger.info("No results from Spotify search API.")
+
+        {:no_results, new_access_token}
       _ ->
         Logger.info("Something unexpected happened when using the Spotify search API.")
+
+        {:error, new_access_token}
     end
-
-    {:noreply, Map.put(state, :access_token, access_token)}
-  end
-
-  @impl true
-  def handle_call(:world, _from, state) do
-    IO.inspect("CALL")
-    {:reply, state, "D"}
   end
 end

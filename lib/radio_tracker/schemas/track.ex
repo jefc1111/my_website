@@ -25,6 +25,10 @@ defmodule RadioTracker.Schemas.Track do
     field :artist, :string
     field :song, :string
     field :spotify_uri, :string
+    field :spotify_uri_source, Ecto.Enum, values: [
+      :spotify_api_filtered_search,
+      :spotify_api_general_search
+    ]
 
     has_many :plays, Play
 
