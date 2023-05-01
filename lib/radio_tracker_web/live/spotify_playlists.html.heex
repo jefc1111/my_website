@@ -12,20 +12,32 @@
       path={~p"/spotify-playlists"}
       opts={[table_attrs: [class: "table is-fullwidth gc-nowrap-desktop-table"]]}
     >
-      <:col :let={playlist} label="id" field={:id}><%= playlist.id %></:col>
-      <:col :let={playlist} label="Name" field={:name}><%= link(raw(playlist.name), to: playlist.id) %></:col>
-      <:col :let={playlist} label="Selected">
-        <button class="button is-info">
+      <:col
+        :let={playlist}
+        label="Name"
+        field={:name}
+      >
+        <%= link(raw(playlist.name), to: playlist.href, target: "_blank") %>
+      </:col>
+      <:col
+        :let={playlist}
+        label="Quantity of tracks"
+        field={:qty_tracks}
+      >
+        <%= playlist.qty_tracks %>
+      </:col>
+      <:col label="Selected">
           <span class="icon is-small">
             <.icon name="square" type="regular" class="icon" />
           </span>
-        </button>
+          <span class="icon is-small">
+            <.icon name="ellipsis" type="solid" class="icon" />
+          </span>
+          <span class="icon is-small">
+            <.icon name="square-check" type="regular" class="icon" />
+          </span>
       </:col>
     </Flop.Phoenix.table>
-<label class="checkbox">
-  <input type="checkbox">
-  Remember me
-</label>
     <Flop.Phoenix.pagination
       meta={@meta}
       path={~p"/spotify-playlists"}

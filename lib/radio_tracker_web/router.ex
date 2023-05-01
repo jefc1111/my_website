@@ -32,7 +32,6 @@ defmodule RadioTrackerWeb.Router do
   scope "/", RadioTrackerWeb do
     pipe_through :browser
 
-    get "/tracks/:id", TracksController, :get
     get "/about", AboutController, :index
     get "/link-to-spotify", SpotifyController, :index
     get "/remove-spotify-link", SpotifyController, :remove_link
@@ -41,6 +40,7 @@ defmodule RadioTrackerWeb.Router do
     live "/", Home
     live "/hearted-tracks", HeartedTracks
     live "/tracks", Tracks
+    live "/tracks/:id", Track
     live "/spotify-playlists", SpotifyPlaylists
   end
 

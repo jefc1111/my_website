@@ -27,7 +27,8 @@ defmodule RadioTracker.Spotify.ClientApiService do
   @impl true
   def handle_cast({:new_track, track}, state) do
     query_params = %{
-      "q" => "track:\"#{track.song}\" artist:\"#{track.artist}\"",
+      # "q" => "track:\"#{track.song}\" artist:\"#{track.artist}\"",
+      "q" => "#{track.song} #{track.artist}",
       "type" => "track",
       "market" => "GB",
       "limit" => 1

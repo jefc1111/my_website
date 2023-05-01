@@ -21,6 +21,7 @@ defmodule RadioTrackerWeb.SpotifyPlaylists do
   def handle_params(params, _, socket) do
     case Playlist.get_user_playlists(socket.assigns.current_user, params) do
       {:ok, {playlists, meta}} ->
+        IO.inspect(playlists)
         socket = socket
         |> assign(playlists: playlists)
         |> assign(meta: meta)

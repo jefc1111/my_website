@@ -4,7 +4,12 @@ defmodule RadioTracker.Spotify.Playlist do
 
   alias RadioTracker.Spotify.Authorization
 
-  defstruct id: "unknown", name: "No name"
+  defstruct(
+    id: "unknown",
+    name: "No name",
+    href: "",
+    qty_tracks: ""
+  )
 
   @page_size 10
 
@@ -22,11 +27,13 @@ defmodule RadioTracker.Spotify.Playlist do
     query_str = URI.encode_query(query_params)
 
     {:ok, result} = Authorization.do_user_req(user, "https://api.spotify.com/v1/me/playlists?#{query_str}")
-
+    IO.inspect(result["items"])
     playlists_as_structs = result["items"] |> Enum.map(
       fn item -> %__MODULE__{
         id: item["id"],
-        name: item["name"]
+        name: item["name"],
+        href: item["external_urls"]["spotify"],
+        qty_tracks: item["tracks"]["total"]
       } end
     )
 
