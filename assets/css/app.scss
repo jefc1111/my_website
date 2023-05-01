@@ -114,3 +114,28 @@ footer {
   padding-top: 2rem;
   border-top: 1px solid #eaeaea;
 }
+
+.spotify-playlist-link {
+  width: 20px;
+  height: 20px;
+}
+
+.spotify-playlist-link:hover {
+  cursor: pointer;
+}
+
+.uri-source-filtered {
+  fill: #254907;
+}
+
+.uri-source-filtered:hover {
+  fill: lighten(#254907, 10%);
+}
+
+.uri-source-general {
+  fill: #86973a;
+}
+
+.uri-source-general:hover {
+  fill: lighten(#86973a, 10%);
+}

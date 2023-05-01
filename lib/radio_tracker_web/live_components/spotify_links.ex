@@ -3,6 +3,8 @@ defmodule RadioTrackerWeb.LiveComponents.SpotifyLinks do
 
   use Phoenix.HTML
 
+  import RadioTrackerWeb.Components.Icon
+
   attr :show_warning, :boolean, default: false
 
   def render(assigns) do
@@ -10,17 +12,19 @@ defmodule RadioTrackerWeb.LiveComponents.SpotifyLinks do
     <div>
       <%= if (@track.spotify_uri !== nil) do %>
         <%= link("App", to: {:spotify, String.replace(@track.spotify_uri, "spotify:", "")}) %>
-        |
         <%=
           link("Web", to: String.replace(@track.spotify_uri, "spotify:track:", "https://open.spotify.com/track/"),
           target: "_blank")
         %>
         <%= if (assigns[:current_user]) do %>
-        |
-        Add to playlist
+          <div title={"Source: #{spotify_uri_source_tooltip(@track.spotify_uri_source)}"}>
+            <.icon
+              name="spotify"
+              type="brands"
+              class={"icon spotify-playlist-link #{spotify_uri_source_class(@track.spotify_uri_source)}"}
+            />
+          </div>
         <% end %>
-        |
-        URI source: <%= @track.spotify_uri_source %>
       <% else %>
         <%= if (@show_warning) do %>
           Spotify URI could not be found
@@ -28,6 +32,22 @@ defmodule RadioTrackerWeb.LiveComponents.SpotifyLinks do
       <% end %>
     </div>
     """
+  end
+
+  def spotify_uri_source_class(source) do
+    case source do
+      :spotify_api_filtered_search -> "uri-source-filtered"
+      :spotify_api_general_search -> "uri-source-general"
+      _ -> nil
+    end
+  end
+
+  def spotify_uri_source_tooltip(source) do
+    case source do
+      :spotify_api_filtered_search -> "Spotify API search (filtered)"
+      :spotify_api_general_search -> "Spotify API search (general)"
+      _ -> nil
+    end
   end
 
   # def handle_event("delete-user-likes-for-track", data, socket) do
