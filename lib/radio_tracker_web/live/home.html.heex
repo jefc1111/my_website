@@ -59,7 +59,7 @@
         <td>
           <.live_component
             module={RadioTrackerWeb.LiveComponents.SpotifyLinks}
-            id={"track-#{play.track.id}-spotify-links"}
+            id={"track-#{play.track.id}-play-#{play.id}-spotify-links"}
             track={play.track}
             current_user={if assigns[:current_user], do: @current_user, else: false}
           />

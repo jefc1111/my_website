@@ -46,7 +46,7 @@ defmodule RadioTrackerWeb.LiveComponents.SpotifyLinks do
     case source do
       :spotify_api_filtered_search -> "Spotify API search (filtered)"
       :spotify_api_general_search -> "Spotify API search (general)"
-      _ -> nil
+      _ -> "unknown"
     end
   end
 
