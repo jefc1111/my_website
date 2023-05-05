@@ -11,19 +11,30 @@ defmodule RadioTrackerWeb.LiveComponents.SpotifyLinks do
     ~H"""
     <div>
       <%= if (@track.spotify_uri !== nil) do %>
-        <%= link("App", to: {:spotify, String.replace(@track.spotify_uri, "spotify:", "")}) %>
+        <div style="display: inline-block" title={"Source: #{spotify_uri_source_tooltip(@track.spotify_uri_source)}"}>
+          <.icon
+            name="spotify"
+            type="brands"
+            class={"icon spotify-playlist-link #{spotify_uri_source_class(@track.spotify_uri_source)}"}
+          />
+        </div>
+        <%=
+          link("App", to: {:spotify, String.replace(@track.spotify_uri, "spotify:", "")})
+        %>
         <%=
           link("Web", to: String.replace(@track.spotify_uri, "spotify:track:", "https://open.spotify.com/track/"),
           target: "_blank")
         %>
         <%= if (assigns[:current_user]) do %>
-          <div title={"Source: #{spotify_uri_source_tooltip(@track.spotify_uri_source)}"}>
-            <.icon
-              name="spotify"
-              type="brands"
-              class={"icon spotify-playlist-link #{spotify_uri_source_class(@track.spotify_uri_source)}"}
-            />
-          </div>
+          <button class="button is-success">
+            <span class="icon is-small">
+              <.icon
+                name="plus"
+                type="solid"
+                class={"icon"}
+              />
+            </span>
+          </button>
         <% end %>
       <% else %>
         <%= if (@show_warning) do %>

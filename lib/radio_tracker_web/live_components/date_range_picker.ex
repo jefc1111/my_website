@@ -2,7 +2,6 @@ defmodule RadioTrackerWeb.LiveComponents.DateRangePicker do
   use Phoenix.LiveComponent
 
   def render(assigns) do
-    IO.inspect(assigns)
     ~H"""
     <div id="dateRangePickerHolder" phx-update="ignore" class="box">
       <input

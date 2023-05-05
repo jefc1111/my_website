@@ -84,8 +84,6 @@ defmodule RadioTracker.DataAcquisition.Twitter do
   defp handle_new_track(now_playing_track) do
     res = Track.get_by_artist_song(now_playing_track.artist, now_playing_track.song)
 
-    #IO.inspect(res)
-
     case res do
       nil -> Repo.insert(%Play{track: now_playing_track})
       existing_track = ^res -> Repo.insert(%Play{track_id: existing_track.id})

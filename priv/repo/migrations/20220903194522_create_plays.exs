@@ -7,6 +7,5 @@ defmodule RadioTracker.Repo.Migrations.CreatePlays do
 
       timestamps()
     end
-
   end
 end

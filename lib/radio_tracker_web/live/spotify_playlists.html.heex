@@ -26,16 +26,19 @@
       >
         <%= playlist.qty_tracks %>
       </:col>
-      <:col label="Selected">
-          <span class="icon is-small">
-            <.icon name="square" type="regular" class="icon" />
-          </span>
-          <span class="icon is-small">
-            <.icon name="ellipsis" type="solid" class="icon" />
-          </span>
-          <span class="icon is-small">
-            <.icon name="square-check" type="regular" class="icon" />
-          </span>
+      <:col :let={playlist} label="Selected">
+        <span
+          class="icon is-small"
+          phx-click="select-playlist"
+          phx-value-playlist-id={playlist.id}
+          phx-value-playlist-name={playlist.name}
+        >
+          <.icon
+            name={if playlist.is_saved, do: "square-check", else: "square"}
+            type="regular"
+            class="icon"
+          />
+        </span>
       </:col>
     </Flop.Phoenix.table>
     <Flop.Phoenix.pagination

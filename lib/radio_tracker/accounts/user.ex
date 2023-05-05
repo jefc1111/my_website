@@ -15,6 +15,8 @@ defmodule RadioTracker.Accounts.User do
 
     field :role, :string, default: "user"
 
+    has_many :spotify_playlists, RadioTracker.Schemas.UserSpotifyPlaylist
+
     timestamps()
   end
 

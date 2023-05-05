@@ -3,6 +3,8 @@ defmodule RadioTrackerWeb.SpotifyPlaylists do
 
   alias RadioTracker.Spotify.Playlist
   alias RadioTracker.Accounts
+  alias RadioTracker.Schemas.UserSpotifyPlaylist
+  alias RadioTracker.Repo
 
   import RadioTrackerWeb.Components.Icon
 
@@ -21,7 +23,7 @@ defmodule RadioTrackerWeb.SpotifyPlaylists do
   def handle_params(params, _, socket) do
     case Playlist.get_user_playlists(socket.assigns.current_user, params) do
       {:ok, {playlists, meta}} ->
-        IO.inspect(playlists)
+
         socket = socket
         |> assign(playlists: playlists)
         |> assign(meta: meta)
@@ -39,5 +41,19 @@ defmodule RadioTrackerWeb.SpotifyPlaylists do
        to: Routes.live_path(socket, __MODULE__, socket.assigns.url_params)
      )
     }
+  end
+
+  def handle_event("select-playlist", value, socket) do
+    # {:ok, new_temp} = Thermostat.inc_temperature(socket.assigns.id)
+    # {:noreply, assign(socket, :temperature, new_temp)}
+    IO.inspect(socket)
+
+    Repo.insert(%UserSpotifyPlaylist{
+      user_id: socket.assigns.current_user.id,
+      playlist_id: value["playlist-id"],
+      playlist_name: value["playlist-name"]
+    })
+
+    {:noreply, socket}
   end
 end
