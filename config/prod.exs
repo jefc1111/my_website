@@ -19,7 +19,7 @@ config :logger, level: :info
 config :radio_tracker, RadioTracker.Mailer,
   adapter: Swoosh.Adapters.Sendmail,
   cmd_path: "/usr/sbin/sendmail",
-  cmd_args: "-N delay,failure,success",
+  cmd_args: "-N delay,failure,success"
 
 # ## SSL Support
 #
