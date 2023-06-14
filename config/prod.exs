@@ -16,6 +16,11 @@ config :radio_tracker, RadioTrackerWeb.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+config :radio_tracker, RadioTracker.Mailer,
+  adapter: Swoosh.Adapters.Sendmail,
+  cmd_path: "/usr/sbin/sendmail",
+  cmd_args: "-N delay,failure,success",
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key

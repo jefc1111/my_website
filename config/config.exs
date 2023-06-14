@@ -45,9 +45,6 @@ config :dart_sass,
     cd: Path.expand("../assets", __DIR__)
   ]
 
-config :radio_tracker, RadioTracker.Mailer,
-  adapter: Swoosh.Adapters.Local
-
 config :flop, repo: RadioTracker.Repo
 
 config :kaffy,
