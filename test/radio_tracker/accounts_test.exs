@@ -59,7 +59,7 @@ defmodule RadioTracker.AccountsTest do
     end
 
     test "validates email and password when given" do
-      {:error, changeset} = Accounts.register_user(%{email: "not valid", password: "not valid"})
+      {:error, changeset} = Accounts.register_user(%{email: "not valid", password: "2smol"})
 
       assert %{
                email: ["must have the @ sign and no spaces"],
@@ -262,8 +262,8 @@ defmodule RadioTracker.AccountsTest do
     test "validates password", %{user: user} do
       {:error, changeset} =
         Accounts.update_user_password(user, valid_user_password(), %{
-          password: "not valid",
-          password_confirmation: "another"
+          password: "2smol",
+          password_confirmation: "2smol2"
         })
 
       assert %{
@@ -471,8 +471,8 @@ defmodule RadioTracker.AccountsTest do
     test "validates password", %{user: user} do
       {:error, changeset} =
         Accounts.reset_user_password(user, %{
-          password: "not valid",
-          password_confirmation: "another"
+          password: "2smol",
+          password_confirmation: "2smol2"
         })
 
       assert %{

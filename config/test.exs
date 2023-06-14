@@ -23,3 +23,6 @@ config :radio_tracker, RadioTrackerWeb.Endpoint,
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+
+config :radio_tracker, RadioTracker.Mailer,
+  adapter: Swoosh.Adapters.Local
