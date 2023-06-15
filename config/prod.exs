@@ -17,9 +17,10 @@ config :radio_tracker, RadioTrackerWeb.Endpoint,
 config :logger, level: :info
 
 config :radio_tracker, RadioTracker.Mailer,
-  adapter: Swoosh.Adapters.Sendmail,
-  cmd_path: "/usr/sbin/sendmail",
-  cmd_args: "-N delay,failure,success"
+  adapter: Swoosh.Adapters.AmazonSES,
+  region: "eu-west-1",
+  access_key: System.get_env("AWS_ACCESS_KEY"),
+  secret: System.get_env("AWS_SECRET_KEY")
 
 # ## SSL Support
 #
