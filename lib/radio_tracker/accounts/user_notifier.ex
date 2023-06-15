@@ -8,7 +8,7 @@ defmodule RadioTracker.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"Geoff's BBC 6 Music Radio Tracker", "geoff@accounts.radio-tracker.geoffclayton.com"})
+      |> from({"Geoff's BBC 6 Music Radio Tracker", "accounts@radio-tracker.geoffclayton.com"})
       |> subject(subject)
       |> text_body(body)
 
