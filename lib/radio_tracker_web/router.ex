@@ -86,7 +86,7 @@ defmodule RadioTrackerWeb.Router do
   end
 
   scope "/", RadioTrackerWeb do
-    pipe_through [:browser, :require_authenticated_user]
+    pipe_through [:browser, :require_authenticated_user, :require_confirmed_user]
 
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update
