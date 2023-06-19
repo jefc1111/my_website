@@ -30,6 +30,8 @@ defmodule RadioTracker.AccountsTest do
     test "returns the user if the email and password are valid" do
       %{id: id} = user = user_fixture()
 
+      {:ok, user} = RadioTracker.Accounts.confirm_user_without_token(user)
+
       assert %User{id: ^id} =
                Accounts.get_user_by_email_and_password(user.email, valid_user_password())
     end
@@ -294,6 +296,8 @@ defmodule RadioTracker.AccountsTest do
           password: "new valid password"
         })
 
+      {:ok, user} = RadioTracker.Accounts.confirm_user_without_token(user)
+
       assert is_nil(user.password)
       assert Accounts.get_user_by_email_and_password(user.email, "new valid password")
     end
@@ -489,6 +493,9 @@ defmodule RadioTracker.AccountsTest do
 
     test "updates the password", %{user: user} do
       {:ok, updated_user} = Accounts.reset_user_password(user, %{password: "new valid password"})
+
+      {:ok, user} = RadioTracker.Accounts.confirm_user_without_token(user)
+
       assert is_nil(updated_user.password)
       assert Accounts.get_user_by_email_and_password(user.email, "new valid password")
     end
