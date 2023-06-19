@@ -3,7 +3,7 @@ defmodule RadioTrackerWeb.UserRegistrationController do
 
   alias RadioTracker.Accounts
   alias RadioTracker.Accounts.User
-  alias RadioTrackerWeb.UserAuth
+  #alias RadioTrackerWeb.UserAuth
 
   def new(conn, _params) do
     changeset = Accounts.change_user_registration(%User{})

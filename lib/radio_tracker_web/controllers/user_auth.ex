@@ -140,8 +140,7 @@ defmodule RadioTrackerWeb.UserAuth do
   end
 
   def require_confirmed_user(conn, _opts) do
-IO.inspect(conn.assigns)
-    if conn.assigns[:current_user] do
+    if conn.assigns[:current_user] && conn.assigns[:current_user].confirmed_at != nil do
       conn
     else
       conn
