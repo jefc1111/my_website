@@ -47,6 +47,13 @@ defmodule RadioTracker.Accounts do
     if User.valid_password?(user, password) && user.confirmed_at != nil, do: user
   end
 
+  def registration_pending?(email)
+    when is_binary(email) do
+      user = Repo.get_by(User, email: email)
+
+    user && user.confirmed_at == nil
+  end
+
   @doc """
   Gets a single user.
 

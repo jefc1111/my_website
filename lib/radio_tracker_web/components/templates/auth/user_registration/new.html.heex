@@ -1,7 +1,6 @@
 <.form_wrapper>
   <div class="is-clearfix">
     <h1>Register</h1>
-    <h2 class="has-text-danger">Note: Registration is currently closed - you'll be able to fill in the form but will not get an email. Do contact me if interested in the app.</h2>
     <.form let={f} for={@changeset} action={Routes.user_registration_path(@conn, :create)}>
       <%= if @changeset.action do %>
         <.form_validation_fail />

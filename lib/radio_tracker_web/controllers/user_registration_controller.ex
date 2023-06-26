@@ -20,7 +20,7 @@ defmodule RadioTrackerWeb.UserRegistrationController do
           )
 
         conn
-        |> put_flash(:info, "User created successfully.")
+        |> put_flash(:info, "Please check your email inbox for account confirmation instructions.")
         #|> UserAuth.log_in_user(user)
         |> redirect(to: "/")
 
