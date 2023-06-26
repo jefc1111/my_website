@@ -28,8 +28,8 @@
       </:col>
       <:col :let={playlist} label="Selected">
         <span
-          class="icon is-small"
-          phx-click="select-playlist"
+          class="icon is-small is-clickable"
+          phx-click={if playlist.is_saved, do: "deselect-playlist", else: "select-playlist"}
           phx-value-playlist-id={playlist.id}
           phx-value-playlist-name={playlist.name}
         >

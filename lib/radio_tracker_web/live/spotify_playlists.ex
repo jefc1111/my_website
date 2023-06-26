@@ -6,6 +6,8 @@ defmodule RadioTrackerWeb.SpotifyPlaylists do
   alias RadioTracker.Schemas.UserSpotifyPlaylist
   alias RadioTracker.Repo
 
+  import Ecto.Query
+
   import RadioTrackerWeb.Components.Icon
 
   def mount(_params, %{"user_token" => user_token}, socket) do
@@ -35,6 +37,7 @@ defmodule RadioTrackerWeb.SpotifyPlaylists do
     end
   end
 
+
   def handle_info({:list_change, _data}, socket) do
     {:noreply,
      push_patch(socket,
@@ -46,7 +49,7 @@ defmodule RadioTrackerWeb.SpotifyPlaylists do
   def handle_event("select-playlist", value, socket) do
     # {:ok, new_temp} = Thermostat.inc_temperature(socket.assigns.id)
     # {:noreply, assign(socket, :temperature, new_temp)}
-    IO.inspect(socket)
+    #IO.inspect(socket)
 
     Repo.insert(%UserSpotifyPlaylist{
       user_id: socket.assigns.current_user.id,
@@ -54,6 +57,30 @@ defmodule RadioTrackerWeb.SpotifyPlaylists do
       playlist_name: value["playlist-name"]
     })
 
-    {:noreply, socket}
+    refreshed_playlists(socket)
+  end
+
+  def handle_event("deselect-playlist", value, socket) do
+    playlist_id = value["playlist-id"]
+
+    q = from p in UserSpotifyPlaylist, where: p.playlist_id == ^playlist_id
+
+    Repo.delete_all(q)
+
+    refreshed_playlists(socket)
+  end
+
+  defp refreshed_playlists(socket) do
+    case Playlist.get_user_playlists(socket.assigns.current_user, socket.assigns.url_params) do
+      {:ok, {playlists, meta}} ->
+
+        socket = socket
+        |> assign(playlists: playlists)
+        |> assign(meta: meta)
+
+        {:noreply, socket}
+      _ ->
+        {:noreply, push_navigate(socket, to: "/")}
+    end
   end
 end
